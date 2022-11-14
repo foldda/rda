@@ -132,8 +132,8 @@ dmypy.json
 .vscode/
 
 # Visual Studio artifacts 
-src/CSharp/bin
-src/CSharp/obj
-src/CSharp/TestResults
-src/CSharp/UnitTests/bin
-src/CSharp/UnitTests/obj
+src/CSharp/bin/
+src/CSharp/obj/
+src/CSharp/TestResults/
+src/CSharp/UnitTests/bin/
+src/CSharp/UnitTests/obj/
