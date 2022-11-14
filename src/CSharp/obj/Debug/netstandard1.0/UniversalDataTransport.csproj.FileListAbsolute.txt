@@ -1,0 +1,10 @@
+C:\Users\micha\source\repos\foldda\rda\src\CSharp\obj\Debug\netstandard1.0\UniversalDataTransport.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\micha\source\repos\foldda\rda\src\CSharp\obj\Debug\netstandard1.0\UniversalDataTransport.AssemblyInfoInputs.cache
+C:\Users\micha\source\repos\foldda\rda\src\CSharp\obj\Debug\netstandard1.0\UniversalDataTransport.AssemblyInfo.cs
+C:\Users\micha\source\repos\foldda\rda\src\CSharp\obj\Debug\netstandard1.0\UniversalDataTransport.csproj.CoreCompileInputs.cache
+C:\Users\micha\source\repos\foldda\rda\src\CSharp\bin\Debug\netstandard1.0\UniversalDataTransport.deps.json
+C:\Users\micha\source\repos\foldda\rda\src\CSharp\bin\Debug\netstandard1.0\UniversalDataTransport.dll
+C:\Users\micha\source\repos\foldda\rda\src\CSharp\bin\Debug\netstandard1.0\UniversalDataTransport.pdb
+C:\Users\micha\source\repos\foldda\rda\src\CSharp\obj\Debug\netstandard1.0\UniversalDataTransport.dll
+C:\Users\micha\source\repos\foldda\rda\src\CSharp\obj\Debug\netstandard1.0\UniversalDataTransport.pdb
+C:\Users\micha\source\repos\foldda\rda\src\CSharp\obj\Debug\netstandard1.0\UniversalDataTransport.csproj.AssemblyReference.cache
