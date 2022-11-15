@@ -1,13 +1,13 @@
 ﻿// Copyright (c) 2020 Michael Chen
 // Licensed under the MIT License -
-// https://github.com/sierrathedog/rda/blob/main/LICENSE
+// https://github.com/foldda/rda/blob/main/LICENSE
 
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 /*
- * UniversalDataTransport name-space is for unified data storage and transportation using the RDA data storage structure. 
+ * UniversalDataTransport name-space is for unified data storage and transportation using the RDA. 
  */
 
 namespace UniversalDataTransport
@@ -28,7 +28,7 @@ namespace UniversalDataTransport
      * 
      */
 
-    public class Rda : IRdaSerializable
+    public class Rda : IRda
     {
         /**
          * Base properties
@@ -90,7 +90,6 @@ namespace UniversalDataTransport
         {
             get
             {
-                //if (Children.Count == 1) { return Children[0].Dimension; }
                 int maxChildDimemsion = -1;
                 foreach (var c in Children)
                 {
@@ -590,6 +589,7 @@ namespace UniversalDataTransport
             {
                 if (Children.Count == 0) 
                 { 
+                    //it's a dummy if it has no children (dimension==0) and null scalar-value 
                     return _scalarValue == null; 
                 }
                 else
@@ -620,13 +620,6 @@ namespace UniversalDataTransport
 
         private void EnsureArrayLength(int index)
         {
-            //1. turns a "leaf" node to a "composite" node - that is, a node that have children that can be indexed.
-            //if (Children.Count == 0)
-            //{
-            //    //push original_value down to become the 1st child
-            //    Children.Add(new RecursiveDelimitedArray(null /* null payload */, this) { Content = _unescapedValueExpression });
-            //}
-
             //extend the children elements if over-indexing is required
             int diff = index - Children.Count + 1;
 
@@ -727,7 +720,7 @@ namespace UniversalDataTransport
             return this;
         }
 
-        public IRdaSerializable FromRda(Rda rda)
+        public IRda FromRda(Rda rda)
         {
             if (rda.Dimension == 0) 
             { 
