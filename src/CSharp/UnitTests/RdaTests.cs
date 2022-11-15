@@ -1,6 +1,6 @@
 // Copyright (c) 2020 Michael Chen
 // Licensed under the MIT License -
-// https://github.com/sierrathedog/rda/blob/main/LICENSE
+// https://github.com/foldda/rda/blob/main/LICENSE
 
 using UniversalDataTransport;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -16,9 +16,19 @@ namespace UnitTests
             string rdaString0 = @"";
             Rda rda0 = Rda.Parse(rdaString0);
             Assert.AreEqual(string.Empty, rda0.ToString()); //dim=0
+            var value = "Two";
+            rda0.SetValue(2, value);
+            Assert.AreEqual(value, rda0.GetValue(2)); //value at expanded container
+            Assert.AreEqual(1, rda0.Dimension);  //dim=1
+
             rdaString0 = @"Xyz";
+            int[] addr = new int[] { 1, 2, 3 };
             rda0 = Rda.Parse(rdaString0);
-            Assert.AreEqual(rdaString0, rda0.ToString()); //dim=0
+            Assert.AreEqual(rdaString0, rda0.ScalarValue); //test scalar value keeping
+            rda0.SetValue(addr, value);
+            Assert.AreEqual(rdaString0, rda0.ScalarValue); //test scalar value keeping
+            Assert.AreEqual(value, rda0.GetValue(addr)); //test stored value
+            Assert.AreEqual(3, rda0.Dimension);  //dim=3
 
             //delimiters are not mendatory for a RDA container, delimiters can be added (or be removed) as required
             string rdaString1 = @"|\|";
