@@ -39,9 +39,9 @@ Also, thanks to its simple and efficient delimiter-based encoding, an RDA contai
 
 > *The RDA API contains only one class and one interface which are easy to understand and to use. The API has no 3rd party dependency and requires no installation.*
 
-The RDA-encoding API from Part of this repo is available in three languages: [C#](https://github.com/foldda/rda/tree/main/src/CSharp), [Java](https://github.com/foldda/rda/blob/main/src/Java/), and [Python](https://github.com/foldda/rda/blob/main/src/Python). To start, simply include the provided source files in your project and start using the API objects and methods as part of your program:
+This project provides the RDA-encoding API in three languages: [C#](https://github.com/foldda/rda/tree/main/src/CSharp), [Java](https://github.com/foldda/rda/blob/main/src/Java/), and [Python](https://github.com/foldda/rda/blob/main/src/Python). To start, simply include the provided source files in your project, and use the API types/methods in your program, which are very simple - 
 
-#### _API Part 1: the Rda class_
+#### _API Part 1: Rda class_
 
 The _Rda class_ is modeled as a "container" object. It implements the RDA encoding and decoding via these methods:
 
@@ -49,7 +49,7 @@ The _Rda class_ is modeled as a "container" object. It implements the RDA encodi
 * **ToString** method is for RDA-encoding, i.e. serializing the container object and its content into a string, and 
 * **Parse** method is for RDA-decoding, i.e. de-serializing an RDA-encoded string to an RDA container object in a program.
 
-The following code sample[^3] shows how these methods are used to serialized and de-serialize a data object.
+The following code sample[^3] shows how these methods are used to serialized and de-serialize data values via an RDA container.
 
 [^3]: Methods of using the Java API and the Python API are very similar.
 
@@ -58,29 +58,29 @@ using UniversalDataTransport;  //the Rda class is defined in this domain
 
 class RdaDemo
 {
-    //a data object to be serialized
-    string[] data = new string[]{"One", "Two", "Three"};
-    
-    //create an RDA container
-    Rda rda1 = new Rda();    
+    public void Main()
+    {
+        //create an RDA container
+        Rda rdaSending = new Rda();    
 
-    //SetValue(): store properties of data[] into the container
-    rda1.SetValue(0, data[0]);  //store value "One" at index = 0
-    rda1.SetValue(1, data[1]);
-    rda1.SetValue(2, data[2]);
+        //SetValue(): store data values into the container
+        rdaSending.SetValue(0, "One");  //store value "One" at index = 0
+        rdaSending.SetValue(1, "Two");
+        rdaSending.SetValue(2, "Three");
 
-    //ToString(): serialize the container and its content to an RDA-encoded string
-    System.Console.WriteLine(rda1.ToString());   //print the encoded container string, eg "|\|One|Two|Three"
+        //ToString(): serialize the container and its content to an RDA-encoded string
+        System.Console.WriteLine(rdaSending.ToString());   //print the encoded container string, eg "|\|One|Two|Three"
 
-    //Parse(): de-serialize an RDA formatted string back to an RDA container object 
-    Rda rda2 = Rda.Parse(rda1.ToString());   //Parse() method does the reverse of the ToString() method.
+        //Parse(): de-serialize an RDA-format encoded string back to an RDA container object 
+        Rda rdaReceived = Rda.Parse(@"|\|One|Two|Three");   
 
-    //GetValue(): retrieve a value from in an RDA container at an index location    
-    System.Console.WriteLine(rda2.GetValue(2));   //print "Three", the value stored at index=2 in the container.
+        //GetValue(): retrieve a value from in an RDA container at an index location    
+        System.Console.WriteLine(rdaReceived.GetValue(2));   //print "Three", the value stored at index=2 in the container.    
+    }
 }
 ```
 
-#### _API Part 2: the IRdaSerializable interface_
+#### _API Part 2: IRda interface_
 
 The _IRdaSerializable interface_ defines two methods for applications to implement arbitrarily complex object-serialization using RDA:
 
