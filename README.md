@@ -5,15 +5,15 @@
 
 Recursive Delimited Array, or RDA, is an encoding format for storing and transporting structured data in a text string.
 
-Unlike XML and JSON that restrict the data to a specific application using a schema, the RDA format is **schema-less** and is for **generic data**. An RDA-encoded string, aka "RDA container", can store any data from any application. 
+Unlike XML and JSON using a schema to restrict the data type and structure to a specific application, RDA is a **schema-less** format for **generic data** - an RDA-encoded string (aka "RDA container") can be used for storing any data from any application. 
 
 ## A Schema-less Data Container
 
-> *An RDA container is like a expandable shelf that provides unlimited space where you can store "anything", and an XML or JSON container is like a wallet, where there are specific places for coins, notes, and cards.* 
+> *An RDA container is like a shelf that provides unlimited, expandable space for storing "anything", and an XML or JSON container is like a wallet, where there are specific places for coins, notes, and cards.* 
 
-When use XML/JSON containers for data exchange between applications, the applications' data must comply with the schema-specified types and structure to be fit into the container. If an application requires changing its data format and the schema, all other connected applications will need to change their container-parsing logic to remain compatible, and this can be difficult if the other applications are developed and maintained by different parties.
+When use XML/JSON containers for data exchange between applications, the applications' data must comply with the schema-specified types and structure to be fit into the container. If an application requires changing its data format and the schema, all other connected applications will need to change their container-parsing and data-handling logic to be compatible. Imaging if Twitter or Google want to change their REST API, a lot of downstream applications will be affected.
 
-While RDA is also a text-encoded data format for storing structured data[^1], it is designed to be generic and **application independent**:
+While RDA is also a text-encoded data format[^1] for exchanging complex structured data, it is designed to be generic and **application independent**:
 
 [^1]: Full details of the encoding rules can be found [here](https://foldda.github.io/rda/rda-encoding-rule).
 
@@ -25,11 +25,11 @@ While RDA is also a text-encoded data format for storing structured data[^1], it
 
 ## Benefits Of Using RDA
 
-> *RDA allows implementing a generic and unified data transport layer that applications can utilize for consistently sending and receiving data, so they are "loosely coupled" when require data exchange, and can be separately and flexibly maintained for compatibility.*
+> *RDA allows implementing a generic and unified data transport layer that applications can utilize for flexibly and consistently sending and receiving data. As the applications are "loosely coupled" in such way, they can be separately maintained and remain compatible.*
  
-One powerful feature of RDA is for implementing cross-language and cross-application object-serialization. For example, you can send [a "Person" object as a serialized RDA container](https://foldda.github.io/rda/2022/10/03/obj-serialization-pattern.html) from your Java program to many receivers, and in a Python program, you can de-serialize a "User" object using the received RDA container. Unlike using XML/JSON, the "Person" object and the "User" object are not bound to a schema, so they can be programmed and maintained separately. 
+One powerful feature of RDA is for implementing cross-language and cross-application object-serialization. For example, you can send [a "Person" object as a serialized RDA container](https://foldda.github.io/rda/2022/10/03/obj-serialization-pattern.html) from your Java program to many receivers, and in a Python program, you can de-serialize a "User" object using the received RDA container. Because there is no schema to be adhered to, the "Person" object and the "User" object can be programmed differently and be maintained separately. 
 
-Another use of RDA is maintaining versioning compatibility between a sender and a receiver. Because RDA has a recursive storage structure, you can have "children" RDAs as data elements in a "parent" RDA. It means you can transfer multiple versions and multiple formats of your data (as child RDAs) "side-by-side" in an RDA container, and the receiver can pick the right version and the right format to use. 
+Another use of RDA is maintaining versioning compatibility between a sender and a receiver. Because RDA's recursive storage allows storing an RDA inside another RDA, you can transfer multiple versions and multiple formats of your data "side-by-side" (as child RDAs) in an RDA container, and the receiver can pick the right version and the right format of its preference. 
 
 Indeed, being able to send multiple pieces of "anything" side-by-side in a container can have many interesting uses: like sending XML data (which is a string) together with its DTD (another string), or sending an encrypted document together with the associated digital signature and public key, or sending a computing "workload" that has some data together with an executable script to a data-processing unit, etc.
 
@@ -37,13 +37,13 @@ Also, thanks to its simple and efficient delimiter-based encoding, an RDA contai
 
 ## Getting Started
 
-> *The RDA API contains only one class and one interface which are easy to understand and to use. The API has no 3rd party dependency and requires no installation.*
+> *The RDA API has no 3rd party dependency and requires no installation. It contains only one class and one interface which are very simple and easy to use.*
 
-This project provides the RDA-encoding API in three languages: [C#](https://github.com/foldda/rda/tree/main/src/CSharp), [Java](https://github.com/foldda/rda/blob/main/src/Java/), and [Python](https://github.com/foldda/rda/blob/main/src/Python). To start, simply include the provided source files in your project, and use the API types/methods in your program, which are very simple - 
+This project provides the RDA-encoding API in three languages: [C#](https://github.com/foldda/rda/tree/main/src/CSharp), [Java](https://github.com/foldda/rda/blob/main/src/Java/), and [Python](https://github.com/foldda/rda/blob/main/src/Python). To start, simply include the provided source files in your project, and use the API types/methods in your program, as explained below - 
 
-#### _API Part 1: Rda class_
+#### _Using class Rda_
 
-The _Rda class_ is modeled as a "container" object. It implements the RDA encoding and decoding via these methods:
+The _Rda class_ implements the RDA encoding and decoding and is modeled as a "container". It provides these methods:
 
 * **Setter-Getter** methods are for assigning and retrieving the container's content using index-based addresses, 
 * **ToString** method is for RDA-encoding, i.e. serializing the container object and its content into a string, and 
@@ -54,35 +54,30 @@ The following code sample[^3] shows how these methods are used to serialized and
 [^3]: Methods of using the Java API and the Python API are very similar.
 
 ```c#
-using UniversalDataTransport;  //the Rda class is defined in this domain
 
-class RdaDemo
-{
-    public void Main()
-    {
-        //create an RDA container
-        Rda rdaSending = new Rda();    
+//create an RDA container
+Rda rdaSending = new Rda();    
 
-        //SetValue(): store data values into the container
-        rdaSending.SetValue(0, "One");  //store value "One" at index = 0
-        rdaSending.SetValue(1, "Two");
-        rdaSending.SetValue(2, "Three");
+//SetValue(): store data values into the container
+rdaSending.SetValue(0, "One");  //store value "One" at index = 0
+rdaSending.SetValue(1, "Two");
+rdaSending.SetValue(2, "Three");
 
-        //ToString(): serialize the container and its content to an RDA-encoded string
-        System.Console.WriteLine(rdaSending.ToString());   //print the encoded container string, eg "|\|One|Two|Three"
+//ToString(): serialize the container and its content to an RDA-encoded string
+System.Console.WriteLine(rdaSending.ToString());   //print the encoded container string, eg "|\|One|Two|Three"
 
-        //Parse(): de-serialize an RDA-format encoded string back to an RDA container object 
-        Rda rdaReceived = Rda.Parse(@"|\|One|Two|Three");   
+//Parse(): de-serialize an RDA-format encoded string back to an RDA container object 
+Rda rdaReceived = Rda.Parse(@"|\|One|Two|Three");   
 
-        //GetValue(): retrieve a value from in an RDA container at an index location    
-        System.Console.WriteLine(rdaReceived.GetValue(2));   //print "Three", the value stored at index=2 in the container.    
-    }
-}
+//GetValue(): retrieve a value from in an RDA container at an index location    
+System.Console.WriteLine(rdaReceived.GetValue(2));   //print "Three", the value stored at index=2 in the container.
+
+
 ```
 
-#### _API Part 2: IRda interface_
+#### _Using interface IRda_
 
-The _IRdaSerializable interface_ defines two methods for applications to implement arbitrarily complex object-serialization using RDA:
+The _IRda interface_ defines two methods for applications to implement arbitrarily complex object-serialization using RDA:
 
 * **ToRda()**: produces an RDA container that contains specific properties of the object, for serialization. 
 
