@@ -2,7 +2,7 @@ from __future__ import annotations
 from enum import Enum
 from typing import List, Optional
 import unicodedata
-from i_rda_serializable import IRdaSerializable
+from i_rda import IRda
 
 from encoding import RdaEncoding
 
@@ -19,7 +19,7 @@ LINE_BREAK = "\r\n"
 INDENT = "  "
 
 
-class Rda(IRdaSerializable):
+class Rda(IRda):
     elements: List[Rda]
 
     _scalar_value: Optional[str] = None
