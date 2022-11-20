@@ -22,7 +22,7 @@ import java.util.List;
  *
  */
 
-public class Rda implements IRdaSerializable {
+public class Rda implements IRda {
 
   public static <T> T getValueOrDefault(T value, T defaultValue) {
     return value == null ? defaultValue : value;
@@ -32,7 +32,7 @@ public class Rda implements IRdaSerializable {
     return this;
   }
 
-  public IRdaSerializable FromRda(Rda rda) {
+  public IRda FromRda(Rda rda) {
     if (rda.Dimension() == 0) {
       SetScalarValue(rda.GetScalarValue());
     } else {
