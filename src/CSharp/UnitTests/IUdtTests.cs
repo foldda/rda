@@ -8,7 +8,7 @@ using System.IO;
 
 namespace UnitTests
 {
-    public class Person : IRda
+    public class Person : IUdt
     {
         public string FirstName = "John";
         public string LastName = "Smith";
@@ -28,7 +28,7 @@ namespace UnitTests
         }
 
         //restore the object’s properties from an RDA
-        public virtual IRda FromRda(Rda rda)
+        public virtual IUdt FromRda(Rda rda)
         {
             this.FirstName = rda[(int) RDA_INDEX.FIRST_NAME].ScalarValue;
             this.LastName = rda[(int)RDA_INDEX.LAST_NAME].ScalarValue;
@@ -53,7 +53,7 @@ namespace UnitTests
         }
     }
 
-    class Address : IRda
+    class Address : IUdt
     {
         public enum RDA_INDEX : int { LINES = 0, ZIP = 1 }
 
@@ -71,7 +71,7 @@ namespace UnitTests
         }
 
         //restore the properties from an RDA
-        public IRda FromRda(Rda rda)
+        public IUdt FromRda(Rda rda)
         {
             this.AddressLines = rda[(int)RDA_INDEX.LINES].ScalarValue;
             this.ZIP = rda[(int)RDA_INDEX.ZIP].ScalarValue;
@@ -101,7 +101,7 @@ namespace UnitTests
             return personRda;
         }
 
-        public override IRda FromRda(Rda rda)
+        public override IUdt FromRda(Rda rda)
         {
             //restore the base Person properties
             base.FromRda(rda);  //restores FirstName and LastName
@@ -126,44 +126,8 @@ namespace UnitTests
 
 
     [TestClass]
-    public class IRdaTests
+    public class IUdtTests
     {
-
-        //[TestMethod]
-        //public void RdaDataContainerTest()
-        //{
-        //    string rda = @"|;\|sec1;sec2|<record 1>;<record 2>;<record N>";
-
-        //    //test constructing container, and reteriving container properties
-        //    RdaDataContainer container = new RdaDataContainer(rda);
-        //    Assert.AreEqual(rda, container.ToString());
-        //    Assert.AreEqual(3, container.Records.Count);
-        //    Assert.AreEqual("<record 1>,<record 2>,<record N>", string.Join(',', container.Records));
-
-
-        //    RdaDataContainer container2 = container.Clone();
-        //    Assert.AreEqual(container.ToString(), container2.ToString()); // toString compare Clone
-
-        //    container2.AddRecord(new Rda() { ScalarValue = "added1" });
-        //    container2.AddRecord(new Rda() { ScalarValue = "added2" });
-        //    Assert.AreEqual("<record 1>,<record 2>,<record N>,added1,added2", string.Join(',', container2.Records));
-
-        //    string filePath = "C:\\Temp\\UDP_Test_binaryfile111.bin";
-        //    using (BinaryWriter writer = new BinaryWriter(File.Open(filePath, FileMode.Create)))
-        //    {
-        //        //write container to file in compressed binary stream.
-        //        container2.WriteStream(writer);
-        //    }
-
-        //    using (BinaryReader reader = new BinaryReader(File.Open(filePath, FileMode.Open)))
-        //    {
-        //        //read container back from file and compare.
-        //        var container3 = RdaDataContainer.ReadStream(reader);
-        //        Assert.AreEqual(container2.ToString(), container3.ToString());
-        //    }
-
-        //    File.Delete(filePath);  //tear down
-        //}
 
         [TestMethod]
         public void ObjectSerializationTest()

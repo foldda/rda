@@ -12,19 +12,70 @@ public class UniversalDataFrameworkTests {
     String rdaString0 = "";
     Rda rda0 = Rda.Parse(rdaString0);
     assertEquals(rdaString0, rda0.ToString()); //dim=0
-    String value = "Two";
-    rda0.SetValue(2, value);
-    assertEquals(value, rda0.GetValue(2)); //value at expanded container
+    String newRandomValue = "Two";
+    //String value = "Two";
+    rda0.SetValue(2, newRandomValue);
+    assertEquals(newRandomValue, rda0.GetValue(2)); //value at expanded container
     assertEquals(1, rda0.Dimension());  //dim=1
 
     rdaString0 = "Xyz";
     int[] addr = new int[] { 1, 2, 3 };
     rda0 = Rda.Parse(rdaString0);
     assertEquals(rdaString0, rda0.GetScalarValue()); //test scalar value keeping
-    rda0.SetValue(addr, value);
+    rda0.SetValue(addr, newRandomValue);
     assertEquals(rdaString0, rda0.GetScalarValue()); //test scalar value keeping
-    assertEquals(value, rda0.GetValue(addr)); //test stored value
+    assertEquals(newRandomValue, rda0.GetValue(addr)); //test stored value
     assertEquals(3, rda0.Dimension());  //dim=3
+
+
+    rdaString0 ="Abc";
+    int[] addr2D= new int[] { 0, 2 };
+    rda0 = Rda.Parse(rdaString0);
+    assertEquals(rdaString0, rda0.GetScalarValue()); //test scalar value keeping
+    rda0.SetValue(addr2D, newRandomValue);
+    assertEquals(2, rda0.Dimension());  //dim=2
+    assertEquals(newRandomValue, rda0.GetValue(addr2D)); //test stored value
+    assertEquals(rdaString0, rda0.GetScalarValue()); //test scalar value keeping
+
+
+    String newScarlar = "scalar value at [0,0,0] replaced";
+    rda0.SetValue(new int[] { 0, 0, 0 }, newScarlar);
+    assertEquals(3, rda0.Dimension());  //dim=3
+    assertEquals(newRandomValue, rda0.GetValue(addr2D)); //test stored value being kept
+    assertEquals(newScarlar, rda0.GetScalarValue()); //test scalar value replaced
+    //now replacing scalar value at root, expecting everything underneath to be deleted
+    newScarlar = "scalar value at [0] replaced";
+    rda0.SetValue(0, newScarlar);
+    assertEquals(newScarlar, rda0.GetScalarValue()); //test scalar value replaced
+    assertEquals(1, rda0.Dimension());  //dim becomes 1
+    assertEquals("", rda0.GetValue(addr2D)); //test previously stored value being deleted
+    assertTrue(rda0.GetRda(addr2D).IsDummy()); //test previously stored value being deleted
+
+    rda0.SetScalarValue("D-0 Scalar");
+    assertEquals(rda0.ToString(), rda0.GetScalarValue());
+    assertEquals(0, rda0.Dimension());  //dim is 0
+    //test scalar value being "push donw" to higher dimension
+    assertEquals(rda0.GetScalarValue(), rda0.GetValue(0)); //test previously stored value being deleted
+    assertFalse(rda0.GetRda(0).IsDummy()); //left-most node always "exists"
+    assertEquals(1, rda0.Dimension());  //dim is expanded and becomes 1
+    assertTrue(rda0.GetRda(new int[] { 0, 0, 1 }).IsDummy()); //test previously stored value being deleted
+    assertEquals(3, rda0.Dimension());  //dim gets expanded
+    System.out.printf("expanded rda with sigle scalar value:\n %s\n", rda0.ToString());
+    rda0.CompressDimension();
+    System.out.printf("compressed rda with sigle scalar value:\n %s\n", rda0.ToString());
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

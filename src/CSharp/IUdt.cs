@@ -5,19 +5,13 @@
 namespace UniversalDataTransport
 {
     /*
-     * An object implements this interface to gurrantee its "meaningful" properties 
-     * 
-     * #1. can be stored into an RDA object, with placement to designated locations 
-     * and with no or acceptable distortion; and 
-     * 
-     * #2. can be restored from an RDA object with values retrived from the designated 
-     * location.
-     * 
-     * IRda is an "abstract data type" for data objects in compliance with Universal Data Transport
+     * RDA-Serializable object implements this interface to ensure 
+     * 1) its properties can be stored into an resulting RDA object,  
+     * 2) used a provided RDA to restore this object's properties' values.  
      * 
      */
 
-    public interface IRda
+    public interface IUdt
     {
         /// <summary>
         /// Stores properties into the RDA.
@@ -29,7 +23,7 @@ namespace UniversalDataTransport
         /// Populate properties with the values from the RDA
         /// </summary>
         /// <param name="rda">An Rda instance that carries the properties of an object to be restored.</param>
-        IRda FromRda(Rda rda);
+        IUdt FromRda(Rda rda);
     }
 }
 

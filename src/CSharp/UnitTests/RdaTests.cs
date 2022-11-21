@@ -13,22 +13,57 @@ namespace UnitTests
         [TestMethod]
         public void ConstructorAndParsingTest()
         {
+            var newRandomValue = "Two";
             string rdaString0 = @"";
             Rda rda0 = Rda.Parse(rdaString0);
             Assert.AreEqual(string.Empty, rda0.ToString()); //dim=0
-            var value = "Two";
-            rda0.SetValue(2, value);
-            Assert.AreEqual(value, rda0.GetValue(2)); //value at expanded container
+            rda0.SetValue(2, newRandomValue);
+            Assert.AreEqual(newRandomValue, rda0.GetValue(2)); //value at expanded container
             Assert.AreEqual(1, rda0.Dimension);  //dim=1
 
             rdaString0 = @"Xyz";
             int[] addr = new int[] { 1, 2, 3 };
             rda0 = Rda.Parse(rdaString0);
             Assert.AreEqual(rdaString0, rda0.ScalarValue); //test scalar value keeping
-            rda0.SetValue(addr, value);
+            rda0.SetValue(addr, newRandomValue);
             Assert.AreEqual(rdaString0, rda0.ScalarValue); //test scalar value keeping
-            Assert.AreEqual(value, rda0.GetValue(addr)); //test stored value
+            Assert.AreEqual(newRandomValue, rda0.GetValue(addr)); //test stored value
             Assert.AreEqual(3, rda0.Dimension);  //dim=3
+
+            rdaString0 = @"Abc";
+            int[] addr2D= new int[] { 0, 2 };
+            rda0 = Rda.Parse(rdaString0);
+            Assert.AreEqual(rdaString0, rda0.ScalarValue); //test scalar value keeping
+            rda0.SetValue(addr2D, newRandomValue);
+            Assert.AreEqual(2, rda0.Dimension);  //dim=2
+            Assert.AreEqual(newRandomValue, rda0.GetValue(addr2D)); //test stored value
+            Assert.AreEqual(rdaString0, rda0.ScalarValue); //test scalar value keeping
+
+            var newScarlar = "scalar value at [0,0,0] replaced";
+            rda0.SetValue(new int[] { 0, 0, 0 }, newScarlar);
+            Assert.AreEqual(3, rda0.Dimension);  //dim=3
+            Assert.AreEqual(newRandomValue, rda0.GetValue(addr2D)); //test stored value being kept
+            Assert.AreEqual(newScarlar, rda0.ScalarValue); //test scalar value replaced
+            //now replacing scalar value at root, expecting everything underneath to be deleted
+            newScarlar = "scalar value at [0] replaced";
+            rda0.SetValue(0, newScarlar);
+            Assert.AreEqual(newScarlar, rda0.ScalarValue); //test scalar value replaced
+            Assert.AreEqual(1, rda0.Dimension);  //dim becomes 1
+            Assert.AreEqual(string.Empty, rda0.GetValue(addr2D)); //test previously stored value being deleted
+            Assert.IsTrue(rda0.GetRda(addr2D).IsDummy); //test previously stored value being deleted
+
+            rda0.ScalarValue = "D-0 Scalar";
+            Assert.AreEqual(rda0.ToString(), rda0.ScalarValue);
+            Assert.AreEqual(0, rda0.Dimension);  //dim is 0
+            //test scalar value being "push donw" to higher dimension
+            Assert.AreEqual(rda0.ScalarValue, rda0.GetValue(0)); //test previously stored value being deleted
+            Assert.IsFalse(rda0.GetRda(0).IsDummy); //left-most node always "exists"
+            Assert.AreEqual(1, rda0.Dimension);  //dim is expanded and becomes 1
+            Assert.IsTrue(rda0.GetRda(new int[] { 0, 0, 1 }).IsDummy); //test previously stored value being deleted
+            Assert.AreEqual(3, rda0.Dimension);  //dim gets expanded
+            rda0.ToString().Print("expanded rda with sigle scalar value");
+            rda0.CompressDimension();
+            rda0.ToString().Print("compressed rda with sigle scalar value");
 
             //delimiters are not mendatory for a RDA container, delimiters can be added (or be removed) as required
             string rdaString1 = @"|\|";
