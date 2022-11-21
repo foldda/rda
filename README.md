@@ -5,15 +5,15 @@
 
 Recursive Delimited Array, or RDA, is an encoding format for storing and transporting structured data in a text string.
 
-Unlike XML and JSON using a schema to restrict the data to the types and structure of a specific application, RDA is a **schema-less** format for **generic** data. An RDA "container" (i.e. an RDA-encoded string) can be used for storing any data from any application. 
+Unlike XML and JSON using a schema to restrict the data to the types and structure of a specific application, RDA is a **schema-less** format for **generic** data. An RDA-encoded string (aka. "RDA container") can be used for storing any data from any application. 
 
-## A Problem With Using XML/JSON
+## A Problem With XML/JSON
 
-> *An RDA container is like a shelf that provides unlimited, expandable space for storing "anything", whilst an XML or JSON container is like a wallet, where there are specific places for coins, notes, and cards.* 
+> *An RDA container is like a vast shelf that provides unlimited, expandable space for storing "anything", whilst an XML or JSON container is like a wallet that offers specific places for coins, notes, and cards.* 
 
-For data exchange using XML/JSON as the container format, the applications' data must comply with the types and structure specified by the schema so it can be fit into the container. If an application changes its data format and the schema, all other connected applications will need to change their container-parsing and data-handling logic to be compatible. For example, if Twitter or Google changes the data format of their REST API, a lot of downstream applications will be affected.
+When use XML/JSON format for data exchange, a developer must firstly decide the data types and data structure for all connected applications, and carve the decided data format in a schema. If an application changes its data format and the schema, all other applications will need to change their container-parsing and data-handling logic to be compatible. For example, if Twitter or Google changes the data format in their REST API, a lot of downstream applications will be affected.
 
-In contrast, while RDA is also a text-encoded data format[^1] for complex structured data, it is designed to be **application independent** -
+In contrast, while RDA is also a text-encoded data format[^1] for storing complex structured data, it is designed to be **generic** and **application independent** -
 
 [^1]: Full details of the encoding rules can be found [here](https://foldda.github.io/rda/rda-encoding-rule).
 
@@ -23,9 +23,9 @@ In contrast, while RDA is also a text-encoded data format[^1] for complex struct
  
 [^2]:RDA data types and data structure are [discussed here](https://foldda.github.io/rda/data-type-and-data-structure). 
 
-It is a brand new way of data exchange using RDA, for making applications more resilient to data format changes.
+This means an RDA container can accomandate any data format changes, so applications can freely connect to each other to exchange data. It means the content and the structure can be decided later and can evolve over time, and be flexibly handled by the application.
 
-## Benefits of Using RDA
+## Benefits of RDA
 
 > *RDA allows implementing a generic and unified data transport layer which applications can utilize for flexibly and consistently sending and receiving data. As the applications are "loosely coupled" between each other, they can be independently maintained while remain compatible.*
  
