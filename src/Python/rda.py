@@ -2,11 +2,10 @@ from __future__ import annotations
 from enum import Enum
 from typing import List, Optional
 import unicodedata
-from i_rda import IRda
+from i_udt import IUdt
 
 from encoding import RdaEncoding
 
-# from i_rda_serializable import IRdaSerializable
 from utils import range_contains
 
 
@@ -19,7 +18,7 @@ LINE_BREAK = "\r\n"
 INDENT = "  "
 
 
-class Rda(IRda):
+class Rda(IUdt):
     elements: List[Rda]
 
     _scalar_value: Optional[str] = None

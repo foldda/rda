@@ -8,7 +8,7 @@ if TYPE_CHECKING:
     from rda import Rda
 
 
-class IRda: 
+class IUdt: 
     @abc.abstractmethod
     def to_rda(self)->'Rda':
         pass

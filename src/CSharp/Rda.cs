@@ -1,13 +1,13 @@
 ﻿// Copyright (c) 2020 Michael Chen
 // Licensed under the MIT License -
-// https://github.com/foldda/rda/blob/main/LICENSE
+// https://github.com/sierrathedog/rda/blob/main/LICENSE
 
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 /*
- * UniversalDataTransport name-space is for unified data storage and transportation using the RDA. 
+ * UniversalDataTransport name-space is for unified data storage and transportation using the RDA data storage structure. 
  */
 
 namespace UniversalDataTransport
@@ -24,11 +24,11 @@ namespace UniversalDataTransport
      * an encoded string, which can then be written to a file, be sent through a computer network, or be used for exchanging data between 
      * integrated computer applications.
      * 
-     * "Recursive Delimited Array" and "RDA" are trademarks of Foldda Pty Ltd (an Australian company)
+     * "Recursive Delimited Array" and "RDA" are trade marks of Briliant.NET (an Australian company)
      * 
      */
 
-    public class Rda : IRda
+    public class Rda : IUdt
     {
         /**
          * Base properties
@@ -38,12 +38,12 @@ namespace UniversalDataTransport
         //"scalar" content is used when RDA's Dimension = 0, it's the unescaped 'original' value that is independent to the encoding chars.
         private string _scalarValue = null;
         //Children are for storing the "composite" content, when RDA's Dimension > 0, where each child is a sub-RDA
-        public List<Rda> Children { get; } = new List<Rda>();
-        public Rda Parent { get; private set; } // the upper-level RDA of which this RDA is a child
+        public List<Rda> Elements { get; } = new List<Rda>();
+        public Rda Home { get; private set; } // the upper-level RDA of which this RDA is a child
 
         //for the whole RDA structure, encoding is fixed and shared amongs parent and children
         private RdaEncoding _encoding;
-        public RdaEncoding GlobalEncoding => Parent == null ? _encoding : Parent.GlobalEncoding;   
+        public RdaEncoding GlobalEncoding => Home == null ? _encoding : Home.GlobalEncoding;   
 
         /**
          * Constructors
@@ -58,7 +58,7 @@ namespace UniversalDataTransport
 
         private Rda(Rda parent) 
         {
-            Parent = parent;    //inherites parent's encoding
+            Home = parent;    //inherites parent's encoding
         }
 
         public static Rda Parse(string rdaString)
@@ -90,8 +90,9 @@ namespace UniversalDataTransport
         {
             get
             {
+                //if (Children.Count == 1) { return Children[0].Dimension; }
                 int maxChildDimemsion = -1;
-                foreach (var c in Children)
+                foreach (var c in Elements)
                 {
                     maxChildDimemsion = Math.Max(maxChildDimemsion, c.Dimension);
                 }
@@ -103,7 +104,7 @@ namespace UniversalDataTransport
 
         //the number of steps from the root Parent RDA
         //it's used as the index to Delimiters array for determing the next-level delimiter
-        private int Level => Parent == null ? 0 : Parent.Level + 1;
+        private int Level => Home == null ? 0 : Home.Level + 1;
 
         /**
          * API Properties and Methods - when using RDA as a storage container
@@ -113,12 +114,12 @@ namespace UniversalDataTransport
         public string ScalarValue 
         { 
             //For Dimension-0 (leaf) RDA, it's the stored scalar-value, for composite RDA (dimension > 0), it's the left-most child's scalar-value
-            get => Children.Count > 0 ? Children[0].ScalarValue : _scalarValue ?? string.Empty;
+            get => Elements.Count > 0 ? Elements[0].ScalarValue : _scalarValue ?? string.Empty;
 
             //sets the scalar-value, and clears children (making this RDA as Dimension-0)
             set
             {
-                Children.Clear();
+                Elements.Clear();
                 _scalarValue = value;
             }
         }
@@ -146,14 +147,14 @@ namespace UniversalDataTransport
             if (childRda != null)
             {
                 GlobalEncoding.TryExtendRequiredDelimiters(Level + childRda.Dimension + 1); //throws Exception if limit is reached
-                childRda.Parent = this;
+                childRda.Home = this;
 
-                Children[index] = childRda; //set or replace the child at the addressed position
+                Elements[index] = childRda; //set or replace the child at the addressed position
             }
             else
             {
                 GlobalEncoding.TryExtendRequiredDelimiters(Level + 1);  //throws Exception if limit is reached
-                Children[index] = new Rda(this);    //make a dummy
+                Elements[index] = new Rda(this);    //make a dummy
             }
         }
 
@@ -166,13 +167,13 @@ namespace UniversalDataTransport
             if(Dimension == 0)
             {
                 //push this RDA's scalar-value to become the left-most child's value
-                Children.Add(new Rda(this) { ScalarValue = _scalarValue }); ;
+                Elements.Add(new Rda(this) { ScalarValue = _scalarValue }); ;
             }
 
             EnsureArrayLength(index);   //creates dummies if required
 
             //the indexed child can be safely retrived
-            return Children[index];
+            return Elements[index];
         }
 
         //set a child RDA at the index'd location, extend the max index if required 
@@ -231,12 +232,12 @@ namespace UniversalDataTransport
 
         public void AddValue(string valueString)
         {
-            SetValue(Children.Count, valueString);
+            SetValue(Elements.Count, valueString);
         }
 
         public void AddRda(Rda rda)
         {
-            SetRda(Children.Count, rda);
+            SetRda(Elements.Count, rda);
         }
 
         public string[] ChildrenValueArray
@@ -244,13 +245,13 @@ namespace UniversalDataTransport
             get
             {
                 List<string> result = new List<string>();
-                if (Children.Count == 0)
+                if (Elements.Count == 0)
                 {
                     result.Add(_scalarValue);
                 }
                 else
                 {
-                    foreach (var child in Children)
+                    foreach (var child in Elements)
                     {
                         result.Add(child.ScalarValue);
                     }
@@ -260,7 +261,7 @@ namespace UniversalDataTransport
 
             set
             {
-                Children.Clear();
+                Elements.Clear();
                 if (value == null || value.Length == 0)
                 {
                     _scalarValue = null;
@@ -270,7 +271,7 @@ namespace UniversalDataTransport
                     foreach (var s in value)
                     {
                         var child = new Rda(this) { ScalarValue = s };
-                        Children.Add(child);
+                        Elements.Add(child);
                     }
                 }
             }
@@ -290,7 +291,7 @@ namespace UniversalDataTransport
             {
                 for (int i = 0; i < Length; i++)
                 {
-                    if (Children[i].ContentEqual(other.Children[i]) == false)
+                    if (Elements[i].ContentEqual(other.Elements[i]) == false)
                     {
                         return false;
                     }
@@ -304,7 +305,7 @@ namespace UniversalDataTransport
         public char ChildDelimiter => GlobalEncoding.Delimiters[Level];  //the char that separates the immediate children elements
         public char EscapeChar => GlobalEncoding.EscapeChar;
 
-        public int Length => Children.Count;
+        public int Length => Elements.Count;
 
         public char[] DelimitersInUse
         {
@@ -320,7 +321,7 @@ namespace UniversalDataTransport
         //and store these unescaped values to the scalar_value variable of an rda
         private void ParsePayload(string payloadString, bool v2Formatted)
         {
-            Children.Clear();
+            Elements.Clear();
 
             //apply maximun unescape to "string-value" before it's stored
             //this will be reversed (escaped) when the value is used for assembling a payload section.
@@ -338,29 +339,37 @@ namespace UniversalDataTransport
                     var child = new Rda(this);
                     child.ParsePayload(childPayLoad, v2Formatted); 
 
-                    Children.Add(child);
+                    Elements.Add(child);
                 }
             }
         }
 
-        //shrink (shortening) each branch to its required minimun dimension
-        public bool CompressDimension()
+        //shrink (shortening) each branch to its minimun required dimension
+        public void CompressDimension()
         {
-            if (Children.Count == 1 &&
-               (Children[0].Dimension == 0 || Children[0].CompressDimension() == true))
+            if (Dimension > 0)
             {
-                //keeping the first (and only and if it's D-0) child's value, and remove sub-branch
-                //(setting scalar-value will clear the children collection and reduce the branch)
-                this.ScalarValue = Children[0].ScalarValue;
-                return true;
-            }
-            else
-            {
-                foreach (var child in Children)
+                //compress all children (recursion)
+                foreach (var element in Elements)
                 {
-                    child.CompressDimension();
+                    element.CompressDimension();
                 }
-                return false;
+
+                //check... skips all the dummies from the end
+                for(int i = Elements.Count - 1; i > 0; i--)
+                {
+                    if (Elements[i].IsDummy == false) 
+                    { 
+                        return; /* no compression - if non-dummy child found before index 0 */
+                    }
+                }
+
+                //reduce the dimension if these is only one non-dummy child, and its dimension is 0,
+                //... by bringing the child's scalar value up, which also deletes all children
+                if (Elements[0].Dimension == 0)
+                {
+                    this.ScalarValue = Elements[0].ScalarValue;  
+                }
             }
         }
 
@@ -533,8 +542,8 @@ namespace UniversalDataTransport
         {
             get
             {
-                if (Parent == null || Parent.Children.Count == 1) { return string.Empty; }
-                else { return Parent.Indent + INDENT; }
+                if (Home == null || Home.Elements.Count == 1) { return string.Empty; }
+                else { return Home.Indent + INDENT; }
             }
         }
 
@@ -554,7 +563,7 @@ namespace UniversalDataTransport
             {
                 for (int i = 0; i <= LastNonDummyIndex; i++)
                 {
-                    var child = Children[i];
+                    var child = Elements[i];
                     if (applyFormatting)
                     {
                         result.Append(GetFormattingPrefix(i)); //TODO replace the below.
@@ -574,7 +583,7 @@ namespace UniversalDataTransport
             //if this is the first child ...
             if(index == 0)
             {
-                return Children.Count > 1 && Parent != null ? INDENT : string.Empty;
+                return Elements.Count > 1 && Home != null ? INDENT : string.Empty;
             }
             else
             {
@@ -583,19 +592,18 @@ namespace UniversalDataTransport
         }
 
         //dummy child is 'place-holder' that is created when accessor 'over-indexed' the RDA existing values
-        bool IsDummy
+        public bool IsDummy
         {
             get
             {
-                if (Children.Count == 0) 
+                if (Elements.Count == 0) 
                 { 
-                    //it's a dummy if it has no children (dimension==0) and null scalar-value 
                     return _scalarValue == null; 
                 }
                 else
                 {
                     //else it's a dummy if all children are dummy
-                    foreach (var child in Children)
+                    foreach (var child in Elements)
                     {
                         if (child.IsDummy == false) { return false; }
                     }
@@ -609,8 +617,8 @@ namespace UniversalDataTransport
         {
             get
             {
-                int lastNonDummyIndex = Children.Count - 1;
-                while (lastNonDummyIndex >= 0 && Children[lastNonDummyIndex].IsDummy == true)
+                int lastNonDummyIndex = Elements.Count - 1;
+                while (lastNonDummyIndex >= 0 && Elements[lastNonDummyIndex].IsDummy == true)
                 {
                     lastNonDummyIndex--;
                 }
@@ -620,13 +628,20 @@ namespace UniversalDataTransport
 
         private void EnsureArrayLength(int index)
         {
+            //1. turns a "leaf" node to a "composite" node - that is, a node that have children that can be indexed.
+            //if (Children.Count == 0)
+            //{
+            //    //push original_value down to become the 1st child
+            //    Children.Add(new RecursiveDelimitedArray(null /* null payload */, this) { Content = _unescapedValueExpression });
+            //}
+
             //extend the children elements if over-indexing is required
-            int diff = index - Children.Count + 1;
+            int diff = index - Elements.Count + 1;
 
             while (diff > 0)
             {
                 var dummy = new Rda(this);/*dummy*/
-                Children.Add(dummy);
+                Elements.Add(dummy);
                 diff--;
             }
         }
@@ -720,7 +735,7 @@ namespace UniversalDataTransport
             return this;
         }
 
-        public IRda FromRda(Rda rda)
+        public IUdt FromRda(Rda rda)
         {
             if (rda.Dimension == 0) 
             { 
@@ -728,8 +743,8 @@ namespace UniversalDataTransport
             }
             else
             {
-                Children.Clear();
-                Children.AddRange(rda.Children);
+                Elements.Clear();
+                Elements.AddRange(rda.Elements);
             }
 
             return this;

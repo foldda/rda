@@ -7,7 +7,7 @@ package UniversalDataTransport;
  *
  */
 
-public interface IRda {
+public interface IUdt {
   /// <summary>
   /// Stores properties into the RDA.
   /// </summary>
@@ -18,5 +18,5 @@ public interface IRda {
   /// Populate properties with the values from the RDA
   /// </summary>
   /// <param name="rda">An Rda instance that carries the properties of an object to be restored.</param>
-  IRda FromRda(Rda rda);
+  IUdt FromRda(Rda rda);
 }

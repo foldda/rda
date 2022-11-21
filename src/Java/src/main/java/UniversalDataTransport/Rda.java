@@ -22,7 +22,7 @@ import java.util.List;
  *
  */
 
-public class Rda implements IRda {
+public class Rda implements IUdt {
 
   public static <T> T getValueOrDefault(T value, T defaultValue) {
     return value == null ? defaultValue : value;
@@ -32,7 +32,7 @@ public class Rda implements IRda {
     return this;
   }
 
-  public IRda FromRda(Rda rda) {
+  public IUdt FromRda(Rda rda) {
     if (rda.Dimension() == 0) {
       SetScalarValue(rda.GetScalarValue());
     } else {
@@ -315,7 +315,7 @@ public class Rda implements IRda {
 
   //remove unused delimiters in the header
   public String ToStringMinimal() {
-    TrimSoloBranch(); //remove unnecessary levels if a branch only has one leaf-node
+    CompressDimension(); //remove unnecessary levels if a branch only has one leaf-node
     return ToString();
   }
 
@@ -374,24 +374,31 @@ public class Rda implements IRda {
     }
   }
 
-  //shrink and remove unnecessary single branches
-  private boolean TrimSoloBranch() {
-    if (Elements.size() == 1) {
-      if (
-        Elements.get(0).Dimension() == 0 ||
-        Elements.get(0).TrimSoloBranch() == true
-      ) {
-        this.SetScalarValue(Elements.get(0).GetScalarValue());
-        return true;
-      } else {
-        return false;
+  public void CompressDimension()
+  {
+      if (Dimension() > 0)
+      {
+          //compress all children (recursion)
+          for (int i = 0; i < Elements.size(); i++) { 		      
+            Elements.get(i).CompressDimension(); 		
+          }   		
+
+          //check... skips all the dummies from the end
+          for(int i = Elements.size() - 1; i > 0; i--)
+          {
+              if (Elements.get(i).IsDummy() == false) 
+              { 
+                  return; /* no compression - if non-dummy child found before index 0 */
+              }
+          }
+
+          //reduce the dimension if these is only one non-dummy child, and its dimension is 0,
+          //... by bringing the child's scalar value up, which also deletes all children
+          if (Elements.get(0).Dimension() == 0)
+          {
+              this.SetScalarValue(Elements.get(0).GetScalarValue());  
+          }
       }
-    } else {
-      for (var child : Elements) {
-        child.TrimSoloBranch();
-      }
-      return false;
-    }
   }
 
   public enum FORMATTING_VERSION {
