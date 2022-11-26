@@ -9,7 +9,7 @@ Unlike XML and JSON using a schema to restrict the data to the types and structu
 
 ## A Problem With XML/JSON
 
-> *An RDA container is like a vast shelf that provides unlimited, expandable space for storing "anything", whilst an XML or JSON container is like a wallet that offers specific places for coins, notes, and cards.* 
+> *An RDA container is like an enormous, expandable shelf that provides unlimited space for storing "anything", whilst an XML or JSON container is like a wallet that offers specific places for coins, notes, and cards.* 
 
 When use XML/JSON format for data exchange, a developer must firstly decide the data types and data structure for all connected applications, and carve the decided data format in a schema. If an application changes its data format and the schema, all other applications will need to change their container-parsing and data-handling logic to be compatible. For example, if Twitter or Google changes the data format in their REST API, a lot of downstream applications will be affected.
 
@@ -27,7 +27,7 @@ This means an RDA container can accomandate any data format changes, so applicat
 
 ## Benefits of RDA
 
-> *RDA allows implementing a generic and unified data transport layer which applications can utilize for flexibly and consistently sending and receiving data. As the applications are "loosely coupled" between each other, they can be independently maintained while remain compatible.*
+> *RDA allows implementing a generic and unified data transport layer which applications can utilize for sending and receiving data. As the applications are "loosely coupled" because of this unified data transport layer, they can be independently and flexibly maintained if the data format is changed.*
  
 One powerful feature of RDA is for implementing cross-language and cross-application object-serialization. For example, you can send [a "Person" object as a serialized RDA container](https://foldda.github.io/rda/2022/10/03/obj-serialization-pattern.html) from your C# program to many receivers, and in a Python program, you can de-serialize a "User" object using data elements from the received RDA container. Because there is no schema to be adhered to, the "Person" object and the "User" object can be programmed differently and be maintained separately. 
 
@@ -96,9 +96,15 @@ The unit tests [[C#](https://github.com/foldda/rda/tree/main/src/CSharp/UnitTest
 
 ## More Details 
 
-The following links contain more details and thoughts about RDA. (Warning: some of these are only drafts and due for improvement. )
+The wiki pages of this project contains more details about RDA, including - 
 
-- [RDA encoding rules](https://foldda.github.io/rda/rda-encoding-rule)
+- [The background and philosophy of this project.](https://github.com/foldda/rda/wiki#1-introduction)
+- [RDA encoding rules](https://github.com/foldda/rda/wiki#3-more-about-rda)
+- [The structure, and usage examples, of the API.](https://github.com/foldda/rda/wiki#2-using-the-api)
+- [FAQ.](https://github.com/foldda/rda/wiki#4-faq)
+
+(Warning: some of these are only drafts and due for improvement. )
+
 - [Data type and data structure in RDA](https://foldda.github.io/rda/data-type-and-data-structure)
 - [RDA terms and definitions, and more API methods examples](https://foldda.github.io/rda/api-terms-and-definitions)
 - [Generic and universal object-serialization](https://foldda.github.io/rda/object-serialization-pattern)
