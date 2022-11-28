@@ -96,14 +96,13 @@ The unit tests [[C#](https://github.com/foldda/rda/tree/main/src/CSharp/UnitTest
 
 ## More Details 
 
-The wiki pages of this project contains more details about RDA, including - 
+The wiki of this project contains more details about RDA, including - 
 
-- [The background and philosophy of this project.](https://github.com/foldda/rda/wiki#1-introduction)
-- [RDA encoding rules](https://github.com/foldda/rda/wiki#3-more-about-rda)
-- [The structure, and usage examples, of the API.](https://github.com/foldda/rda/wiki#2-using-the-api)
+- [RDA overview.](https://github.com/foldda/rda/wiki#1-introduction)
+- [Using the API.](https://github.com/foldda/rda/wiki#2-using-the-api)
 - [FAQ.](https://github.com/foldda/rda/wiki#4-faq)
 
-(Warning: some of these are only drafts and due for improvement. )
+GitHub pages - 
 
 - [Data type and data structure in RDA](https://foldda.github.io/rda/data-type-and-data-structure)
 - [RDA terms and definitions, and more API methods examples](https://foldda.github.io/rda/api-terms-and-definitions)
