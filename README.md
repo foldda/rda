@@ -45,11 +45,11 @@ This project provides the RDA-encoding API in three languages: [C#](https://gith
 
 #### _Using class Rda_
 
-The _Rda class_ implements the RDA encoding and decoding and is modeled as a "container" object, which provides - 
+The _Rda class_ implements the RDA encoding and decoding and is modeled as a "container" object. The idea is to store your data object and its properties in the container, and then serialize the container and its conent into a string. The Rda class provides - 
 
-* **Setter-Getter** methods for accessing the container's content using index-based addresses, 
-* **ToString** method for RDA-encoding, i.e. serializing the container object and its content into a string, and 
-* **Parse** method for RDA-decoding, i.e. de-serializing an RDA-encoded string to an RDA container object in a program.
+* **Setter-Getter** methods are for accessing the container's content using index-based addresses. 
+* **ToString** method is for serialization, i.e. apply RDA-encoding to the container's content and making it into a string. 
+* **Parse** method is for de-serializing an RDA-encoded string back to an RDA container object with content.
 
 The following code[^4] shows an example of serializing and de-serializing data values using these methods.
 
