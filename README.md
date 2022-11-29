@@ -31,19 +31,17 @@ This means an RDA container can accomandate any data format changes, so applicat
  
 One powerful feature of RDA is for implementing cross-language and cross-application object-serialization. For example, you can send [a "Person" object as a serialized RDA container](https://foldda.github.io/rda/2022/10/03/obj-serialization-pattern.html) from your C# program to many receivers, and in a Python program, you can de-serialize a "User" object using data elements from the received RDA container. Because there is no schema to be adhered to, the "Person" object and the "User" object can be programmed differently and be maintained separately. 
 
-Another use of RDA is for maintaining version compatibility between a sender and a receiver. Because RDA's recursive storage allows storing an RDA inside another RDA, you can transfer copies of multiple versions or formats of your data "side-by-side" (as child RDAs) in an RDA container, and the receiver can pick the right version or format to its preference. 
+Another feature of RDA is for maintaining version compatibility between a sender and a receiver. Because RDA's recursive storage allows storing an RDA inside another RDA, you can transfer copies of multiple versions or formats of your data "side-by-side" (as child RDAs) in an RDA container, and the receiver can pick the right version or format to its preference. 
 
 Indeed, being able to send multiple pieces of "anything" side-by-side in a container can have many interesting uses: like sending XML data together with its DTD[^3], or sending an encrypted document together with the associated digital signature and public key, or sending a computing "workload" that has some data together with an executable script to a data-processing unit, etc.
 
 [^3]: An XML or JSON document can be converted to a single 'string' data element, and be stored inside an RDA container.
 
-Also, thanks to its simple and efficient delimiter-based encoding, an RDA container is much more compact than a XML or JSON container with the same content, and it is much easier to parse. RDA encoding is also more robust and resilient to data corruption, as it does not have any reserved keyword or character. For example, it allows the data to contain native line-breaks as part of the value, whilst in XML/JSON line-breaks must be replaced with a reserved string (eg "&#xA;") or they will be ignored by the parser.
+Also, thanks to its simple and efficient delimiter-based encoding, an RDA container is much more compact than a XML or JSON container with the same content, and it is much easier to parse. RDA encoding is also more robust and resilient to data corruption, as it does not have any reserved keyword or character. For example, it allows the data to contain native line-breaks as part of the value, whilst in XML/JSON line-breaks must be replaced with a reserved string (eg "\&\#xA;") or they will be ignored by the parser.
 
 ## Getting Started
 
-> *The RDA API has no 3rd party dependency and requires no installation. It contains only one class and one interface which are very simple to use.*
-
-This project provides the RDA-encoding API in three languages: [C#](https://github.com/foldda/rda/tree/main/src/CSharp), [Java](https://github.com/foldda/rda/blob/main/src/Java/), and [Python](https://github.com/foldda/rda/blob/main/src/Python). Once you have included the provided source files in your project, you are ready to use the provides types/methods in your program, as explained below - 
+This project provides the RDA-encoding API in three languages: [C#](https://github.com/foldda/rda/tree/main/src/CSharp), [Java](https://github.com/foldda/rda/blob/main/src/Java/), and [Python](https://github.com/foldda/rda/blob/main/src/Python). The API has no 3rd party dependency and requires no installation. You just need to include the API's super-lightweight source code, which contains only one class and one interface, in your project, and start using them as part of your program, as below. 
 
 #### _Using class Rda_
 
@@ -98,18 +96,9 @@ The unit tests [[C#](https://github.com/foldda/rda/tree/main/src/CSharp/UnitTest
 
 The wiki of this project contains more details about RDA, including - 
 
-- [RDA overview.](https://github.com/foldda/rda/wiki#1-introduction)
-- [Using the API.](https://github.com/foldda/rda/wiki#2-using-the-api)
-- [FAQ.](https://github.com/foldda/rda/wiki#4-faq)
-
-GitHub pages - 
-
-- [Data type and data structure in RDA](https://foldda.github.io/rda/data-type-and-data-structure)
-- [RDA terms and definitions, and more API methods examples](https://foldda.github.io/rda/api-terms-and-definitions)
-- [Generic and universal object-serialization](https://foldda.github.io/rda/object-serialization-pattern)
-- [RDA tooling and "version-2" formatting](https://foldda.github.io/rda/rda-tooling-and-formatting)
-- [Managing data exchange without using schema](https://foldda.github.io/rda/metadata-vs-schema)
-- [Tips for writing a parser/encoder](https://foldda.github.io/rda/parser-development-tips)
+- [RDA overview.](https://github.com/foldda/rda/wiki#1-introduction) - explains the background and philosophy of this project.
+- [Using the API.](https://github.com/foldda/rda/wiki#2-using-the-api) - contains more technical details, with a practical example. 
+- [FAQ.](https://github.com/foldda/rda/wiki#4-faq) - misc. topic dicsussions.
 
 ## Contributing
 
