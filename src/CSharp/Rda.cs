@@ -24,11 +24,11 @@ namespace UniversalDataTransport
      * an encoded string, which can then be written to a file, be sent through a computer network, or be used for exchanging data between 
      * integrated computer applications.
      * 
-     * "Recursive Delimited Array" and "RDA" are trade marks of Briliant.NET (an Australian company)
+     * "Recursive Delimited Array" and "RDA" are trademarks of Foldda Pty Ltd (an Australian company)
      * 
      */
 
-    public class Rda : IUdt
+    public class Rda : IRda
     {
         /**
          * Base properties
@@ -735,7 +735,7 @@ namespace UniversalDataTransport
             return this;
         }
 
-        public IUdt FromRda(Rda rda)
+        public IRda FromRda(Rda rda)
         {
             if (rda.Dimension == 0) 
             { 

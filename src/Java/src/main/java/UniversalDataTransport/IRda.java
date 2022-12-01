@@ -1,3 +1,7 @@
+// Copyright (c) 2020 Michael Chen
+// Licensed under the MIT License -
+// https://github.com/foldda/rda/blob/main/LICENSE
+
 package UniversalDataTransport;
 
 /*
@@ -7,7 +11,7 @@ package UniversalDataTransport;
  *
  */
 
-public interface IUdt {
+public interface IRda {
   /// <summary>
   /// Stores properties into the RDA.
   /// </summary>
@@ -18,5 +22,5 @@ public interface IUdt {
   /// Populate properties with the values from the RDA
   /// </summary>
   /// <param name="rda">An Rda instance that carries the properties of an object to be restored.</param>
-  IUdt FromRda(Rda rda);
+  IRda FromRda(Rda rda);
 }

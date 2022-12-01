@@ -8,7 +8,7 @@ using System.IO;
 
 namespace UnitTests
 {
-    public class Person : IUdt
+    public class Person : IRda
     {
         public string FirstName = "John";
         public string LastName = "Smith";
@@ -28,7 +28,7 @@ namespace UnitTests
         }
 
         //restore the object’s properties from an RDA
-        public virtual IUdt FromRda(Rda rda)
+        public virtual IRda FromRda(Rda rda)
         {
             this.FirstName = rda[(int) RDA_INDEX.FIRST_NAME].ScalarValue;
             this.LastName = rda[(int)RDA_INDEX.LAST_NAME].ScalarValue;
@@ -53,7 +53,7 @@ namespace UnitTests
         }
     }
 
-    class Address : IUdt
+    class Address : IRda
     {
         public enum RDA_INDEX : int { LINES = 0, ZIP = 1 }
 
@@ -71,7 +71,7 @@ namespace UnitTests
         }
 
         //restore the properties from an RDA
-        public IUdt FromRda(Rda rda)
+        public IRda FromRda(Rda rda)
         {
             this.AddressLines = rda[(int)RDA_INDEX.LINES].ScalarValue;
             this.ZIP = rda[(int)RDA_INDEX.ZIP].ScalarValue;
@@ -101,7 +101,7 @@ namespace UnitTests
             return personRda;
         }
 
-        public override IUdt FromRda(Rda rda)
+        public override IRda FromRda(Rda rda)
         {
             //restore the base Person properties
             base.FromRda(rda);  //restores FirstName and LastName
@@ -126,7 +126,7 @@ namespace UnitTests
 
 
     [TestClass]
-    public class IUdtTests
+    public class IRdaTests
     {
 
         [TestMethod]

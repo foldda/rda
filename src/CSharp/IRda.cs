@@ -11,7 +11,7 @@ namespace UniversalDataTransport
      * 
      */
 
-    public interface IUdt
+    public interface IRda
     {
         /// <summary>
         /// Stores properties into the RDA.
@@ -23,7 +23,7 @@ namespace UniversalDataTransport
         /// Populate properties with the values from the RDA
         /// </summary>
         /// <param name="rda">An Rda instance that carries the properties of an object to be restored.</param>
-        IUdt FromRda(Rda rda);
+        IRda FromRda(Rda rda);
     }
 }
 
