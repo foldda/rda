@@ -11,9 +11,9 @@ Unlike XML and JSON using a schema to restrict the data to the types and structu
 
 > *An RDA container is like a bag that has unlimited number of pockets for storing "anything", and an XML or JSON container is like a wallet that offers specific places for coins, notes, and cards.* 
 
-When use XML/JSON format for data exchange between two applications, a developer must firstly decide the data types and data structure for the applications, and fixes the decided data format in a schema. If there are many applications connected together, and if one of them wants to change its data format and the schema, it will be difficult to manage compatibility. For example, if Twitter or Google changes the data format in their REST API, a lot of downstream applications will be affected.
+When use XML/JSON format for data exchange between two applications, a developer must firstly decide the data types and data structure for the applications, and fix the decided data format in a schema. If one of applications wants to change its data format and the schema, it will be difficult to manage compatibility especially if the applications are maintained by different parties. Imagine if Twitter or Google changes the data format in their REST API, a lot of downstream applications will be affected.
 
-In contrast, while RDA is also a text-encoded data format[^1] for storing complex structured data, it is designed to be **generic** and **application independent** -
+In contrast, while RDA is also a text-encoded data format[^1] capable for storing complex structured data, it is designed to be **generic** and **application independent**:
 
 [^1]: Full details of the encoding rules can be found [here](https://foldda.github.io/rda/rda-encoding-rule).
 
