@@ -42,7 +42,7 @@ Also, thanks to its simple and efficient delimiter-based encoding, an RDA contai
 ## Getting Started
 > *The super-lightweight API has no 3rd party dependency and requires no installation. It contains only one class and one interface.*
 
-To use the RDA encoding API from this project, all you need is to include the provided API source code (available in three languages ([C#](https://github.com/foldda/rda/tree/main/src/CSharp), [Java](https://github.com/foldda/rda/blob/main/src/Java/), and [Python](https://github.com/foldda/rda/blob/main/src/Python)) in your project, and start using the provided class and interface in your program, as explained below - 
+To use the RDA encoding API from this project, all you need is to include the provided API source code (available in [C#](https://github.com/foldda/rda/tree/main/src/CSharp), [Java](https://github.com/foldda/rda/blob/main/src/Java/), and [Python](https://github.com/foldda/rda/blob/main/src/Python)) in your project, and start using the provided class and interface in your program, as explained below - 
 
 #### _Using class Rda_
 
