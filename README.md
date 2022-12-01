@@ -40,12 +40,13 @@ Indeed, being able to send multiple pieces of "anything" side-by-side in a conta
 Also, thanks to its simple and efficient delimiter-based encoding, an RDA container is much more compact than a XML or JSON container with the same content, and it is much easier to parse. RDA encoding is also more robust and resilient to data corruption, as it does not have any reserved keyword or character and allows any charactor to be part of the data content. In contrast, for example, in XML the line-feed character in data has to be encoded as "\&\#xA;", otherwise it will cause corruption.
 
 ## Getting Started
+> *The super-lightweight API has no 3rd party dependency and requires no installation. It contains only one class and one interface.*
 
-This project provides the API for using RDA in your program. The super-lightweight API contains only one class and one interface and is written in three languages: [C#](https://github.com/foldda/rda/tree/main/src/CSharp), [Java](https://github.com/foldda/rda/blob/main/src/Java/), and [Python](https://github.com/foldda/rda/blob/main/src/Python). The API has no 3rd party dependency and requires no installation, so all you need is to include the source code in your project, and start using the class and the interface in your program, as below - 
+To use the RDA encoding API from this project, all you need is to include the provided API source code (available in three languages ([C#](https://github.com/foldda/rda/tree/main/src/CSharp), [Java](https://github.com/foldda/rda/blob/main/src/Java/), and [Python](https://github.com/foldda/rda/blob/main/src/Python)) in your project, and start using the provided class and interface in your program, as explained below - 
 
 #### _Using class Rda_
 
-The _Rda class_ implements the RDA encoding and decoding for erializing data objects. It is modeled as a "container" object, and the idea is, instead of serializing a data object, you'd store the data object and its properties into an Rda container object which is serializable. 
+The _Rda class_ is for serializing your data objects. It implements the RDA encoding and decoding and is modeled as a serializable "container". The idea is, to serialize a data object, you'd store the data object and its properties into an Rda container, so the data object can be serialized along with the containing container. 
 
 The Rda class provides - 
 
@@ -84,9 +85,9 @@ System.Console.WriteLine(rdaReceived.GetValue(2));   //print "Three", the value
 
 Your class implements the _IRda interface_ methods to signify its properties can be converted to and from an Rda container object:
 
-* **ToRda()**: produces an RDA container that contains specific properties of the object, for serialization. 
+* **ToRda()**: produces an Rda container object that contains specific properties of the object, for serialization. 
 
-* **FromRda(rda)**: restores the object's specific properties from values in a given RDA container, for de-serialization.
+* **FromRda(rda)**: restores the object's specific properties from values in a given Rda container object, for de-serialization.
 
 An example of complex object-serialization using RDA container [can be found here.](https://foldda.github.io/rda/object-serialization-pattern).
 
