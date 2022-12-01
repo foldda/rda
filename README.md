@@ -46,12 +46,12 @@ To use the RDA encoding API from this project, all you need is to include the pr
 
 #### _Using class Rda_
 
-The _Rda class_ is for serializing your data objects. It implements the RDA encoding and decoding and is modeled as a serializable "container". The idea is, to serialize a data object, you'd store the data object and its properties into an Rda container, so the data object can be serialized along with the containing container. 
+The _Rda class_ is for serializing your data objects. It implements the RDA encoding and decoding and is modeled as a "container" that is serializable. The idea is instead of serializing a data object directly, we store the data object's properties into an Rda container, and serialize the containing container. So any data object can be serialized as long as it can be fit into an Rda container.
 
 The Rda class provides - 
 
-* **Setter-Getter** methods are for accessing the container's content using index-based addresses. 
-* **ToString** method is for serialization, i.e. apply RDA-encoding to the container's content and making it into a string. 
+* **Setter-Getter** methods are for storing and retrieving the container's content using index-based addresses. 
+* **ToString** method is for serializing the container and its content, i.e. apply RDA-encoding and make it into a string. 
 * **Parse** method is for de-serializing an RDA-encoded string back to an RDA container object with content.
 
 Below is an example of serializing and de-serializing data values using these methods[^4].
