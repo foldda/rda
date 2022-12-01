@@ -9,9 +9,9 @@ Unlike XML and JSON using a schema to restrict the data to the types and structu
 
 ## A Problem With XML/JSON
 
-> *An RDA container is like an enormous, expandable shelf that provides unlimited space for storing "anything", whilst an XML or JSON container is like a wallet that offers specific places for coins, notes, and cards.* 
+> *An RDA container is like a bag that has unlimited number of pockets for storing "anything", and an XML or JSON container is like a wallet that offers specific places for coins, notes, and cards.* 
 
-When use XML/JSON format for data exchange, a developer must firstly decide the data types and data structure for all connected applications, and carve the decided data format in a schema. If an application changes its data format and the schema, all other applications will need to change their container-parsing and data-handling logic to be compatible. For example, if Twitter or Google changes the data format in their REST API, a lot of downstream applications will be affected.
+When use XML/JSON format for data exchange between two applications, a developer must firstly decide the data types and data structure for the applications, and fixes the decided data format in a schema. If there are many applications connected together, and if one of them wants to change its data format and the schema, it will be difficult to manage compatibility. For example, if Twitter or Google changes the data format in their REST API, a lot of downstream applications will be affected.
 
 In contrast, while RDA is also a text-encoded data format[^1] for storing complex structured data, it is designed to be **generic** and **application independent** -
 
@@ -33,25 +33,27 @@ One powerful feature of RDA is for implementing cross-language and cross-applica
 
 Another feature of RDA is for maintaining version compatibility between a sender and a receiver. Because RDA's recursive storage allows storing an RDA inside another RDA, you can transfer copies of multiple versions or formats of your data "side-by-side" (as child RDAs) in an RDA container, and the receiver can pick the right version or format to its preference. 
 
-Indeed, being able to send multiple pieces of "anything" side-by-side in a container can have many interesting uses: like sending XML data together with its DTD[^3], or sending an encrypted document together with the associated digital signature and public key, or sending a computing "workload" that has some data together with an executable script to a data-processing unit, etc.
+Indeed, being able to send multiple pieces of "anything" side-by-side in a container can have many interesting uses: like sending XML data together with its DTD[^3], or sending a digital document paired with its digital signature or public key, or sending a computing "workload" that has some data together with an executable script to a data-processing unit, etc.
 
 [^3]: An XML or JSON document can be converted to a single 'string' data element, and be stored inside an RDA container.
 
-Also, thanks to its simple and efficient delimiter-based encoding, an RDA container is much more compact than a XML or JSON container with the same content, and it is much easier to parse. RDA encoding is also more robust and resilient to data corruption, as it does not have any reserved keyword or character. For example, it allows the data to contain native line-breaks as part of the value, whilst in XML/JSON line-breaks must be replaced with a reserved string (eg "\&\#xA;") or they will be ignored by the parser.
+Also, thanks to its simple and efficient delimiter-based encoding, an RDA container is much more compact than a XML or JSON container with the same content, and it is much easier to parse. RDA encoding is also more robust and resilient to data corruption, as it does not have any reserved keyword or character and allows any charactor to be part of the data content. In contrast, for example, in XML the line-feed character in data has to be encoded as "\&\#xA;", otherwise it will cause corruption.
 
 ## Getting Started
 
-This project provides the RDA-encoding API in three languages: [C#](https://github.com/foldda/rda/tree/main/src/CSharp), [Java](https://github.com/foldda/rda/blob/main/src/Java/), and [Python](https://github.com/foldda/rda/blob/main/src/Python). The API has no 3rd party dependency and requires no installation. You just need to include the API's super-lightweight source code, which contains only one class and one interface, in your project, and start using them as part of your program, as below. 
+This project provides the API for using RDA in your program. The super-lightweight API contains only one class and one interface and is written in three languages: [C#](https://github.com/foldda/rda/tree/main/src/CSharp), [Java](https://github.com/foldda/rda/blob/main/src/Java/), and [Python](https://github.com/foldda/rda/blob/main/src/Python). The API has no 3rd party dependency and requires no installation, so all you need is to include the source code in your project, and start using the class and the interface in your program, as below - 
 
 #### _Using class Rda_
 
-The _Rda class_ implements the RDA encoding and decoding and is modeled as a "container" object. The idea is to store your data object and its properties in the container, and then serialize the container and its conent into a string. The Rda class provides - 
+The _Rda class_ implements the RDA encoding and decoding for erializing data objects. It is modeled as a "container" object, and the idea is, instead of serializing a data object, you'd store the data object and its properties into an Rda container object which is serializable. 
+
+The Rda class provides - 
 
 * **Setter-Getter** methods are for accessing the container's content using index-based addresses. 
 * **ToString** method is for serialization, i.e. apply RDA-encoding to the container's content and making it into a string. 
 * **Parse** method is for de-serializing an RDA-encoded string back to an RDA container object with content.
 
-The following code[^4] shows an example of serializing and de-serializing data values using these methods.
+Below is an example of serializing and de-serializing data values using these methods[^4].
 
 [^4]: Methods of using the Java API and the Python API are very similar.
 
@@ -68,7 +70,7 @@ rdaSending.SetValue(2, "Three");
 //ToString(): serialize the container and its content to an RDA-encoded string
 System.Console.WriteLine(rdaSending.ToString());   //print the encoded container string, eg "|\|One|Two|Three"
 
-// ... the encoded RDA string can be saved to a file, or be sent across the network ...
+// ... the encoded RDA string can be saved to a file, or be sent to another app via network ...
 
 //Parse(): de-serialize an RDA-format encoded string back to an RDA container object 
 Rda rdaReceived = Rda.Parse(@"|\|One|Two|Three");   
@@ -80,7 +82,7 @@ System.Console.WriteLine(rdaReceived.GetValue(2));   //print "Three", the value
 
 #### _Using interface IRda_
 
-The _IRda interface_ defines two methods for applications to implement arbitrarily complex object-serialization using RDA:
+Your class implements the _IRda interface_ methods to signify its properties can be converted to and from an Rda container object:
 
 * **ToRda()**: produces an RDA container that contains specific properties of the object, for serialization. 
 
