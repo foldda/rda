@@ -52,7 +52,9 @@ The _Rda class_ implements the RDA encoding and decoding. It provides -
 * **ToString** method is for serializing the container and its content, i.e. apply RDA-encoding and make it into a string. 
 * **Parse** method is for de-serializing an RDA-encoded string back to an RDA container object with content.
 
-The Rda class is for serializing data objects and is modeled as a "container". The idea is, instead of serializing a data object directly, a data object or its properties are stored inside an Rda container, and the container is serialized into a string. In such way, as long as a data object can be stored into an Rda container, it can be serialized. Below is an example of serializing and de-serializing data values using these methods[^4].
+The Rda class is for serializing data objects and is modeled as a "container". The idea is, since an Rda container (and its content) is serializable, rather than serializing a data object directly, all we need is to store the data object or its properties into the Rda container.
+
+Below is an example of serializing and de-serializing data values using the Rda class and its methods[^4].
 
 [^4]: Methods of using the Java API and the Python API are very similar.
 
