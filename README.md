@@ -13,7 +13,7 @@ Unlike XML and JSON using a schema to restrict the data to the types and structu
 
 When use XML/JSON format for data exchange between two applications, a developer must firstly decide the data types and data structure for the applications, and fix the decided data format in a schema. If one of applications wants to change its data format and the schema, it will be difficult to manage compatibility especially if the applications are maintained by different parties. Imagine if Twitter or Google changes the data format in their REST API, a lot of downstream applications will be affected.
 
-In contrast, while RDA is also a text-encoded data format[^1] capable for storing complex structured data, it is designed to be **generic** and **application independent**:
+In contrast, while RDA is also a text-encoded data format[^1] capable for storing complex structured data, it is designed to remove anything "application specific":
 
 [^1]: Full details of the encoding rules can be found [here](https://foldda.github.io/rda/rda-encoding-rule).
 
@@ -23,11 +23,11 @@ In contrast, while RDA is also a text-encoded data format[^1] capable for storin
  
 [^2]:RDA data types and data structure are [discussed here](https://foldda.github.io/rda/data-type-and-data-structure). 
 
-This means an RDA container can accomandate any data format changes, so applications can freely connect to each other to exchange data. It means the content and the structure can be decided later and can evolve over time, and be flexibly handled by the application.
+These make RDA **application independent** and **generic**, meaning any application can freely use an RDA container as the media for exchanging data with each other. It means the data content can be decided later and can evolve when required, and gives the application the flexibility to handle any changes.
 
 ## Benefits of RDA
 
-> *RDA allows implementing a generic and unified data transport layer which applications can utilize for sending and receiving data. As the applications are "loosely coupled" because of this unified data transport layer, they can be independently and flexibly maintained if the data format is changed.*
+> *RDA allows implementing a generic and unified data transport layer which applications can utilize for sending and receiving data. As the applications are "loosely coupled" using such a data transport layer, they are less dependent and can be flexibly maintained if the data format is changed.*
  
 One powerful feature of RDA is for implementing cross-language and cross-application object-serialization. For example, you can send a "Person" object as a serialized RDA container from your C# program to many receivers, and in a Python program, you can de-serialize a "User" object using data elements from the received RDA container. Because there is no schema to be adhered to, the "Person" object and the "User" object can be programmed differently and be maintained separately. 
 
