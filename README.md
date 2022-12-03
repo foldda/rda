@@ -13,7 +13,7 @@ Unlike XML and JSON using a schema to restrict the data to the types and structu
 
 When use XML/JSON format for data exchange between two applications, a developer must firstly decide the data types and data structure for the applications, and fix the decided data format in a schema. If one of applications wants to change its data format and the schema, it will be difficult to manage compatibility especially if the applications are maintained by different parties. Imagine if Twitter or Google changes the data format in their REST API, a lot of downstream applications will be affected.
 
-In contrast, while RDA is also a text-encoded data format[^1] capable for storing complex structured data, it is designed to remove anything "application specific":
+In contrast, while RDA is also capable for storing complex structured data, it is designed to remove anything "application specific"[^1]:
 
 [^1]: Full details of the encoding rules can be found [here](https://foldda.github.io/rda/rda-encoding-rule).
 
@@ -46,15 +46,13 @@ To use the RDA encoding API from this project, all you need is to include the pr
 
 #### _Using class Rda_
 
-The _Rda class_ is for serializing your data objects. It implements the RDA encoding and decoding and is modeled as a "container" that is serializable. The idea is instead of serializing a data object directly, we store the data object's properties into an Rda container, and serialize the containing container. So any data object can be serialized as long as it can be fit into an Rda container.
-
-The Rda class provides - 
+The _Rda class_ implements the RDA encoding and decoding. It provides - 
 
 * **Setter-Getter** methods are for storing and retrieving the container's content using index-based addresses. 
 * **ToString** method is for serializing the container and its content, i.e. apply RDA-encoding and make it into a string. 
 * **Parse** method is for de-serializing an RDA-encoded string back to an RDA container object with content.
 
-Below is an example of serializing and de-serializing data values using these methods[^4].
+The Rda class is for serializing data objects and is modeled as a "container". The idea is, instead of serializing a data object directly, a data object or its properties are stored inside an Rda container, and the container is serialized into a string. In such way, as long as a data object can be stored into an Rda container, it can be serialized. Below is an example of serializing and de-serializing data values using these methods[^4].
 
 [^4]: Methods of using the Java API and the Python API are very similar.
 
@@ -83,13 +81,54 @@ System.Console.WriteLine(rdaReceived.GetValue(2));   //print "Three", the value
 
 #### _Using interface IRda_
 
-Your class implements the _IRda interface_ methods to signify its properties can be converted to and from an Rda container object:
+A class implements the two methd defined in _IRda interface_ to specify how its properties can be stored in and be restored from an Rda container, for serialization:
 
-* **ToRda()**: produces an Rda container object that contains specific properties of the object, for serialization. 
+* **ToRda()**: produces an Rda container object that contains specific properties of the object. 
 
-* **FromRda(rda)**: restores the object's specific properties from values in a given Rda container object, for de-serialization.
+* **FromRda(rda)**: restores the object's specific properties from values in a given Rda container object.
 
-An example of complex object-serialization using RDA container [can be found here.](https://foldda.github.io/rda/object-serialization-pattern).
+Here is an example - 
+
+```c#
+public class Person : IRda
+{
+   //properties of Person class
+   public string Name = "John Smith";
+   public int Age = 30;
+
+    //define the index locations in the container for storing the properties
+    const int IDX_NAME = 0, IDX_AGE = 1;
+        
+    //store the properties into an RDA
+    public Rda ToRda()
+    {
+       var rda = new Rda();  //create an RDA container
+            
+       //store the properties to designated places in the container
+       rda.SetValue(IDX_NAME, this.Name);
+       rda.SetValue(IDX_AGE, this.Age.ToString()); //convert int to string
+            
+       return rda;     //the result
+    }
+
+    //restore the properties from an RDA
+    public IRda FromRda(Rda rda)
+    {
+       try
+       {
+          this.Name = rda.GetValue(IDX_NAME);
+          this.Age = int.Parse(rda.GetValue(IDX_AGE)); //convert string to int
+       }
+       catch
+       {
+           //handle error here ..
+       }
+       return this;
+    }
+}
+```
+
+A more complex object-serialization example using RDA container [can be found here.](https://foldda.github.io/rda/object-serialization-pattern).
 
 #### _Test Cases_
 
