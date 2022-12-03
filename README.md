@@ -52,7 +52,7 @@ The _Rda class_ implements the RDA encoding and decoding. It provides -
 * **ToString** method is for serializing the container and its content, i.e. apply RDA-encoding and make it into a string. 
 * **Parse** method is for de-serializing an RDA-encoded string back to an RDA container object with content.
 
-The Rda class is for serializing data objects and is modeled as a "container". The idea is, since an Rda container (and its content) is serializable, rather than serializing a data object directly, all we need is to store the data object or its properties into the Rda container.
+The Rda class is for serializing data objects and is modeled as a "container". The idea is, since an Rda container (with its content) is serializable, so rather than serializing a data object directly, all we need is to store the data object or its properties into the Rda container and serialize the container instead.
 
 Below is an example of serializing and de-serializing data values using the Rda class and its methods[^4].
 
@@ -83,7 +83,7 @@ System.Console.WriteLine(rdaReceived.GetValue(2));   //print "Three", the value
 
 #### _Using interface IRda_
 
-A class implements the two methd defined in _IRda interface_ to specify how its properties can be stored in and be restored from an Rda container, for serialization:
+A class implements these two method defined in _IRda interface_ to specify how it can be converted to and from an Rda container, for serialization:
 
 * **ToRda()**: produces an Rda container object that contains specific properties of the object. 
 
