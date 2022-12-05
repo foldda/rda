@@ -1,7 +1,7 @@
 title: Recursive Delimited Array
 author:
   name: Michael Chen
-  email: michael@foldda.com
+  email: contact@foldda.com
 description: > # this means to ignore newlines until "show_excerpts:"
   Recursive Delimited Array (RDA) is an encoding format for storing data in a text string container. It's a contender to formats like XML and JSON, for being simpler, more efficient and versatile.
 
@@ -14,8 +14,8 @@ minima:
 
   # generate social links in footer
   social_links:
-    #twitter: MrMichaelChen
-    github:  sierrathedog
+    twitter: FolddaConnect
+    github:  foldda
     # devto: jekyll
     # dribbble: jekyll
     # facebook: jekyll
