@@ -43,19 +43,19 @@ Also, thanks to its simple and efficient delimiter-based encoding, an RDA contai
 
 ## About This Project
 
-This project provides an object-serialization API for cross-application data communication, using RDA as the media. In the design of the API, the RDA encoding and parsing implementation is wrapped in a single class, called _Rda_, which is intuitively modeled as a "container" that provides the following methods - 
+This project provides an object-serialization API for cross-application data communication, using RDA as the data format. In the design of the API, the RDA encoding and parsing implementation is wrapped in a single class, called _Rda_, which is intuitively modeled as a "container" that provides the following methods - 
 
 * **Setter-Getter** methods are for storing and retrieving the container's content using index-based addresses. 
 * **ToString** method is for serializing the container and its content, i.e. apply RDA-encoding and make it into a string. 
 * **Parse** method is for de-serializing an RDA-encoded string back to an RDA container object with content.
 
-The idea of such design is, for achieving object-serialization for any type of object, we'd store a data object's properties' values into an Rda container and serialize the container instead, rather than serializing the data object directly. 
+The idea of such design is, for achieving object-serialization for any type of object, we'd store a data object's properties' values into an Rda container and serialize the container, rather than serializing the data object directly. 
 
 ## Getting Started
 
-The super-lightweight API has no 3rd party dependency and requires no installation for any ob. All you need is to include the provided source code (available in [C#](https://github.com/foldda/rda/tree/main/src/CSharp), [Java](https://github.com/foldda/rda/blob/main/src/Java/), and [Python](https://github.com/foldda/rda/blob/main/src/Python)) in your project, and use the implemented properties and methods. 
+The super-lightweight API has no 3rd party dependency and requires no installation. All you need is to include the provided source code (available in [C#](https://github.com/foldda/rda/tree/main/src/CSharp), [Java](https://github.com/foldda/rda/blob/main/src/Java/), and [Python](https://github.com/foldda/rda/blob/main/src/Python)) in your project, and use the implemented properties and methods. 
 
-Below is very brief introduction of using the Rda class and its methods[^4] for serializing and de-serializing data values.
+Below is very brief demonstration of using the Rda class and its methods[^4] for serializing and de-serializing data values.
 
 [^4]: Methods of using the Java API and the Python API are very similar.
 
@@ -84,13 +84,13 @@ System.Console.WriteLine(rdaReceived.GetValue(2));   //print "Three", the value
 
 ## More Details 
 
-The wiki of this project contains more details about RDA, including - 
+The [wiki of this project](https://github.com/foldda/rda/wiki) contains more details about RDA, including - 
 
 - [RDA overview.](https://github.com/foldda/rda/wiki#1-introduction) - explains the background and philosophy of this project.
 - [Using the API.](https://github.com/foldda/rda/wiki#2-using-the-api) - contains more technical details, with a practical example. 
-- [FAQ.](https://github.com/foldda/rda/wiki#4-faq) - misc. topic dicsussions.
+- [FAQ.](https://github.com/foldda/rda/wiki#4-faq) - miscellaneous topics and dicsussions.
 
-The unit tests [[C#](https://github.com/foldda/rda/tree/main/src/CSharp/UnitTests), [Java](https://github.com/foldda/rda/blob/main/src/Java/src/test/java/UniversalDataTransport/UniversalDataFrameworkTests.java), [Python](https://github.com/foldda/rda/blob/main/src/Python/test_rda.py)] are good places to find further examples of how to use the RDA API.
+The unit tests (in [C#](https://github.com/foldda/rda/tree/main/src/CSharp/UnitTests), [Java](https://github.com/foldda/rda/blob/main/src/Java/src/test/java/UniversalDataTransport/UniversalDataFrameworkTests.java), and [Python](https://github.com/foldda/rda/blob/main/src/Python/test_rda.py)) are good places to find further examples of how to use the RDA API.
 
 ## Contributing
 
