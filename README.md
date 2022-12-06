@@ -11,7 +11,7 @@ With the simple yet powerful data communication using RDA, programs "talking" to
 
 ## A Problem With XML/JSON
 
-> *An RDA container is like a bag that has unlimited number of pockets for storing "anything", and an XML or JSON container is like a wallet that offers specific places for coins, notes, and cards.* 
+> *An RDA container is like a box that has unlimited number of pockets for storing "anything", and an XML or JSON container is like a wallet that offers specific places for coins, notes, and cards.* 
 
 When use XML/JSON format for data exchange between two applications, a developer must firstly decide the data types and data structure for the applications, and fix the decided data format in a schema. If one of applications wants to change its data format and the schema, it will be difficult to manage compatibility especially if the applications are maintained by different parties. Imagine if Twitter or Google changes the data format in their REST API, a lot of downstream applications will be affected.
 
@@ -43,11 +43,11 @@ Also, thanks to its simple and efficient delimiter-based encoding, an RDA contai
 
 ## About This Project
 
-This project provides an object-serialization API for cross-application data communication, using RDA as the data format. In the design of the API, the RDA encoding and parsing implementation is wrapped in a single class, called _Rda_, which is intuitively modeled as a "container" that provides the following methods - 
+This project provides an object-serialization API for cross-application data communication, using RDA as the data format. In the design of the API, the RDA encoding and parsing are wrapped in a single class, called _Rda_, which is intuitively modeled as a "container" that provides the following methods - 
 
-* **Setter-Getter** methods are for storing and retrieving the container's content using index-based addresses. 
-* **ToString** method is for serializing the container and its content, i.e. apply RDA-encoding and make it into a string. 
-* **Parse** method is for de-serializing an RDA-encoded string back to an RDA container object with content.
+* **Setter-Getter()** methods which are for storing and retrieving the container's content using index-based addresses. 
+* **ToString()** method which is for serializing the container and its content, i.e. apply RDA-encoding and make it into a string. 
+* **Parse()** method which is for de-serializing an RDA-encoded string back to an Rda container object with content.
 
 The idea of such design is, for achieving object-serialization for any type of object, we'd store a data object's properties' values into an Rda container and serialize the container, rather than serializing the data object directly. 
 
