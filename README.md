@@ -43,42 +43,44 @@ Also, thanks to its simple and efficient delimiter-based encoding, an RDA contai
 
 ## About This Project
 
-This project implements an API for cross-application data communication via object-serialization using RDA as the data format. In the API design, RDA encoding and parsing are wrapped in a single class called _Rda_. Class Rda is intuitively modeled as a "container" which provides the following methods - 
+This project is a library for cross-application data communication via object serialization, using RDA as the data format. The library implements the RDA encoding API in a class called _Rda_, which is modeled as a "container" that hides the RDA encoding and parsing details but provides the following easy-to-understand methods - 
 
-* **Setter-Getter()** methods which are for storing and retrieving the container's content using index-based addresses. 
-* **ToString()** method which is for serializing the container and its content, i.e. apply RDA-encoding and make it into a string. 
-* **Parse()** method which is for de-serializing an RDA-encoded string back to an Rda container object with content.
+* **Setter-Getter()** methods are for storing and retrieving the container's content using index-based addresses. 
+* **ToString()** method is for serializing the container and its content, i.e. apply RDA-encoding and make it into a string. 
+* **Parse()** method is for de-serializing an RDA-encoded string back to an Rda container object with content.
 
-The idea of generic object-serialization in such design is, rather than serializing a data object, the data object's properties are stored in an Rda container object first and then the Rda object (with its content) is serialized instead. 
+The idea of this generic and **universal** object serialization API is, rather than serializing a data object, the object's properties are stored in an Rda container object first and then the container (with its content) is serialized instead. 
 
 ## Getting Started
 
-The super-lightweight API has no 3rd party dependency and requires no installation. To use the API, you just need to inlcude the provided source code (available in [C#](https://github.com/foldda/rda/tree/main/src/CSharp), [Java](https://github.com/foldda/rda/blob/main/src/Java/), and [Python](https://github.com/foldda/rda/blob/main/src/Python)) in your project. 
+The super-lightweight library has no 3rd party dependency and requires no installation or configuration. To use the library, you need to include the provided source code (available in [C#](https://github.com/foldda/rda/tree/main/src/CSharp), [Java](https://github.com/foldda/rda/blob/main/src/Java/), and [Python](https://github.com/foldda/rda/blob/main/src/Python)) in your project. 
 
-The code snippet below demonstrates how to serialize and de-serialize data values, using the API[^4] - 
+The example code below shows how to store or send data values via object serialization, using the API[^4] - 
 
 [^4]: The example is given in C#. Methods of using the Java API and the Python API are very similar.
 
 ```c#
-//a sender ... create an RDA container
-Rda rdaSending = new Rda();    
+using UniversalDataTransport;   //referring to the API's namespace
 
-//use SetValue() store some data values in the container
-rdaSending.SetValue(0, "One");  //store value "One" at index = 0
-rdaSending.SetValue(1, "Two");
-rdaSending.SetValue(2, "Three");
+//a sender creates an RDA container
+Rda container = new Rda();    
+
+//use SetValue() to store some data values in the container
+container.SetValue(0, "One");  //stores data value "One" at index = 0
+container.SetValue(1, "Two");
+container.SetValue(2, "Three");
 
 //use ToString() to serialize the container and its content to an RDA-encoded string
-System.Console.WriteLine(rdaSending.ToString());   //print the encoded container string, eg "|\|One|Two|Three"
+System.Console.WriteLine(container.ToString());   //print the encoded container string, eg "|\|One|Two|Three"
 
-// ... the encoded RDA string can be saved to a file, or be sent to another app via network ...
+// ... the string can be saved to a file, or be sent to another app via TCP/IP, Http, messaging, RPC, etc.
 // ... and a receiver can ...
 
-//use Parse() to de-serialize an RDA-format encoded string back to an Rda container object 
+//use Parse() to de-serialize an RDA-format encoded string back to a container object 
 Rda rdaReceived = Rda.Parse(@"|\|One|Two|Three");   
 
-//use GetValue() to retrieve data values from in an RDA container at an index location    
-System.Console.WriteLine(rdaReceived.GetValue(2));   //print "Three", the value stored at index=2 in the container.
+//use GetValue() to retrieve data values from the container at their index locations    
+System.Console.WriteLine(rdaReceived.GetValue(2));   //print "Three", the value at index=2 in the container.
 
 ```
 
