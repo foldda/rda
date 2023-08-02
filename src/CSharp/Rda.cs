@@ -7,10 +7,10 @@ using System.Collections.Generic;
 using System.Text;
 
 /*
- * UniversalDataTransport name-space is for unified data storage and transportation using the RDA data storage structure. 
+ * Charian name-space is for unified data storage and transportation using the RDA data storage structure. 
  */
 
-namespace UniversalDataTransport
+namespace Charian
 {
     /*
      * Recursive Delimited Array (RDA) is a simplified and flexible text-encoding format for encoding and storing data in a text string. 
@@ -24,11 +24,11 @@ namespace UniversalDataTransport
      * an encoded string, which can then be written to a file, be sent through a computer network, or be used for exchanging data between 
      * integrated computer applications.
      * 
-     * "Recursive Delimited Array" and "RDA" are trade marks of Briliant.NET (an Australian company)
+     * "Recursive Delimited Array" and "RDA" are trademarks of Foldda Pty Ltd (an Australian company)
      * 
      */
 
-    public class Rda : IUdt
+    public class Rda : IRda
     {
         /**
          * Base properties
@@ -735,7 +735,7 @@ namespace UniversalDataTransport
             return this;
         }
 
-        public IUdt FromRda(Rda rda)
+        public IRda FromRda(Rda rda)
         {
             if (rda.Dimension == 0) 
             { 

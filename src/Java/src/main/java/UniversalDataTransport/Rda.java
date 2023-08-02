@@ -1,3 +1,7 @@
+// Copyright (c) 2020 Michael Chen
+// Licensed under the MIT License -
+// https://github.com/foldda/rda/blob/main/LICENSE
+
 package UniversalDataTransport;
 
 import java.util.ArrayList;
@@ -22,7 +26,7 @@ import java.util.List;
  *
  */
 
-public class Rda implements IUdt {
+public class Rda implements IRda {
 
   public static <T> T getValueOrDefault(T value, T defaultValue) {
     return value == null ? defaultValue : value;
@@ -32,7 +36,7 @@ public class Rda implements IUdt {
     return this;
   }
 
-  public IUdt FromRda(Rda rda) {
+  public IRda FromRda(Rda rda) {
     if (rda.Dimension() == 0) {
       SetScalarValue(rda.GetScalarValue());
     } else {

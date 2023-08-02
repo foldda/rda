@@ -1,3 +1,7 @@
+# Copyright (c) 2022 Foldda Pty Ltd
+# Licensed under the MIT License -
+# https://github.com/foldda/rda/blob/main/LICENSE
+
 from typing import List, Optional
 
 from utils import range_contains

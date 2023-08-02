@@ -1,3 +1,7 @@
+# Copyright (c) 2022 Foldda Pty Ltd
+# Licensed under the MIT License -
+# https://github.com/foldda/rda/blob/main/LICENSE
+
 import pytest
 from rda import Rda
 
@@ -224,3 +228,25 @@ def test_escaped_value_formatting_test():
     print("v2-formatted", s2)
     rda4 = Rda.parse(s2f)
     assert s2 == rda4.to_string()
+    
+def test_rda_quick_demo_test():
+    # sender creates a container
+    container = Rda()
+    
+    # use set_value() to store some data values in container
+    container.set_value(0, "One")
+    container.set_value(1, "Two")
+    container.set_value(2, "Three")
+    
+    # use to_string() to serialize the container and its content
+    print(container.to_string())    # prints encoded RDA string -> "|\|One|Two|Three"
+    
+    # ... the string can be stored in a file, or send to another app via TCP/IP, Http, RPC, etc
+    # ... and a receiver can ...
+    
+    # use parse() to convert an RDA string back to a container object
+    received = Rda.parse("|\|One|Two|Three")
+    
+    # use get_value() to retrive transported value from a container 
+    print(received.get_value(2))    # prints "Three" (the value at index=2 in the container)
+
