@@ -2,8 +2,9 @@
 // Licensed under the MIT License -
 // https://github.com/foldda/rda/blob/main/LICENSE
 
-using UniversalDataTransport;
+using Charian;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.IO;
 
 namespace UnitTests
@@ -14,15 +15,19 @@ namespace UnitTests
         public string LastName = "Smith";
 
         //specify an allocated position in the RDA for storing each of the object's proterties
-        public enum RDA_INDEX : int { FIRST_NAME = 0, LAST_NAME = 1, RES_ADDRESS = 2, POST_ADDRESS = 3 }
+        public enum RDA_INDEX : int
+        {
+            FIRST_NAME = 0,
+            LAST_NAME = 1
+        }
 
         //store the properties of this object into an RDA
         public virtual Rda ToRda()
         {
             var rda = new Rda();  //create an RDA container
-            
+
             //stores each of the properties’ value
-            rda[(int) RDA_INDEX.FIRST_NAME].ScalarValue = this.FirstName;
+            rda[(int)RDA_INDEX.FIRST_NAME].ScalarValue = this.FirstName;
             rda[(int)RDA_INDEX.LAST_NAME].ScalarValue = this.LastName;
             return rda;
         }
@@ -30,7 +35,7 @@ namespace UnitTests
         //restore the object’s properties from an RDA
         public virtual IRda FromRda(Rda rda)
         {
-            this.FirstName = rda[(int) RDA_INDEX.FIRST_NAME].ScalarValue;
+            this.FirstName = rda[(int)RDA_INDEX.FIRST_NAME].ScalarValue;
             this.LastName = rda[(int)RDA_INDEX.LAST_NAME].ScalarValue;
             return this;
         }
@@ -84,19 +89,27 @@ namespace UnitTests
         public Address ResidentialAddress = new Address() { AddressLines = "1, 2, 3", ZIP = "12345" };
         public Address PostalAddress = new Address() { AddressLines = "a, b, c", ZIP = "23456" };
 
+        public new enum RDA_INDEX : int
+        {
+            FIRST_NAME = 0,
+            LAST_NAME = 1,
+            RES_ADDRESS = 2,
+            POST_ADDRESS = 3
+        }
+
         public override Rda ToRda()
         {
             Rda personRda = base.ToRda();
 
             //assign the “residential address” RDA to a location in the “person” RDA
-            personRda[(int) RDA_INDEX.RES_ADDRESS] = this.ResidentialAddress.ToRda();
+            personRda[(int)RDA_INDEX.RES_ADDRESS] = this.ResidentialAddress.ToRda();
 
             //now personRda is 2-dimensional
             //Console.Println(personRda[2][1].ScalarValue);   //prints ResidentialAddress.ZIP
 
             //You can continue to grow the complexity of the Person object.
             //eg storing a further “postal address” RDA to the person RDA, and so on ..
-            personRda[(int) RDA_INDEX.POST_ADDRESS] = this.PostalAddress.ToRda();
+            personRda[(int)RDA_INDEX.POST_ADDRESS] = this.PostalAddress.ToRda();
 
             return personRda;
         }
@@ -107,8 +120,8 @@ namespace UnitTests
             base.FromRda(rda);  //restores FirstName and LastName
 
             //sub-RDA structure is passed on to recursively de-serialize sub objects
-            this.ResidentialAddress.FromRda(rda[(int) RDA_INDEX.RES_ADDRESS]);
-            this.PostalAddress.FromRda(rda[(int) RDA_INDEX.POST_ADDRESS]);
+            this.ResidentialAddress.FromRda(rda[(int)RDA_INDEX.RES_ADDRESS]);
+            this.PostalAddress.FromRda(rda[(int)RDA_INDEX.POST_ADDRESS]);
             return this;
         }
 
@@ -132,10 +145,10 @@ namespace UnitTests
         [TestMethod]
         public void ObjectSerializationTest()
         {
-            var person = new Person();
             string filePath1 = "C:\\Temp\\IRda_Person_Test_binaryfile111.bin";
-
+            var person = new Person();
             person.SaveToFile(filePath1);
+
             var person2 = Person.ReadFromFile(filePath1);
             Assert.AreEqual(person.FirstName, person2.FirstName);
             Assert.AreEqual(person.LastName, person2.LastName);
@@ -144,10 +157,10 @@ namespace UnitTests
 
             /* test recurrsively embeded serializable objects */
 
-            var complexPerson = new ComplexPerson();
             string filePath2 = "C:\\Temp\\IRda_Person_C_Test_binaryfile222.bin";
-
+            var complexPerson = new ComplexPerson();
             complexPerson.SaveToFile(filePath2);
+
             var complexPerson2 = ComplexPerson.ReadFromFile(filePath2);
             Assert.AreEqual(complexPerson.FirstName, complexPerson2.FirstName);
             Assert.AreEqual(complexPerson.LastName, complexPerson2.LastName);
@@ -156,9 +169,47 @@ namespace UnitTests
 
             complexPerson2.ToRda().ToString().Print("Complex Person RDA");
 
-
             File.Delete(filePath2);  //tear down
+        }
+    }
 
+
+
+
+
+    class RdaDemo1
+    {
+        string PATH = "C:\\Temp\\IRda_Person_Test_binaryfile111.bin";
+        public void SendSomeData(string filePath)
+        {
+
+            Rda rda1 = new Rda();    //create a new RDA container object
+
+            //store some values at some randomly-chosen locations in the container
+            rda1.SetValue(0, "A string");  //storing value "One" at index = 0
+            rda1.SetValue(1, 2.5.ToString());
+            rda1.SetValue(2, DateTime.Now.ToString());
+
+            string encodedRdaString = rda1.ToString(); //serialize
+            File.WriteAllText(filePath, encodedRdaString);
+        }
+
+        public void ReceiveSomeData(string filePath)
+        {
+            string encodedRdaString = File.ReadAllText(filePath);
+
+            Rda rda1 = Rda.Parse(encodedRdaString);    //create a new RDA container object from the RDA string
+
+            //retrive  some values at some designated locations in the container
+            string a = rda1.GetValue(0);  //storing value "One" at index = 0
+            double b = double.Parse(rda1.GetValue(1));
+            DateTime c = DateTime.Parse(rda1.GetValue(2));
+        }
+
+        public void Main(string[] args)
+        {
+            SendSomeData(PATH);
+            ReceiveSomeData(PATH);
         }
     }
 }

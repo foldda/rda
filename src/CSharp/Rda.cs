@@ -7,10 +7,10 @@ using System.Collections.Generic;
 using System.Text;
 
 /*
- * UniversalDataTransport name-space is for unified data storage and transportation using the RDA data storage structure. 
+ * Charian name-space is for unified data storage and transportation using the RDA data storage structure. 
  */
 
-namespace UniversalDataTransport
+namespace Charian
 {
     /*
      * Recursive Delimited Array (RDA) is a simplified and flexible text-encoding format for encoding and storing data in a text string. 
