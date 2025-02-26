@@ -3,13 +3,33 @@
 
 <img src="docs/image/rda_logo.png" align="right" height="128">
 
-Recursive Delimited Array, or RDA, is an encoding format for storing and transporting structured data in a text string.
+Recursive Delimited Array, or RDA, is a text encoding format for storing structured data in a string, similar to XML and JSON. 
 
-Unlike XML and JSON using a schema to restrict the data to the specifics of a certain application, RDA is a **schema-less** format for **generic** data. It means an RDA-encoded string (aka. "RDA container") can be used for storing any data from any application. 
+## Schema-less Encoding
 
-_With the simple yet powerful data transportation enabled by using RDA, programs "talking" to each other has never been so easy._
+In RDA encoding, data elements of a structured data object are placed in a space of a multi-dimensional array where the number of dimensions and the size of each dimemsion can be expanded as rquired. 
 
-## A Problem With XML/JSON
+The following example shows a 1-dimension RDA-encoded string container containing a list of data elements: "One", "Two", and "Three". 
+
+```
+|\|One|Two|Three
+```
+The next example is a 2-dimension RDA container that contains the data equivalent to the content of the following table.
+```
+|,\|Name,Sex,Age|Mary,F,52|John,M,70|Kate,F,63
+```
+
+| Name | Sex | Age | 
+|------|-----|-----|
+| Mary | F   | 52  | 
+| John | M   | 70  |
+| Kate | F   | 63  | 
+
+So unlike XML and JSON, RDA encoding is **schema-less** - meaning it is "one-size  so an RDA-encoded string (an "RDA container") is not fixed to a defined data structure, and can be flexibily adapted depending on the application. 
+
+_RDA is most suitable for exchanging data between distributed, independent programs, as it allows a program to flexibly adapt to uncontrolled data structure changes (eg. caused by the other party), and remain compatible in the data communication._
+
+## A Problem Schema-based Data Communication With XML/JSON
 
 > *An RDA container is like a large, expandable pocket with many inner pockets, recursively, which can be used for storing "anything"; an XML or JSON container is like a wallet with specific places for coins, notes, and cards.* 
 
@@ -17,7 +37,7 @@ When using XML/JSON format for data exchange between two applications, a develop
 
 In comparison, while RDA can also be used for exchanging complex structured data, it is schema-less and is designed to be **application independent**[^1]:
 
-[^1]: Full details of the encoding rules can be found [here](https://foldda.github.io/rda/rda-encoding-rule).
+[^1]: Full details of the encoding rules can be found [here](https://github.com/foldda/RDA/wiki/1.-Overview#the-rda-encoding-rule).
 
 * Instead of using tags or markups, RDA uses delimited encoding for separating and structuring data elements; 
 * Instead of using named paths, RDA uses integer-based indexes for addressing data elements inside a container; 
