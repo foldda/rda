@@ -5,11 +5,15 @@
 
 Recursive Delimited Array, or RDA, is a text encoding format for storing structured data in a string, similar to XML and JSON. 
 
+But unlike XML and JSON, which require pre-defining a schema that has places and defined attributes for every data elements for a targeted data structure, RDA's "storage space" is a plain "one-size-fits-all" multi-dimensional array[^1], and all data elements of a data object are placed as a simplified data types in the array.
+
+[^1]: The number of dimensions and the size of each dimemsion of the multi-dimensional array of an RDA encoded string can be expanded as rquired, 
+
+As the result, RDA encoding and decoding are much simpler (read "fast", "efficient", "compact"...), and as explained below, more flexible and resiliant to data structure changes during exchanging data between programs.
+
 ## Schema-less Encoding
 
-In RDA encoding, data elements of a structured data object are placed in a space of a multi-dimensional array where the number of dimensions and the size of each dimemsion can be expanded as rquired. 
-
-The following example shows a 1-dimension RDA-encoded string container containing a list of data elements: "One", "Two", and "Three". 
+The following example shows a 1-dimension RDA-encoded string that contains a list of data elements: "One", "Two", and "Three". 
 
 ```
 |\|One|Two|Three
@@ -25,9 +29,7 @@ The next example is a 2-dimension RDA container that contains the data equivalen
 | John | M   | 70  |
 | Kate | F   | 63  | 
 
-So unlike XML and JSON, RDA encoding is **schema-less** - meaning it is "one-size  so an RDA-encoded string (an "RDA container") is not fixed to a defined data structure, and can be flexibily adapted depending on the application. 
-
-_RDA is most suitable for exchanging data between distributed, independent programs, as it allows a program to flexibly adapt to uncontrolled data structure changes (eg. caused by the other party), and remain compatible in the data communication._
+_As RDA **schema-less** encoding is not fixed to a defined data structure, it can be flexibily adapted depending on the application, and is most suitable for exchanging data between distributed, independent programs, as it allows a program to flexibly adapt to uncontrolled data structure changes (eg. caused by the other party), and remain compatible in the data communication._
 
 ## A Problem Schema-based Data Communication With XML/JSON
 
