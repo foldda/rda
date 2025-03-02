@@ -7,9 +7,9 @@ Recursive Delimited Array, or RDA, is a text encoding format for storing structu
 
 Unlike XML and JSON encodings that use a schema defining the structure for a targeted data object, and the ids and attributes of every data elements of the object, RDA's "encoding space" is a plain "one-size-fits-all" multi-dimensional array[^1], where all data elements from the data object are placed in the space as strings.
 
-[^1]: The number of dimensions and the size of each dimemsion of the multi-dimensional array of an RDA encoded string can be expanded as rquired, 
+[^1]: The number of dimensions and the size of each dimemsion of the multi-dimensional array of an RDA encoded string can be expanded as rquired.
 
-Because RDA encoding is much simpler compared to XML or JSON, it has many benefits such as being easier to implement, faster, more space-efficient, minimalist and compact, etc. And, as explained below, its schemas-less approach allows applications to adapt to data structure changes more easily when it's required.
+Because RDA encoding is much simpler compared to XML or JSON, it has many benefits such as being easier to implement, faster, more compact and space-efficient, etc. And, as explained below, its schemas-less approach allows applications to adapt to data structure changes more easily when it's required.
 
 ## Schema-less Encoding
 
@@ -29,19 +29,21 @@ The next example is a 2-dimension RDA container that contains the data equivalen
 | John | M   | 70  |
 | Kate | F   | 63  | 
 
-_As RDA **schema-less** encoding is not fixed to a defined data structure, it can be flexibily adapted depending on the application, and is most suitable for exchanging data between distributed, independent programs, as it allows a program to flexibly adapt to uncontrolled data structure changes (eg. caused by the other party), and remain compatible in the data communication._
+As you can see in the examples, in RDA's **schema-less** encoding, it first defines the delimiter chars ("delimiters") at the begining of the string, where the number of the delimiters equals or is greater than the required storage space's array dimensions. Then in the string, following these defined delimiters, it encodes data elements at different locations in the multi-dimensional array using the defined delimiters (accordingly to the intended dimemsion level) to separate these data elements.[^2]
 
-## The Problem To Solve
+[^2]: A more detailed explanation of RDA encoding rule can be found in this repo's wiki.
 
-Independent programs, such as a browser-hosted app and a Web server, or an IoT device and a control console, often need to communicate with each other to form a collaborative distributed solution. Exchanging data in such cases is normally complicated and requires extra effort because of the implied diversity and uncertainty - the programs can have a different business and data model, be written in different languages, executed in separate computer environments, and can be developed and maintained by different parties. The conventional approach for cross-program data exchange typically involves building a dedicated pipeline connecting the communicating parties and having an 'agreed' format (i.e. a schema) for the data exchange.
+## The Problem (To Solve) And The Idea
+
+Independent programs, such as a browser-hosted app and a Web server, or an IoT device and a control console, often need to communicate with each other to form a collaborative distributed solution. In these cases exchanging data is normally complicated because of the implied diversity and uncertainty, as the programs can be developed and maintained by different parties, having a different business and data model, written in different languages, executed in separate computer environments, and so on. The conventional approach for cross-program data exchange typically involves building a pipeline on dedicated hardware connecting the communicating parties, and either having an 'agreed' format (i.e. a schema) for the data exchange or having the pipeline to do the data format convertion.
 
 <div align='center'>
 <img src='img/Pre-Charian-data-transport.png' width='550' align='center'>
 </div>
 
-Developing a dedicated connection for every application with a different data model is likely time-consuming and costly. The ongoing cost of managing data exchange over schema-based connections can also be significant because the connected programs become “tightly coupled” by these connections, if one of the programs has evolved and the data model needs to be changed, a developed solution often requires significant modification or using a dedicated middleware system to mediate the data model transformation.
+Such an approach is likely time-consuming and costly, and the ongoing cost of managing data exchange over schema-based connections can also be significant because the connected programs have been “tightly coupled” by these connections - i.e. if one of the programs has evolved and the data model needs to be changed, a developed solution often requires significant modification or using a dedicated middleware system to mediate the data model transformation.
 
-In an analogy, building ad-hoc schema-bound data exchange solutions is like sending parcels to people without using the Post Office, but doing everything yourself - meaning you’ll have to make ad-hoc transport and delivery arrangements on each occasion, limited by the resources you have.
+In an analogy, such data exchange solutions is like sending parcels to people through adhoc transport and delivery arrarangements instead of using the Post Office. but doing everything yourself - meaning you’ll have to make ad-hoc transport and delivery arrangements on each occasion, limited by the resources you have.
 
 <div align='center'>
 <img src='img/Pre-Post-office-system.png' width='470' align='center'>
