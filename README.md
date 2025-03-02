@@ -5,7 +5,7 @@
 
 Recursive Delimited Array, or RDA, is a text encoding format for storing structured data in a string, similar to XML and JSON. 
 
-Unlike XML and JSON encodings that use a schema defining the structure for a targeted data object, and the ids and attributes of every data elements of the object, RDA's "encoding space" is a plain "one-size-fits-all" multi-dimensional array[^1], where all data elements from the data object are placed in the space as strings.
+Unlike the XML and JSON encodings, which use a schema to define a targeted data object - including its structure and the ids and attributes of every data elements of the object, RDA's "encoding space" is a plain "one-size-fits-all" multi-dimensional array[^1], where all data elements from the data object are simply placed in the space as strings.
 
 [^1]: The number of dimensions and the size of each dimemsion of the multi-dimensional array of an RDA encoded string can be expanded as rquired.
 
@@ -29,7 +29,7 @@ The next example is a 2-dimension RDA container that contains the data equivalen
 | John | M   | 70  |
 | Kate | F   | 63  | 
 
-As you can see in the examples, in RDA's **schema-less** encoding, it first defines the delimiter chars ("delimiters") at the begining of the string, where the number of the delimiters equals or is greater than the required storage space's array dimensions. Then in the string, following these defined delimiters, it encodes data elements at different locations in the multi-dimensional array using the defined delimiters (accordingly to the intended dimemsion level) to separate these data elements.[^2]
+As you can see in these examples, at the begining of an RDA-encoded string, it first defines the delimiter chars ("delimiters") to be used, depending on the required storage space's array dimensions. Then following these defined delimiters, it encodes data elements at different locations in the multi-dimensional array using the defined delimiters (accordingly to the intended dimemsion level) to separate these data elements.[^2]
 
 [^2]: A more detailed explanation of RDA encoding rule can be found in this repo's wiki.
 
