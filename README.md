@@ -5,7 +5,7 @@
 
 Recursive Delimited Array, or RDA, is a text encoding format for storing structured data in a string, similar to XML and JSON. 
 
-Unlike the XML and JSON encodings, which use a schema to define the very details of a _fixed_ targeted data object, RDA provides an "encoding space" that is a dynamically expandable multi-dimensional array[^1], for storing data with _any data structure_, and there is no defined data types - data element values are simply stored in the space as strings. 
+Unlike the XML and JSON encodings, which use a schema to define the very details of a _fixed_ targeted data object, RDA provides an "encoding space" that is a dynamically expandable multi-dimensional array[^1], for storing data objects of _any structure_, and there is no defined data types - data element values are simply stored in the space as strings. 
 
 [^1]: The number of dimensions and the size of each dimemsion of the multi-dimensional array of an RDA encoded string can be expanded as rquired.
 
@@ -35,7 +35,7 @@ As you can see in these examples, in an RDA-encoded string, it first defines the
 
 ## The Problem To Solve And The Idea
 
-Independent programs, such as a local browser-hosted app and a remote Web server, or an IoT device and a control terminal, often need to communicate and work with each other in a collaborative, distributed solution. In these cases exchanging data is normally complicated because of the implied diversity and uncertainty, as the programs can be developed and maintained by different parties, having a different business and data model, written in different languages, executed in separate computer environments, and so on. The conventional approach for cross-program data exchange typically involves building a pipeline on dedicated hardware connecting the communicating parties, and either having an 'agreed' format (i.e. a schema) for the data exchange or having the pipeline to do the schema convertion.
+Reliable cross-program data exchange, such as between a browser app and its hosting remote server, or between an IoT device and its control console, often are more difficult, as the programs may be developed separatly by different parties, having a different business and data model, written in different languages, executed in separate computer environments, and so on. Normally it involves building custom pipelines on dedicated hardware connecting the communicating parties, and either having an 'agreed' format (i.e. a schema) for the data exchange or having the pipelines to do the schema convertion.
 
 <div align='center'>
 <img src='img/Pre-Charian-data-transport.png' width='550' align='center'>
