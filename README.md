@@ -9,7 +9,9 @@ Unlike the XML and JSON encodings, which use a schema to define the very details
 
 [^1]: The number of dimensions and the size of each dimemsion of the multi-dimensional array of an RDA encoded string can be expanded as rquired.
 
-Because of these simplified rules, RDA encoding is easier to implement, faster, more compact and space-efficient compared to XML and JSON. And, as explained below, RDA's schemas-less "one-size-fits-all" approach allows lower cost in building data pipelines, and allows applications to adapt to data structure changes more easily when it's required.
+Because of its simpler rules, compared to XML and JSON, RDA is easier to implement, faster to encode and decode, and more space-efficient. And, as explained below, RDA's schemas-less "one-size-fits-all" approach allows lowering the cost in building data pipelines, and allows applications to adapt to data structure changes more easily when it's required.
+
+> The space from XML/JSON is like a wallet, where there are specific places for cards, notes, and coins; and the space from RDA is like an infinitly expandable shelf, where anything can be placed anywhere in the unlimited space provided.
 
 ## Schema-less Encoding
 
@@ -35,25 +37,27 @@ As you can see in these examples, in an RDA-encoded string, it first defines the
 
 ## The Problem To Solve And The Idea
 
-Reliable cross-program data exchange, such as between a browser app and its hosting remote server, or between an IoT device and its control console, often are more difficult, as the programs may be developed separatly by different parties, having a different business and data model, written in different languages, executed in separate computer environments, and so on. Normally it involves building custom pipelines on dedicated hardware connecting the communicating parties, and either having an 'agreed' format (i.e. a schema) for the data exchange or having the pipelines to do the schema convertion.
+Reliable cross-program data exchange, such as between a browser app and its service-hosting remote server, or between an IoT device and its control console, are often more complex and more difficult, as the involved programs may have different business requirements and use different data models. Normally it involves building custom pipelines on dedicated hardware connecting the communicating parties, and either having an 'agreed' format (i.e. a schema) for the data exchange or having the pipelines to do the schema convertion.
 
 <div align='center'>
 <img src='img/Pre-Charian-data-transport.png' width='550' align='center'>
 </div>
 
-Building these schema-based pipelines can be expensive and time-consuming, and the cost of on-going maintainance can also be significant because the connected programs are “tightly coupled” by the schemas. If one of the programs has evolved and the data model needs to be changed, a developed solution often requires significant modification or using a dedicated middleware system to mediate the data model transformation.
-
-In an analogy, these expensive data exchange solutions is like sending parcels to people through adhoc transport and delivery arrarangements instead of using the Post Office. but doing everything yourself - meaning you’ll have to make ad-hoc transport and delivery arrangements on each occasion, limited by the resources you have.
+Building these schema-based pipelines catering for aligning all the differences can be expensive and time-consuming. In an analogy, these expensive data exchange solutions is like sending parcels to people through adhoc transport and delivery arrarangements instead of using the Post Office. but doing everything yourself - meaning you’ll have to make ad-hoc transport and delivery arrangements on each occasion, limited by the resources you have.
 
 <div align='center'>
 <img src='img/Pre-Post-office-system.png' width='470' align='center'>
 </div>
+
+Also, the cost of on-going maintainance of custom-built data pipelines can also be significant because the connected programs are “tightly coupled” by the schemas. If one of the programs has evolved and the data model needs to be changed, it would break the collabrative solution until the developped pipelines are modified to accomdate the changes.
 
 As we all know, using the Post Office is convenient and cost-effective for posting goods of different shapes and sizes, because the standard parcel processing can meet the client's wide range of requirements, and the shared logistics and freight system helps cut down the cost.
 
 <div align='center'>
 <img src='img/Post-office-system.png' width='550' align='center'>
 </div>
+
+So the idea is, instead of relying on custom-built adhoc data pipelines, to create a post-office-like common data communication layer, where any program can use for exchanging data between each other. 
 
 ## An Inspired Solution, and The Challenge
 
