@@ -57,26 +57,21 @@ As we all know, using the Post Office is convenient and cost-effective for posti
 <img src='img/Post-office-system.png' width='550' align='center'>
 </div>
 
-So the idea is, instead of relying on custom-built adhoc data pipelines, to create a post-office-like common data communication layer, where any program can use for exchanging data between each other. 
+So the idea is, instead of relying on custom-built adhoc data pipelines, to create a post-office-like common data communication layer, where any program can use for freely exchanging data between each other. 
 
-## An Inspired Solution, and The Challenge
+## Towards Universal Data Exchange
 
-Universal Data Exchange, or UDX, is an envisioned data exchange service that provides the benefits of being convenient and cost-effective using the same “post-office-like” approach - that is, by creating and sharing a common, generic data collection and delivery service to all programs that require exchanging data, rather than building ad-hoc dedicated data-exchange solutions.
+Universal Data Exchange, or UDX, is an envisioned data communication service for all programs to use for exchanging data. UDX provides the benefits of being convenient and cost-effective using the same “post-office-like” approach - that is, by sharing a common, generic data collection and delivery services, rather than individually building ad-hoc dedicated data-exchange solutions.
 
 <div align='center'>
 <img src='img/Charian-data-transport.png' width='550'>
 </div>
 
-But when we look deep into such a solution, there is a challenge. As mentioned, for the Post Office to cater for different parcel-posting requirements from all its clients, it mush use standardized packaging. Packing loose items in boxes simplifies parcel handling and allows modularized, more effective transportation by general courier companies. Similarly, a key in UDX's design is to use a generic data container for packaging (and regulating) various data items (e.g. properties of a data object), so irregular data can be handled uniformly using general data transport protocols and methods.
+The key to implementing UDX though, is to have a standardized, universal data container. Let's keep using the Post Office analogy: for the Post Office to cater for different parcel-posting requirements from all its clients, it mush use standardized packaging. Packing loose items in boxes simplifies parcel handling and allows modularized, more effective transportation by general courier companies. Similarly, a key in UDX's design is to use a generic data container for packaging (and regulating) various data items (e.g. properties of a data object), so irregular data can be handled uniformly using general data transport protocols and methods.
 
-Text-based messaging is the most suitable media UDX transport because string is a supported data type by most computer systems and programming languages. Thus the challenge to implementing UDX is to have a text encoding format that supports encoding any data into a string. Unfortunately, popular data formats, such as XML, JSON, and CSV, are not suitable for encoding the UDX container. That’s because each data instance in one of these formats assumes a certain data model (by structure and type), meaning a container encoded in these formats won't be the “generic and universal” that we want for accommodating _any data_. So our quest for a suitable encoding has led to the development of RDA - a new schemaless data format.
+Unfortunately, popular data formats, such as XML, JSON, and CSV, are not suitable for encoding the UDX container. That’s because each data instance in one of these formats assumes a certain data model (by structure and type), meaning a container encoded in these formats won't be the “generic and universal” that we want for accommodating _any data_. That's where RDA - a "one-size-fits-all" data format - comes to play. RDA encoding allows converting data objects with arbitarily complex structure to a text string, a supported data type by most computer systems and programming languages, so the data can be stored as text, or be transported via text-based network or messaging protocols, such as HTTP/RPC, TCP/IP, and FTP. 
 
-
-for implementing the UDX container. , so encoding, decoding, and transporting data in a “string container” can be naturally carried out using generic tools and protocols. In other words, an UDX data container, as a text message, can be saved to a file system or a database, or be transferred via common network protocols, such as HTTP/RPC, TCP/IP, and FTP. 
-
-
-
-## RDA Encoding - A Key Element Of The Solution
+## Charian - RDA Encoding In Practical Uses
 
 RDA stands for "Recursive Delimited Array". It is a delimited encoding format similar to CSV where encoded data elements are separated by delimiter chars except, among other things, RDA allows dynamically defining multiple delimiters for encoding more complex, multidimensional data[^4].
 
