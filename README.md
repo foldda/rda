@@ -5,13 +5,13 @@
 
 Recursive Delimited Array, or RDA, is a text encoding format for storing structured data in a string, similar to XML and JSON. 
 
-Unlike the XML and JSON encodings, which use a schema to define the very details of a _fixed_ targeted data object, RDA provides an "encoding space" that is a dynamically expandable multi-dimensional array[^1], for storing data objects of _any structure_, and there is no defined data types - data element values are simply stored in the space as strings. 
+Unlike XML and JSON encodings, which use a schema that defines the very details of a targeted _fixed_ data object, RDA provides a dynamically expandable multi-dimensional array as the "encoding space" for storing a data object, regardless of its structure and its properties' data types[^1]. Because the RDA encoding rule is simpler, it is easier to implement, and an RDA-encoded string is faster to compose or parse, and is more space-efficient.
 
-[^1]: The number of dimensions and the size of each dimemsion of the multi-dimensional array of an RDA encoded string can be expanded as rquired.
+[^1]: The number of dimensions and the size of each dimension of the multi-dimensional array of an RDA-encoded string can be expanded as required. In RDA, all data element values are simply stored in the space as strings. 
 
-Because of its simpler rules, compared to XML and JSON, RDA is easier to implement, faster to encode and decode, and more space-efficient. And, as explained below, RDA's schemas-less "one-size-fits-all" approach allows lowering the cost in building data pipelines, and allows applications to adapt to data structure changes more easily when it's required.
+> The space from XML/JSON is like a wallet, where there are specific places for cards, notes, and coins; and the space from RDA is like an infinitely expandable shelf, where anything can be placed anywhere in the unlimited space provided.
 
-> The space from XML/JSON is like a wallet, where there are specific places for cards, notes, and coins; and the space from RDA is like an infinitly expandable shelf, where anything can be placed anywhere in the unlimited space provided.
+Also, as explained below, RDA's schemas-less "one-size-fits-all" approach allows for lowering the cost of building data pipelines, and allows applications to adapt to data structure changes more easily when it's required.
 
 ## Schema-less Encoding
 
