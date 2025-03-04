@@ -3,15 +3,13 @@
 
 <img src="docs/image/rda_logo.png" align="right" height="128">
 
-Recursive Delimited Array, or RDA, is a text encoding format for storing structured data in a string, similar to XML and JSON. 
-
-Unlike XML and JSON encodings, which use a schema that defines the very details of a targeted _fixed_ data object, RDA provides a dynamically expandable multi-dimensional array as the "encoding space" for storing a data object, regardless of its structure and its properties' data types[^1]. Because the RDA encoding rule is simpler, it is easier to implement, and an RDA-encoded string is faster to compose or parse, and is more space-efficient.
-
-[^1]: The number of dimensions and the size of each dimension of the multi-dimensional array of an RDA-encoded string can be expanded as required. In RDA, all data element values are simply stored in the space as strings. 
+Recursive Delimited Array, or RDA, is a text encoding format for storing structured data in a string, similar to XML and JSON. But unlike XML and JSON, RDA does not use a schema that defines the very details of a data object, rather, it provides a flexible encoding space for accommodating the targeted data object, regardless of its structure and its properties' data types[^1].
 
 > The space from XML/JSON is like a wallet, where there are specific places for cards, notes, and coins; and the space from RDA is like an infinitely expandable shelf, where anything can be placed anywhere in the unlimited space provided.
 
-Also, as explained below, RDA's schemas-less "one-size-fits-all" approach allows for lowering the cost of building data pipelines, and allows applications to adapt to data structure changes more easily when it's required.
+RDA's "one-size-fits-all" approach brings many benefits including being simpler, easy to implement, fast parsing and encoding, more space-efficient, etc. Also, as explained below, being schemas-less, RDA does not impose a fixed data model to the data being encoded, which allows for lowering the cost of building data pipelines, and allows applications to adapt to data structure changes more easily when it's required.
+
+[^1]: The number of dimensions and the size of each dimension of the multi-dimensional array of an RDA-encoded string can be expanded as required. In RDA, all data element values are simply stored in the space as strings. 
 
 ## Schema-less Encoding
 
