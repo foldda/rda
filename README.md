@@ -9,9 +9,9 @@ Recursive Delimited Array, or RDA, is a text encoding format for storing structu
 
 As explained below, RDA's simpler, "one-size-fits-all" approach brings many benefits including being easier to implement, faster parsing and encoding, and more space-efficient. Most significantly, RDA enables using generic data transport and delivery services for applications to exchange data freely - as there is no restrictive, schema-imposed data model to be enforced in the data exchange. This means there could be more communication and collaboration between many otherwise isolated devices and programs.
 
-> For XML/JSON, the encoding space defined by a schema is like a wallet, where there are specific places for cards, notes, and coins; and for RDA, the space is like an infinitely expandable shelf, where anything can be placed anywhere in the unlimited space provided.
+## RDA's Schema-less Encoding
 
-## Schema-less Encoding
+> For XML/JSON, the encoding space defined by a schema is like a wallet, where there are specific places for cards, notes, and coins; and for RDA, the space is like an infinitely expandable shelf, where anything can be placed in the unlimitedly provided space.
 
 The following example shows a 1-dimension RDA-encoded string that contains a list of data elements: "One", "Two", and "Three". 
 
@@ -29,13 +29,13 @@ The next example is a 2-dimension RDA container that contains the data equivalen
 | John | M   | 70  |
 | Kate | F   | 63  | 
 
-As you can see in these examples, in an RDA-encoded string, it first defines the delimiter chars ("delimiters") to be used at the begining of the string, then after these delimiters, it encodes data elements at different locations in the multi-dimensional array using the delimiters (accordingly to the intended dimemsion level) to separate these data elements.[^2]
+As you can see in these examples, in an RDA-encoded string, it first defines the delimiter chars ("delimiters") to be used at the beginning of the string, then after these delimiters, it encodes data elements at different locations in the multi-dimensional array using the delimiters (accordingly to the level of the intended dimension) to separate these data elements.[^2] By defining more delimiters, it can create as many dimensions in the encoding space as required.
 
 [^2]: A more detailed explanation of RDA encoding rule can be found in this repo's wiki.
 
-## The Problem To Solve And The Idea
+## The Problem To Solve (And The Idea)
 
-Reliable cross-program data exchange, such as between a browser app and its service-hosting remote server, or between an IoT device and its control console, are often more complex and more difficult, as the involved programs may have different business requirements and use different data models. Normally it involves building custom pipelines on dedicated hardware connecting the communicating parties, and either having an 'agreed' format (i.e. a schema) for the data exchange or having the pipelines to do the schema convertion.
+Reliable cross-program data exchange, such as between a browser app and its service-hosting remote server, or between an IoT device and its control console, are often more complex and more difficult, as the involved programs may have different business requirements and use different data models. Normally it involves building custom pipelines on dedicated hardware connecting the communicating parties, and either having an 'agreed' format (i.e. a schema) for the data exchange or having the pipelines to do the schema conversion.
 
 <div align='center'>
 <img src='img/Pre-Charian-data-transport.png' width='550' align='center'>
