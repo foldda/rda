@@ -3,11 +3,11 @@
 
 <img src="docs/image/rda_logo.png" align="right" height="128">
 
-Recursive Delimited Array, or RDA, is a text encoding format for storing structured data in a string, similar to XML and JSON. But unlike XML and JSON, RDA does not use a schema that defines the very details of a data object, rather, it provides a flexible encoding space for accommodating the targeted data object, regardless of its structure and its properties' data types[^1].
+Recursive Delimited Array, or RDA, is a text encoding format for storing structured data in a string, similar to XML and JSON. But unlike XML and JSON, RDA does not use schema to define a fixed data model for the encoding, rather, it provides a flexible encoding space that accommodates any data object, regardless of the data's structure and properties[^1].
 
-> The space from XML/JSON is like a wallet, where there are specific places for cards, notes, and coins; and the space from RDA is like an infinitely expandable shelf, where anything can be placed anywhere in the unlimited space provided.
+RDA's simpler, "one-size-fits-all" approach brings many benefits including being easier to implement, faster parsing and encoding, and more space-efficient. Most significantly, as explained below, RDA enables using generic data transport and delivery services for applications to exchange data freely - as there is no restrictive, schema-imposed data model to be enforced in the data exchange. This means there could be more communication and collaboration between many otherwise isolated devices and programs.
 
-RDA's "one-size-fits-all" approach brings many benefits including being simpler, easy to implement, fast parsing and encoding, more space-efficient, etc. Also, as explained below, being schemas-less, RDA does not impose a fixed data model to the data being encoded, which allows for lowering the cost of building data pipelines, and allows applications to adapt to data structure changes more easily when it's required.
+> For XML/JSON, the encoding space defined by a schema is like a wallet, where there are specific places for cards, notes, and coins; and for RDA, the space is like an infinitely expandable shelf, where anything can be placed anywhere in the unlimited space provided.
 
 [^1]: The number of dimensions and the size of each dimension of the multi-dimensional array of an RDA-encoded string can be expanded as required. In RDA, all data element values are simply stored in the space as strings. 
 
