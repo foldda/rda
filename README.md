@@ -33,15 +33,15 @@ As you can see in these examples, in an RDA-encoded string, it first defines the
 
 [^2]: A more detailed explanation of RDA encoding rule can be found in this repo's wiki.
 
-## The Problem To Solve (And The Idea)
+## The Targeted Problem
 
-Reliable cross-program data exchange, such as between a browser app and its service-hosting remote server, or between an IoT device and its control console, are often more complex and more difficult to build, as the involved programs may have different business requirements and use different data models. Normally it involves building custom pipelines on dedicated hardware connecting the communicating parties, and either having an 'agreed' format (i.e. a schema) for the data exchange or having the pipelines to do the schema conversion.
+Isolated, independently running programs, such as between a browser applet and its service-hosting remote server, or between an IoT device and its control console, often need to exhange data over the network in a collabration. Reliable cross-program data exchange as such are often more complex and more difficult to build, as these programs may have incompatible data models due to their different business requirements. Normally it requires building custom pipelines on dedicated hardware connecting the communicating parties, and either having an 'agreed' format (i.e. a schema) for the data exchange or having the pipelines to do the schema conversion.
 
 <div align='center'>
 <img src='img/Pre-Charian-data-transport.png' width='550' align='center'>
 </div>
 
-Building these data exchange pipelines are expected to be expensive and time-consuming because, in an analogy, it is like sending parcels to people through ad hoc transport and delivery arrarangements instead of using the generic postal services from the Post Office.
+Building these dedicated pipelines are normally expensive and time-consuming because, in an analogy, it is like sending parcels to people through ad hoc transport and delivery arrarangements instead of using the generic postal services from the Post Office.
 
 <div align='center'>
 <img src='img/Pre-Post-office-system.png' width='470' align='center'>
@@ -53,11 +53,9 @@ As we all know, using the Post Office is convenient and cost-effective for posti
 <img src='img/Post-office-system.png' width='550' align='center'>
 </div>
 
-Also, technical speaking, having the XML/JSON schemas used in building the pipelines, the connected programs are “tightly coupled” by the fixed data models defined by the schema, and become inflexible to changes. If one of the programs has evolved and the data model needs to be changed, the pipelines need to be modified to accomdate the changes, and the situation can be more complex if the data model is depended by multiple parties and they cannot make the change at the same time.
+Also, technical speaking, having the XML/JSON schemas used in building the pipelines, the connected programs are “tightly coupled” by the fixed data models defined by the schema, making them inflexible to changes. If one of the programs has evolved and the data model needs to be changed, the pipelines need to be modified to accomdate the changes, and the situation can be more complex if the data model is depended by multiple parties and they cannot make the change at the same time.
 
-So the idea is to create a post-office-like a data-exchange "service", common data communication layer that is not dependent to a specific data model, for programs freely exchanging data between each other. 
-
-## Enabling Universal Data Exchange
+## Towards Universal Data Exchange
 
 Universal Data Exchange, or UDX, is an envisioned data communication service for all programs to use for exchanging data. UDX provides the benefits of being convenient and cost-effective using the same “post-office-like” approach - that is, by sharing a common, generic data collection and delivery services, rather than individually building ad-hoc dedicated data-exchange solutions.
 
