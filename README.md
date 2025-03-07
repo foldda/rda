@@ -3,13 +3,13 @@
 
 <img src="docs/image/rda_logo.png" align="right" height="128">
 
-Recursive Delimited Array, or RDA, is a text encoding format, similar to XML and JSON, that storing data in text strings. But unlike XML and JSON, RDA does not use a fixed data model (i.e. a schema) for the encoding, rather, it uses a generic space - an expandable multi-dimensional array[^1] - for accomandating any data object, regardless of the object's attributes and structure.
+Recursive Delimited Array, or RDA, is a text encoding format, similar to XML and JSON, that storing data in text strings. Unlike XML and JSON, RDA does not use a fixed data model (i.e. a schema) for the encoding, rather, it uses a generic space, an expandable multi-dimensional array[^1], for accomandating any data object, regardless of the object's attributes and structure.
 
 [^1]: RDA's encoding space is logically an infinitely expandable multi-dimensional array, where the number of dimensions and the size of each dimension of the multi-dimensional array of an RDA-encoded string can be expanded as required, and in RDA, a data object's attributes values are simply stored in the space as strings i.e. no specific data types. 
 
-> For XML/JSON, the encoding space defined by a schema is like a wallet, where there are specific places for cards, notes, and coins; and for RDA, the space is like an infinitely expandable shelf, where anything can be placed in the unlimitedly provided space.
+> XML/JSON's encoding space, defined by a schema, is like a wallet, where there are specific places for cards, notes, and coins; and RDA's space is like an infinitely expandable shelf that has unlimited space to store anything.
 
-RDA's simpler, "one-size-fits-all" approach brings many benefits including being easier to implement, faster parsing and encoding, and more space-efficient. Most significantly, as explained below, RDA enables applications to exchange data _freely_, even when the applications are independent and evolving, as there is no fixed, schema-imposed data model used in the data exchange. This could mean more communication and collaborative interactions between many otherwise isolated devices and programs.
+RDA's simpler, "one-size-fits-all" approach brings many benefits including being easier to implement, faster parsing and encoding, and more space-efficient. Most significantly, as explained below, RDA is a key technology that enables applications to exchange data _freely_, even when the applications are independent and evolving, with 'incompatible' data models. This potentially allows more communication and collaborative interactions between many otherwise isolated devices and programs.
 
 ## RDA's Schema-less Encoding
 
@@ -29,45 +29,45 @@ The next example is a 2-dimension RDA container that contains the data equivalen
 | John | M   | 70  |
 | Kate | F   | 63  | 
 
-As you can see in these examples, in an RDA-encoded string, it first defines the delimiter chars ("delimiters") to be used at the beginning of the string, then after these delimiters, it encodes data elements at different locations in the multi-dimensional array using the delimiters (accordingly to the level of the intended dimension) to separate these data elements.[^2] By defining more delimiters, it can create as many dimensions in the encoding space as required.
+As you can see in these examples, in an RDA-encoded string, it uses the delimiter chars ("delimiters") defined at the beginning of the string (called the "header section") to encode data elements that are placed at different locations in a logical multi-dimensional array[^2]. By defining more delimiters in the header section dynamically, the logical encoding space can have more dimensions when it's required.
 
 [^2]: A more detailed explanation of RDA encoding rule can be found in this repo's wiki.
 
 ## The Problem To Address
 
-Isolated, independently running programs, such as a browser applet and its service-hosting remote server, or an IoT device and its control console, often need to exhange data over the network in a collabration. Reliable cross-program data exchange as such are often more difficult to build, as these programs may have incompatible data models due to their separate development and different business requirements. Normally it requires building custom, dedicated pipelines to connect the communicating parties, and either having an 'agreed' format (i.e. a schema) for the data exchange or having the pipelines to do the schema conversion.
+Distributed, independently running programs, such as a browser applet and its service-hosting remote server, or an IoT device and its control console, often need to exhange data over the network in a collabration. Reliable cross-program data exchange as such are often more difficult, as these programs may have incompatible data models due to their separate development and different business requirements. Normally custom, dedicated pipelines are built to connect the communicating parties, using either an 'agreed' format (i.e. a schema) for the data exchange or having programmed logic in the pipelines to do the data conversion.
 
 <div align='center'>
 <img src='img/Pre-Charian-data-transport.png' width='550' align='center'>
 </div>
 
-Building these dedicated pipelines are normally expensive and time-consuming because, in an analogy, it is like sending parcels to people through ad hoc transport and delivery arrarangements instead of using the generic postal services from the Post Office.
+Building these dedicated pipelines are resource-consuming and inefficient because, in an analogy, it is like sending parcels to people through ad hoc transport and delivery arrarangements instead of using the generic postal services from the Post Office.
 
 <div align='center'>
 <img src='img/Pre-Post-office-system.png' width='470' align='center'>
 </div>
 
-As we know, using the Post Office is convenient and cost-effective for posting goods to, sometimes unfamiliar, people. As a Post Office's service caters for all kninds of requirements, such as parcels of different shapes and sizes, and uses the shared logistics and freight system helps cutting down the cost.
+As we know, using the Post Office is convenient and cost-effective for posting goods to, sometimes unfamiliar, people. As a Post Office's service caters for all kinds of requirements, such as parcels of different shapes and sizes, and uses the shared logistics and freight system helps cutting down the cost.
 
 <div align='center'>
 <img src='img/Post-office-system.png' width='550' align='center'>
 </div>
 
-Also, technical speaking, programs depend on schema-based data exchange are “tightly coupled” by the fixed data models enforced by the schema, making them inflexible to changes. If one of the programs has evolved and the data model needs to be changed, the pipelines connecting the programs need to be updated to maintain compatibility, and the situation can be more complex if the data model is depended by multiple parties and they cannot make the change at the same time.
+Also, technical speaking, programs depend on schema-based data exchange pipelines are “tightly coupled” by the fixed data models used in building the pipelines, making them inflexible to changes. If one of the programs has evolved and the data model needs to be changed, the logic connecting the programs need to be updated to maintain compatibility, and the situation can be more complex if multiple parties need to be kept compatible with the changed data model as it would require more development and testing.
 
 ## Towards Universal Data Exchange
 
-Universal Data Exchange, or UDX, is an envisioned data communication service for all programs to use for exchanging data. UDX provides the benefits of being convenient and cost-effective using the same “post-office-like” approach - that is, by sharing a common, generic data transport and delivery services, rather than individually building ad-hoc dedicated data-exchange solutions.
+Using the same “post-office-like” approach, Universal Data Exchange, or UDX, is an envisioned data communication method for all programs to use for exchanging data conveniently and cost-effective - that is, by sharing a common, generic data transport and delivery services, rather than individually building ad-hoc dedicated data-exchange solutions.
 
 <div align='center'>
 <img src='img/Charian-data-transport.png' width='550'>
 </div>
 
-The key to implementing UDX though, is to have a standardized, universal data container. Let's keep using the Post Office analogy: for the Post Office to cater for different parcel-posting requirements from all its clients, one of the keys is to use standardized packaging. Packing loose items in boxes simplifies parcel handling and allows modularized, more effective transportation by general courier companies. Similarly, a key in UDX's design is to use a generic data container for packaging (and regulating) various data items (e.g. properties of a data object), so irregular data can be handled uniformly using general data transport protocols and methods.
+The key to implementing UDX though, is to have a standardized, _universal_ data container. Using the Post Office analogy, one of the keys for the Post Office to cater for different parcel-posting requirements from all its clients is to use standardized packaging. Packing loose items in **boxes** simplifies parcel handling and allows modularized, more effective transportation by general courier companies. Similarly, a key in UDX's design is to use a generic data container for packaging (and regulating) various data items (e.g. properties of a data object), so arbituary, 'irregular' data can be handled uniformly using general data transport protocols and methods.
 
-However, popular data formats, such as XML, JSON, and CSV, are not suitable for encoding the UDX container. That’s because each data instance in one of these formats assumes a certain data model (by structure and type), meaning a container encoded in these formats won't be the “generic and universal” that we want for accommodating _any data_. That's where RDA - a "one-size-fits-all" data format - comes to play. RDA encoding allows converting data objects with arbitarily complex structure to a text string - a data type supported by most computer systems and programming languages. Using RDA, any data can be stored as text and be exchanged, and be transported via text-based network or messaging protocols, such as HTTP/RPC, TCP/IP, and FTP. 
+Popular data formats, such as XML, JSON, and CSV, are not suitable for encoding the UDX container. That’s because each data instance in one of these formats assumes a certain data model (by structure and type), meaning a container encoded in these formats won't be the “generic and universal” that we want for accommodating _any data_. That's where RDA, a "one-size-fits-all" data format, comes to play. RDA encoding allows converting data objects with arbitarily complex structure to a text string - a data type supported by most computer systems and programming languages for manipulation and transportation. Using RDA, any data can be stored as text and be exchanged via text-based network or messaging protocols, such as HTTP/RPC, TCP/IP, and FTP. 
 
-With UDX, data transport implementation can be simplified and shared, and there is no "tight coupling" between the communicating programs.
+> With UDX, data transport implementation can be simplified and shared, and there is no "tight coupling" between the communicating programs.
 
 ## Charian - An Easy-To-Use RDA Encoding API
 
