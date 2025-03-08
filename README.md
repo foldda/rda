@@ -41,25 +41,23 @@ RDA encoding allows defining delimiters dynamically in the header section, so th
 
 ## The Problem To Address
 
-Distributed, independently running programs, such as a browser applet and its service-hosting remote server, or an IoT device and its control console, often need to exhange data over the network in a collabration. Reliable cross-program data exchange as such are often more difficult, as these programs may have incompatible data models due to their separate development and different business requirements. Normally custom, dedicated pipelines are built to connect the communicating parties, using either an 'agreed' format (i.e. a schema) for the data exchange or having programmed logic in the pipelines to do the data conversion.
+Reliable cross-program data exchange, such as between two systems from different vendors, or an IoT device and its control console, are often more difficult to implement and maintain, as these programs may have incompatible data models due to their separate development cycles and evolving business requirements. Normally it requires building custom, dedicated pipelines to connect the communicating parties, using either an 'agreed' format (i.e. a schema) for the data exchange or having programmed logic in the pipelines to do the data conversion.
 
 <div align='center'>
 <img src='img/Pre-Charian-data-transport.png' width='550' align='center'>
 </div>
 
-Building these dedicated pipelines are resource-consuming and inefficient because, in an analogy, it is like sending parcels to people through ad hoc transport and delivery arrarangements instead of using the generic postal services from the Post Office.
+Building these dedicated pipelines is resource-consuming and inefficient because, in an analogy, it is like sending parcels to people through ad hoc transport and delivery arrangements instead of using the generic postal services from the Post Office. Also, technical speaking, programs depend on schema-based data exchange pipelines are “tightly coupled” by the fixed data models used in building the pipelines, making them inflexible to changes. If one of the programs has evolved and the data model needs to be changed, the logic connecting the programs need to be updated to maintain compatibility, and the situation can be more complex if multiple parties need to be kept compatible with the changed data model as it would require more development and testing.
 
 <div align='center'>
 <img src='img/Pre-Post-office-system.png' width='470' align='center'>
 </div>
 
-As we know, using the Post Office is convenient and cost-effective for posting goods to, sometimes unfamiliar, people. As a Post Office's service caters for all kinds of requirements, such as parcels of different shapes and sizes, and uses the shared logistics and freight system helps cutting down the cost.
+Postal services are convenient and cost-effective for posting goods to people, as they can easily cater to all kinds of requirements, such as parcels of different shapes and sizes, and use of the shared logistics and freight system helps cut down the cost.
 
 <div align='center'>
 <img src='img/Post-office-system.png' width='550' align='center'>
 </div>
-
-Also, technical speaking, programs depend on schema-based data exchange pipelines are “tightly coupled” by the fixed data models used in building the pipelines, making them inflexible to changes. If one of the programs has evolved and the data model needs to be changed, the logic connecting the programs need to be updated to maintain compatibility, and the situation can be more complex if multiple parties need to be kept compatible with the changed data model as it would require more development and testing.
 
 ## Towards Universal Data Exchange
 
@@ -69,7 +67,7 @@ Using the same “post-office-like” approach, Universal Data Exchange, or UDX,
 <img src='img/Charian-data-transport.png' width='550'>
 </div>
 
-The key to implementing UDX though, is to have a standardized, _universal_ data container. Using the Post Office analogy, one of the keys for the Post Office to cater for different parcel-posting requirements from all its clients is to use standardized packaging. Packing loose items in **boxes** simplifies parcel handling and allows modularized, more effective transportation by general courier companies. Similarly, a key in UDX's design is to use a generic data container for packaging (and regulating) various data items (e.g. properties of a data object), so arbituary, 'irregular' data can be handled uniformly using general data transport protocols and methods.
+The key to implementing UDX though, is to have a standardized, _universal_ data container. Using the Post Office analogy, one of the keys for the Post Office to cater for different parcel-posting requirements from all its clients is to use standardized packaging. Packing loose items into **boxes** simplifies parcel handling and allows modularized, more effective transportation by general courier companies. Similarly, a key in UDX's design is to use a generic data container for packaging (and regulating) various data items (e.g. properties of a data object), so arbitrary, 'irregular' data can be handled uniformly using general data transport protocols and methods. For UDX, we need to find such "boxes".
 
 Popular data formats, such as XML, JSON, and CSV, are not suitable for encoding the UDX container. That’s because each data instance in one of these formats assumes a certain data model (by structure and type), meaning a container encoded in these formats won't be the “generic and universal” that we want for accommodating _any data_. That's where RDA, a "one-size-fits-all" data format, comes to play. RDA encoding allows converting data objects with arbitarily complex structure to a text string - a data type supported by most computer systems and programming languages for manipulation and transportation. Using RDA, any data can be stored as text and be exchanged via text-based network or messaging protocols, such as HTTP/RPC, TCP/IP, and FTP. 
 
