@@ -18,6 +18,10 @@ The following example shows a single-dimension RDA-encoded string containing a l
 ```
 |\|One|Two|Three
 ```
+
+| One | Two | Three | 
+|------|-----|-----|
+
 The next example is a 2-dimensional RDA container that contains the data equivalent to the content of the following table.
 ```
 |,\|Name,Sex,Age|Mary,F,52|John,M,70|Kate,F,63
@@ -29,7 +33,7 @@ The next example is a 2-dimensional RDA container that contains the data equival
 | John | M   | 70  |
 | Kate | F   | 63  | 
 
-An RDA-encoded string has two sections: a "header" section at the beginning of the string defines the encoding chars for the encoding, followed by a "payload" section that contains the encoded data elements. In the second example above, the header section is the substring "|,\", where char '\' (the ending char of the substring) is the "escape char", and the other chars leading the escape char are the "delimiter chars" - more specifically, delimiter chars for separating data elements at different dimension in the array - in the example, char '|' is the 1st dimension-1 delimiter, and char ',' is the 2nd dimension's delimiter[^2].
+An RDA-encoded string starts with a "header" section that contains the string's encoding chars, followed by a "payload" section containing the encoded data elements. In the second example above, the header section is the substring _"|,\\"_ and the payload section is the substring _"Name,Sex,Age|Mary,F,52|John,M,70|Kate,F,63"_. In the header section, the ending char of the substring, char '\\', defines the "escape char", and the other chars before the escape char are the "delimiter chars" - more specifically, delimiter chars for separating data elements at different dimensions in the array - in the example, char '|' is the 1st-dimension delimiter, and char ',' is the 2nd-dimension delimiter[^2].
 
 [^2]: A more detailed explanation of RDA encoding rule is in this repo's wiki.
 
