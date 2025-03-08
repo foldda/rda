@@ -3,22 +3,22 @@
 
 <img src="docs/image/rda_logo.png" align="right" height="128">
 
-Recursive Delimited Array, or RDA, is a text encoding format, similar to XML and JSON, that storing data in text strings. Unlike XML and JSON, RDA does not use a fixed data model (i.e. a schema) for the encoding, rather, it uses a generic space, an expandable multi-dimensional array[^1], for accomandating any data object, regardless of the object's attributes and structure.
+Recursive Delimited Array, or RDA, is a text encoding format, similar to XML and JSON, for storing data in text strings. Unlike XML and JSON, RDA does not use a fixed data model (i.e. a schema) for the encoding, rather, it uses a generic space, an expandable multi-dimensional array[^1], for accommodating a targeted data object, regardless of the object's attributes and structure.
 
 [^1]: RDA's encoding space is logically an infinitely expandable multi-dimensional array, where the number of dimensions and the size of each dimension of the multi-dimensional array of an RDA-encoded string can be expanded as required, and in RDA, a data object's attributes values are simply stored in the space as strings i.e. no specific data types. 
 
-> XML/JSON's encoding space, defined by a schema, is like a wallet, where there are specific places for cards, notes, and coins; and RDA's space is like an infinitely expandable shelf that has unlimited space to store anything.
+> XML/JSON's schema-bound encoding space is like a wallet, with specific places for cards, notes, and coins, whilst RDA's space is like an infinitely expandable shelf that can store anything.
 
 RDA's simpler, "one-size-fits-all" approach brings many benefits including being easier to implement, faster parsing and encoding, and more space-efficient. Most significantly, as explained below, RDA is a key technology that enables applications to exchange data _freely_, even when the applications are independent and evolving, with 'incompatible' data models. This potentially allows more communication and collaborative interactions between many otherwise isolated devices and programs.
 
 ## RDA's Schema-less Encoding
 
-The following example shows a 1-dimension RDA-encoded string that contains a list of data elements: "One", "Two", and "Three". 
+The following example shows a single-dimension RDA-encoded string containing a list of data elements: "One", "Two", and "Three". 
 
 ```
 |\|One|Two|Three
 ```
-The next example is a 2-dimension RDA container that contains the data equivalent to the content of the following table.
+The next example is a 2-dimensional RDA container that contains the data equivalent to the content of the following table.
 ```
 |,\|Name,Sex,Age|Mary,F,52|John,M,70|Kate,F,63
 ```
@@ -29,9 +29,11 @@ The next example is a 2-dimension RDA container that contains the data equivalen
 | John | M   | 70  |
 | Kate | F   | 63  | 
 
-As you can see in these examples, in an RDA-encoded string, it uses the delimiter chars ("delimiters") defined at the beginning of the string (called the "header section") to encode data elements that are placed at different locations in a logical multi-dimensional array[^2]. By defining more delimiters in the header section dynamically, the logical encoding space can have more dimensions when it's required.
+An RDA-encoded string has two sections: a "header" section at the beginning of the string defines the encoding chars for the encoding, followed by a "payload" section that contains the encoded data elements. In the second example above, the header section is the substring "|,\", where char '\' (the ending char of the substring) is the "escape char", and the other chars leading the escape char are the "delimiter chars" - more specifically, delimiter chars for separating data elements at different dimension in the array - in the example, char '|' is the 1st dimension-1 delimiter, and char ',' is the 2nd dimension's delimiter[^2].
 
-[^2]: A more detailed explanation of RDA encoding rule can be found in this repo's wiki.
+[^2]: A more detailed explanation of RDA encoding rule is in this repo's wiki.
+
+RDA encoding allows defining delimiters dynamically in the header section, so the encoding space's dimensions can be flexibly extended when required.
 
 ## The Problem To Address
 
