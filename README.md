@@ -57,7 +57,7 @@ Postal services are convenient and cost-effective for posting goods to people, a
 <img src='img/Post-office-system.png' width='550' align='center'>
 </div>
 
-## Towards Universal Data Exchange
+## Universal Data Exchange
 
 Using the same “post-office-like” approach, Universal Data Exchange, or UDX, is an envisioned data communication method for all programs to use for exchanging data conveniently and cost-effective - that is, by sharing a common, generic data transport and delivery services, rather than individually building ad-hoc dedicated data-exchange solutions. With UDX, data transport implementation can be simplified and shared, and there is no "tight coupling" between the communicating programs.
 
@@ -69,7 +69,7 @@ Continue using the Post Office analogy, use standardized packaging is the key fo
 
 Popular data formats, such as XML, JSON, and CSV, are not suitable for encoding the UDX container, because these formats assume certain data models (by structure and type) to the data, meaning a container encoded in these formats is alway for a certain kind of data, not _any data_. That's where RDA, a "one-size-fits-all" data format, comes to play. RDA encoding allows converting data objects with arbitarily complex structure to a text string - a data type supported by most computer systems and programming languages for manipulation and transportation. Using RDA, any data can be stored as text and be exchanged via text-based network or messaging protocols, such as HTTP/RPC, TCP/IP, and FTP. 
 
-## Three Important Characteristics Of RDA
+## Three Important Characteristics
 
 > XML/JSON's schema-bound encoding space is like a wallet, with specific places for cards, notes, and coins, whilst RDA's space is like an infinitely expandable shelf that can store anything.
 
@@ -79,9 +79,20 @@ First, the storage locations in the space are addressed by integer indexes, rath
 
 Second, the number of dimensionas of the space, and the length of the array at each dimension, can be (theoritically) infinitely expanded as required. So from a client's perspective, any required storage in the space is always available.
 
-Third, as a sub-dimension can have unlimited dimensions because it can be infinitely expanded, the sub-dimension is a complete RDA storage itself, this means, **an RDA's encoding space is recursive** - an RDA can store other RDAs as its children. This feature can be used for maintaining compability between multiple versions of data, i.e. you can have have mutliple children RDAs stored inside a parent RDA, each child RDA carries a different version of the data, and when the parent RDA is transferred to a recipient client, it can choose a compatible verion to consume. 
+Third, as a sub-dimension can have unlimited dimensions because it can be infinitely expanded, it is a complete RDA storage itself, meaning **an RDA's encoding space is recursive** - an RDA can be stored inside another RDA as its child. This feature can be used for maintaining compability between multiple versions of data, i.e. you can have have mutliple children RDAs stored inside a parent RDA, each child RDA carries a different version of the data, and when the parent RDA is transferred to a recipient client, it can choose a compatible verion to consume. 
 
 ## Charian - Programming RDA
+
+
+
+## Enflow - A Practical Use
+
+Enflow is a comonent-based computing system that allows an app be assembled using components potentialy from any vendor. In its design, it needs to allow components with no prior knowledge to connect and collabrate with each other, including exchanging data that does not have a fixed data model. RDA is created for this design requirement, and is used in the system's framework API as the primary data object for Enflow to interact with its hosted components, and for components to exchange data between each other.
+
+In Enflow, a compatible component is required to convert its "native data" to and from RDA, by possibly using Charian, so its data can flow through the system. For example, the HL7FileReader component, available at the "Enflow Portable Components" repo, implements the conversion from HL7 to RDA, and the HL7FileWriter component does the opposite conversion, and these two components can be connected and used in an app that required HL7 data file reading and writing.
+
+A demo of Enflow can be found in this video.
+
 
 RDA stands for "Recursive Delimited Array". It is a delimited encoding format similar to CSV where encoded data elements are separated by delimiter chars except, among other things, RDA allows dynamically defining multiple delimiters for encoding more complex, multidimensional data[^4].
 
