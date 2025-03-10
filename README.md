@@ -7,8 +7,6 @@ Recursive Delimited Array, or RDA, is a text encoding format, similar to XML and
 
 [^1]: RDA's encoding space is logically an infinitely expandable multi-dimensional array, where the number of dimensions and the size of each dimension of the multi-dimensional array of an RDA-encoded string can be expanded as required, and in RDA, a data object's attributes values are simply stored in the space as strings i.e. no specific data types. 
 
-> XML/JSON's schema-bound encoding space is like a wallet, with specific places for cards, notes, and coins, whilst RDA's space is like an infinitely expandable shelf that can store anything.
-
 RDA's simpler, "one-size-fits-all" approach brings many benefits including being easier to implement, faster parsing and encoding, and more space-efficient. Most significantly, as explained below, RDA is a key technology that enables applications to exchange data _freely_, even when the applications are independent and evolving, with 'incompatible' data models. This potentially allows more communication and collaborative interactions between many otherwise isolated devices and programs.
 
 ## RDA's Schema-less Encoding
@@ -61,19 +59,31 @@ Postal services are convenient and cost-effective for posting goods to people, a
 
 ## Towards Universal Data Exchange
 
-Using the same “post-office-like” approach, Universal Data Exchange, or UDX, is an envisioned data communication method for all programs to use for exchanging data conveniently and cost-effective - that is, by sharing a common, generic data transport and delivery services, rather than individually building ad-hoc dedicated data-exchange solutions.
+Using the same “post-office-like” approach, Universal Data Exchange, or UDX, is an envisioned data communication method for all programs to use for exchanging data conveniently and cost-effective - that is, by sharing a common, generic data transport and delivery services, rather than individually building ad-hoc dedicated data-exchange solutions. 
+
+> With UDX, data transport implementation can be simplified and shared, and there is no "tight coupling" between the communicating programs.
 
 <div align='center'>
 <img src='img/Charian-data-transport.png' width='550'>
 </div>
 
-The key to implementing UDX though, is to have a standardized, _universal_ data container. Using the Post Office analogy, one of the keys for the Post Office to cater for different parcel-posting requirements from all its clients is to use standardized packaging. Packing loose items into **boxes** simplifies parcel handling and allows modularized, more effective transportation by general courier companies. Similarly, a key in UDX's design is to use a generic data container for packaging (and regulating) various data items (e.g. properties of a data object), so arbitrary, 'irregular' data can be handled uniformly using general data transport protocols and methods. For UDX, we need to find such "boxes".
+Using the Post Office analogy, one of the keys for the Post Office to cater for different parcel-posting requirements from all its clients is to use standardized packaging. Packing loose items into **boxes** simplifies parcel handling and allows modularized, more effective transportation by general courier companies. Similarly, a key in UDX's design is to use a generic data container for packaging (and regulating) various data items (e.g. properties of a data object), so arbitrary, 'irregular' data can be handled uniformly using general data transport protocols and methods. For implementing UDX, we need to find such "boxes", that is, to have a standardized, _universal_ data container.
 
 Popular data formats, such as XML, JSON, and CSV, are not suitable for encoding the UDX container. That’s because each data instance in one of these formats assumes a certain data model (by structure and type), meaning a container encoded in these formats won't be the “generic and universal” that we want for accommodating _any data_. That's where RDA, a "one-size-fits-all" data format, comes to play. RDA encoding allows converting data objects with arbitarily complex structure to a text string - a data type supported by most computer systems and programming languages for manipulation and transportation. Using RDA, any data can be stored as text and be exchanged via text-based network or messaging protocols, such as HTTP/RPC, TCP/IP, and FTP. 
 
-> With UDX, data transport implementation can be simplified and shared, and there is no "tight coupling" between the communicating programs.
+## Three Characteristics Of RDA's Encoding Space
 
-## Charian - An Easy-To-Use RDA Encoding API
+> XML/JSON's schema-bound encoding space is like a wallet, with specific places for cards, notes, and coins, whilst RDA's space is like an infinitely expandable shelf that can store anything.
+
+RDA's multi-dimensional schemaless encoding space has the following three importantant characteristics. 
+
+First, the storage locations in the space are addressed by integer indexes, rather than by names or string paths. This allows a client to access RDA's content easily without any prerequisite.
+
+Second, the number of dimensionas of the space, and the length of the array at each dimension, can be (theoritically) infinitely expanded as required. So from a client's perspective, any required storage in the space is always available.
+
+Third, as a sub-dimension can have unlimited dimensions because it can be infinitely expanded, the sub-dimension is a complete RDA storage itself, this means, **an RDA's encoding space is recursive** - an RDA can store other RDAs as its children. This feature can be used for maintaining compability between multiple versions of data, i.e. you can have have mutliple children RDAs stored inside a parent RDA, each child RDA carries a different version of the data, and when the parent RDA is transferred to a recipient client, it can choose a compatible verion to consume. 
+
+## Charian - Programming RDA
 
 RDA stands for "Recursive Delimited Array". It is a delimited encoding format similar to CSV where encoded data elements are separated by delimiter chars except, among other things, RDA allows dynamically defining multiple delimiters for encoding more complex, multidimensional data[^4].
 
