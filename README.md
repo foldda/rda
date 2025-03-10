@@ -59,19 +59,17 @@ Postal services are convenient and cost-effective for posting goods to people, a
 
 ## Towards Universal Data Exchange
 
-Using the same “post-office-like” approach, Universal Data Exchange, or UDX, is an envisioned data communication method for all programs to use for exchanging data conveniently and cost-effective - that is, by sharing a common, generic data transport and delivery services, rather than individually building ad-hoc dedicated data-exchange solutions. 
-
-> With UDX, data transport implementation can be simplified and shared, and there is no "tight coupling" between the communicating programs.
+Using the same “post-office-like” approach, Universal Data Exchange, or UDX, is an envisioned data communication method for all programs to use for exchanging data conveniently and cost-effective - that is, by sharing a common, generic data transport and delivery services, rather than individually building ad-hoc dedicated data-exchange solutions. With UDX, data transport implementation can be simplified and shared, and there is no "tight coupling" between the communicating programs.
 
 <div align='center'>
 <img src='img/Charian-data-transport.png' width='550'>
 </div>
 
-Using the Post Office analogy, one of the keys for the Post Office to cater for different parcel-posting requirements from all its clients is to use standardized packaging. Packing loose items into **boxes** simplifies parcel handling and allows modularized, more effective transportation by general courier companies. Similarly, a key in UDX's design is to use a generic data container for packaging (and regulating) various data items (e.g. properties of a data object), so arbitrary, 'irregular' data can be handled uniformly using general data transport protocols and methods. For implementing UDX, we need to find such "boxes", that is, to have a standardized, _universal_ data container.
+Continue using the Post Office analogy, use standardized packaging is the key for it to cater for different parcel-posting requirements. Packing loose items into **plain boxes** simplifies parcel handling and allows modularized, more effective transportation by general courier companies. Similarly, a key in UDX's design is to use a generic data container for packaging (and regulating) various data items (e.g. properties of a data object), so arbitrary, 'irregular' data can be handled uniformly using general data transport protocols and methods. For implementing UDX, we need to find such "boxes", that is, to have a standardized, _universal_ data container.
 
-Popular data formats, such as XML, JSON, and CSV, are not suitable for encoding the UDX container. That’s because each data instance in one of these formats assumes a certain data model (by structure and type), meaning a container encoded in these formats won't be the “generic and universal” that we want for accommodating _any data_. That's where RDA, a "one-size-fits-all" data format, comes to play. RDA encoding allows converting data objects with arbitarily complex structure to a text string - a data type supported by most computer systems and programming languages for manipulation and transportation. Using RDA, any data can be stored as text and be exchanged via text-based network or messaging protocols, such as HTTP/RPC, TCP/IP, and FTP. 
+Popular data formats, such as XML, JSON, and CSV, are not suitable for encoding the UDX container, because these formats assume certain data models (by structure and type) to the data, meaning a container encoded in these formats is alway for a certain kind of data, not _any data_. That's where RDA, a "one-size-fits-all" data format, comes to play. RDA encoding allows converting data objects with arbitarily complex structure to a text string - a data type supported by most computer systems and programming languages for manipulation and transportation. Using RDA, any data can be stored as text and be exchanged via text-based network or messaging protocols, such as HTTP/RPC, TCP/IP, and FTP. 
 
-## Three Characteristics Of RDA's Encoding Space
+## Three Important Characteristics Of RDA
 
 > XML/JSON's schema-bound encoding space is like a wallet, with specific places for cards, notes, and coins, whilst RDA's space is like an infinitely expandable shelf that can store anything.
 
