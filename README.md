@@ -59,27 +59,27 @@ Postal services are convenient and cost-effective for posting goods to people, a
 
 ## Universal Data Exchange
 
-Using the same “post-office-like” approach, Universal Data Exchange, or UDX, is an envisioned data communication method for all programs to use for exchanging data conveniently and cost-effective - that is, by sharing a common, generic data transport and delivery services, rather than individually building ad-hoc dedicated data-exchange solutions. With UDX, data transport implementation can be simplified and shared, and there is no "tight coupling" between the communicating programs.
+Universal Data Exchange, or UDX, is a "flattened" data communication layer for independent programs to exchange data conveniently and cost-effectively. By providing shared, generic data transport and delivery services, rather than individually building ad-hoc dedicated data-exchange solutions, it's like the postal service for data exchange. With UDX, cross-program data communication is much simplified, and there is less or no "tight coupling" between the communicating programs.
 
 <div align='center'>
 <img src='img/Charian-data-transport.png' width='550'>
 </div>
 
-Continue using the Post Office analogy, use standardized packaging is the key for it to cater for different parcel-posting requirements. Packing loose items into **plain boxes** simplifies parcel handling and allows modularized, more effective transportation by general courier companies. Similarly, a key in UDX's design is to use a generic data container for packaging (and regulating) various data items (e.g. properties of a data object), so arbitrary, 'irregular' data can be handled uniformly using general data transport protocols and methods. For implementing UDX, we need to find such "boxes", that is, to have a standardized, _universal_ data container.
+Continue using the Post Office analogy, using standardized packaging is the key for it to cater to different parcel-posting requirements. Packing loose items into **plain boxes** simplifies parcel handling and allows modularized, more effective transportation by general courier companies. Similarly, a key in UDX's design is to use a generic data container for packaging (and regulating) various data items (e.g. properties of a data object), so arbitrary, 'irregular' data can be handled uniformly using general data transport protocols and methods. For implementing UDX, we need to find such "boxes", that is, to have a standardized, _universal_ data container.
 
-Popular data formats, such as XML, JSON, and CSV, are not suitable for encoding the UDX container, because these formats assume certain data models (by structure and type) to the data, meaning a container encoded in these formats is alway for a certain kind of data, not _any data_. That's where RDA, a "one-size-fits-all" data format, comes to play. RDA encoding allows converting data objects with arbitarily complex structure to a text string - a data type supported by most computer systems and programming languages for manipulation and transportation. Using RDA, any data can be stored as text and be exchanged via text-based network or messaging protocols, such as HTTP/RPC, TCP/IP, and FTP. 
+Popular data formats, such as XML, JSON, and CSV, are not suitable for encoding the UDX container, because these formats assume certain data models (by structure and type) to the data, meaning a container encoded in these formats is always for a certain kind of data, not _any data_. That's where RDA, a "one-size-fits-all" data format, comes to play. RDA encoding allows converting data objects with arbitrarily complex structures to a text string - a data type supported by most computer systems and programming languages for manipulation and transportation. Using RDA, any data can be stored as text and be exchanged via text-based networks or messaging protocols, such as HTTP/RPC, TCP/IP, and FTP. 
 
-## Three Important Characteristics
+## RDA's Unique Characteristics
 
 > XML/JSON's schema-bound encoding space is like a wallet, with specific places for cards, notes, and coins, whilst RDA's space is like an infinitely expandable shelf that can store anything.
 
-RDA's multi-dimensional schemaless encoding space has the following three importantant characteristics. 
+RDA's multi-dimensional schemaless encoding space has the following three important characteristics. 
 
 First, the storage locations in the space are addressed by integer indexes, rather than by names or string paths. This allows a client to access RDA's content easily without any prerequisite.
 
 Second, the number of dimensionas of the space, and the length of the array at each dimension, can be (theoritically) infinitely expanded as required. So from a client's perspective, any required storage in the space is always available.
 
-Third, as a sub-dimension can have unlimited dimensions because it can be infinitely expanded, it is a complete RDA storage itself, meaning **an RDA's encoding space is recursive** - an RDA can be stored inside another RDA as its child. This feature can be used for maintaining compability between multiple versions of data, i.e. you can have have mutliple children RDAs stored inside a parent RDA, each child RDA carries a different version of the data, and when the parent RDA is transferred to a recipient client, it can choose a compatible verion to consume. 
+Third, as a sub-dimension can have unlimited dimensions because it can be infinitely expanded, it is a complete RDA storage itself, meaning **an RDA's encoding space is recursive** - an RDA can be stored inside another RDA as its child. This feature can be used for maintaining compatibility between multiple versions of data, i.e. you can have multiple children RDAs stored inside a parent RDA, each child RDA carries a different version of the data, and when the parent RDA is transferred to a recipient client, it can choose a compatible version to consume. 
 
 ## Charian - Programming RDA
 
@@ -87,7 +87,7 @@ Third, as a sub-dimension can have unlimited dimensions because it can be infini
 
 ## Enflow - A Practical Use
 
-Enflow is a comonent-based computing system that allows an app be assembled using components potentialy from any vendor. In its design, it needs to allow components with no prior knowledge to connect and collabrate with each other, including exchanging data that does not have a fixed data model. RDA is created for this design requirement, and is used in the system's framework API as the primary data object for Enflow to interact with its hosted components, and for components to exchange data between each other.
+Enflow is a component-based computing system that allows an app be assembled using components potentially from any vendor. In its design, it needs to allow components with no prior knowledge to connect and collaborate with each other, including exchanging data that does not have a fixed data model. RDA is created for this design requirement and is used in the system's framework API as the primary data object for Enflow to interact with its hosted components, and for components to exchange data between each other.
 
 In Enflow, a compatible component is required to convert its "native data" to and from RDA, by possibly using Charian, so its data can flow through the system. For example, the HL7FileReader component, available at the "Enflow Portable Components" repo, implements the conversion from HL7 to RDA, and the HL7FileWriter component does the opposite conversion, and these two components can be connected and used in an app that required HL7 data file reading and writing.
 
