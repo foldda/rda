@@ -3,11 +3,13 @@
 
 <img src="docs/image/rda_logo.png" align="right" height="128">
 
-Recursive Delimited Array, or RDA, is a text encoding format, similar to XML and JSON, for storing data in text strings. Unlike XML and JSON, RDA does not use a fixed data model (i.e. a schema) for the encoding, rather, it uses a generic space, an expandable multi-dimensional array[^1], for accommodating a targeted data object, regardless of the object's attributes and structure.
+Recursive Delimited Array, or RDA, is a text encoding format, similar to XML and JSON, for storing data in text strings. 
+
+Unlike XML and JSON, RDA does not use a fixed data model (i.e. a schema) for the encoding, rather, it uses a generic space, which is an expandable multi-dimensional array[^1], for encoding a targeted data object - regardless of the object's attributes and structure.
 
 [^1]: RDA's encoding space is logically an infinitely expandable multi-dimensional array, where the number of dimensions and the size of each dimension of the multi-dimensional array of an RDA-encoded string can be expanded as required, and in RDA, a data object's attributes values are simply stored in the space as strings i.e. no specific data types. 
 
-RDA's simpler, "one-size-fits-all" approach brings many benefits including being easier to implement, faster parsing and encoding, and more space-efficient. Most significantly, as explained below, RDA is a key technology that enables applications to exchange data _freely_, even when the applications are independent and evolving, with 'incompatible' data models. This potentially allows more communication and collaborative interactions between many otherwise isolated devices and programs.
+RDA's simpler, "one-size-fits-all" approach brings many benefits including being easier to implement, faster parsing and encoding, and more space-efficient. Most significantly, as explained below, RDA presents a key technology that enables applications to exchange data _freely and with low cost_, even when they are independent and evolving, with 'incompatible data models'. So it potentially allows more communication and collaborative interactions between many otherwise isolated devices and programs.
 
 ## RDA's Schema-less Encoding
 
@@ -39,7 +41,7 @@ RDA encoding allows defining delimiters dynamically in the header section, so th
 
 ## The Problem To Address
 
-Reliable cross-program data exchange, such as between two systems from different vendors, or an IoT device and its control console, are often more difficult to implement and maintain, as these programs may have incompatible data models due to their separate development cycles and evolving business requirements. Normally it requires building custom, dedicated pipelines to connect the communicating parties, using either an 'agreed' format (i.e. a schema) for the data exchange or having programmed logic in the pipelines to do the data conversion.
+Reliable cross-program data exchange, such as between two systems from different vendors, or an IoT device and its control console, are often difficult to implement and maintain, as these programs normally have incompatible data models due to their separate development cycles and evolving business requirements. Normally it requires building custom, dedicated pipelines to connect the communicating parties, using either an 'agreed' format (i.e. a schema) for the data exchange or having programmed logic in the pipelines to do the data conversion.
 
 <div align='center'>
 <img src='img/Pre-Charian-data-transport.png' width='550' align='center'>
@@ -83,7 +85,57 @@ Third, as a sub-dimension can have unlimited dimensions because it can be infini
 
 ## Charian - Programming RDA
 
+Charian is another GitHub repo from Foldda that hosts RDA encoding and parsing API's in a number of programming languages, including C#, Java, and Python.
 
+These API's are intuitively designed over the schema-less encoding concept explained above, i.e. using RDA as a "box" for storing data, and accessing the stored data items via integer-based indexing. 
+
+For example, in C#, this is how a client app may send and recive data by firstly encoding the data as an RDA string into a file, then retrieve the data by reading and parsing the RDA string from the file.
+
+```csharp
+    using Charian;
+
+    class RdaDemo1
+    {
+        public void Main(string[] args)
+        {
+            //a file is used as the physical media/channel for the data transport
+            string PATH = "C:\\Temp\\file1.txt";
+
+            //as sender ...
+            SendSomeData(PATH);
+
+            //as receiver ...
+            ReceiveSomeData(PATH);
+        }
+
+        void SendSomeData(string filePath)
+        {
+
+            Rda rda1 = new Rda();    //create an Rda object which provides a storage space
+
+            //placing some data items into the storage space (all as strings)
+            rda1.SetValue(0, "A string");  //storing a string value at index = 0
+            rda1.SetValue(1, 2.5.ToString());  //storing a decimal value at index = 1
+            rda1.SetValue(2, DateTime.Now.ToString());  //storing a date value
+
+            string encodedRdaString = rda1.ToString();     //encode the RDA string
+
+            File.WriteAllText(filePath, encodedRdaString);  //output to a physical media
+        }
+
+        void ReceiveSomeData(string filePath)
+        {
+            string encodedRdaString = File.ReadAllText(filePath);  //input from a physical media
+
+            Rda rda1 = Rda.Parse(encodedRdaString);    //restore the Rda "box" object from the RDA string
+
+            //"unpacking" the data items from the box's content
+            string a = rda1.GetValue(0);  //retrieve the stored value ("A string") from location index = 0
+            double b = double.Parse(rda1.GetValue(1));
+            DateTime c = DateTime.Parse(rda1.GetValue(2));
+        }
+    }
+```
 
 ## Enflow - A Practical Use
 
@@ -93,51 +145,7 @@ In Enflow, a compatible component is required to convert its "native data" to an
 
 A demo of Enflow can be found in this video.
 
-
-RDA stands for "Recursive Delimited Array". It is a delimited encoding format similar to CSV where encoded data elements are separated by delimiter chars except, among other things, RDA allows dynamically defining multiple delimiters for encoding more complex, multidimensional data[^4].
-
-[^4]: According to the RDA encoding rule, the header section starts from the first letter of the string and finishes at the first repeat of the string's starting letter which is called the ‘end-of-section’ marker. Any char can be used as a delimiter or the escape char, the only requirement is they must be different to each other in an RDA string header. By placing the encoding chars in the header at the front of an RDA string allows a parser to be automatically configured when it starts parsing the string. 
-
-Here is an example of an RDA format string containing a 2D (3x3) data table, using two delimiter chars for separating the data elements -
-
-```
-|,\|A,B,C|a,b,c|1,2,3
-```
-The beginning of an RDA string is a substring section known as the "header" which contains the definition of the RDA string’s encoding chars including one or many delimiter chars (“delimiters”) and one escape char. In this example, the header is the substring "|,\\|", and the delimiters are the first two chars '|' and ','. The third char ‘\\’ is the ‘escape’ char, and the last char ‘|’ is the ‘end-of-section’ marker which marks the end of the header section. 
-
-Following the header, the remaining RDA string is the 'payload' section that contains the encoded data. The RDA payload section provides a 'virtual' storage space of a multi-dimensional array where stored data elements are delimited using the delimiters defined in the header, and each data element is accessible via an index address comprised of an array of 0-based integers. In the above example, the top dimension of the array is ored delimited by delimiter '|' and the second dimension is delimited by delimiter ',', and the data element stored in this 2D array at the indexed location [0,1] is the string value "B".
-
-**Compared to XML and JSON**
-
-> The space from XML/JSON is like a wallet, where places are specifically defined for holding cards, notes, and coins; the space from RDA is like an enormous shelf, where you can place anything anywhere in the unlimited space provided.
-
-RDA is specifically designed to avoid targeting a certain data model and having to define and maintain a schema. Such design is reflected by the structure of RDA's encoded storage space, the way of addressing a location in the space, and the supported data types[^5].  
-
-[^5]: First, RDA has multi-dimensional array storage space that is dynamically expandable, that is, the size of each dimension and the number of dimensions can be increased or decreased as required, like an elastic bag. This is in contrast to the ‘fixed’ hierarchical space provided by schema-based encodings, like XML or JSON, which is restricted by a predefined data mode, like a rigid, fixed-shaped box. Second, RDA uses integer-based indexes for addressing the storage locations in its multi-dimensional array storage space, which means, and combination of non-negative integers is a valid address referring to a valid storage location in the space. This is in contrast to XML and JSON, the address for accessing a storage location is a ‘path’ that has to be ‘validated’ against a pre-defined schema. Third, RDA assumes all data (of any type) can be 'expressed as a string' and a value stored at a location (referred to as “a data's value expression”) can only be a string; whilst XML and JSON attempt to define and include every possible data types and a data values stored at a location must conform with what has been defined in the schema.
-
-Inheritively from RDA's schemaless design, the encoding is simpler, more space-efficient, and configuration-free compared to XML and JSON. But perhaps the most interesting and unique property of RDA is the **recursiveness** of the storage space: the multi-dimensional array structure is homogenous, and there can be only one 'unified' data type, so a sub-dimension in the space is itself a multi-dimensional space that has the same structure as its containing (parent dimension) space, and can be used in the same way. The recursiveness of the multi-dimensional space allows an arbitrarily complex data structure to be (recursively) decomposed into sub-components and stored in the dimensions and their sub-dimensions from the provided space.
-
-## Charian - RDA's Codec API
-
-
-
-> *An RDA container is like a large, expandable pocket with many inner pockets, recursively, which can be used for storing "anything"; an XML or JSON container is like a wallet with specific places for coins, notes, and cards.* 
-
-When using XML/JSON format for data exchange between two applications, a developer must first design a schema that decides the data types and data structure specifically for the data exchange. If one of the applications wants to change its data format and schema, the change must be propagated across, and be agreed by all the connected applications. Changing the schema makes it difficult to manage compatibility, but on the other hand, not being able to change the schema restricts what can be enhanced to the applications.
-
-In comparison, while RDA can also be used for exchanging complex structured data, it is schema-less and is designed to be **application independent**[^1]:
-
-[^1]: Full details of the encoding rules can be found [here](https://github.com/foldda/RDA/wiki/1.-Overview#the-rda-encoding-rule).
-
-* Instead of using tags or markups, RDA uses delimited encoding for separating and structuring data elements; 
-* Instead of using named paths, RDA uses integer-based indexes for addressing data elements inside a container; 
-* Instead of having multiple, specific data types, RDA has only two generalized data types[^2]: _RDA_ and _string_, for "composite" and "primitive" data values respectively.
- 
-[^2]: RDA data types and data structure are [discussed here](https://foldda.github.io/rda/data-type-and-data-structure). 
-
-By using RDA, applications are no longer restricted by a pre-defined data format before they can exchange data. It means the data format can be dynamic and can be changed if required, giving the applications the flexibility to handle data changes while maintaining the connection and communication.
-
-## Benefits of RDA
+## Summary
 
 > *RDA allows implementing a generic and unified data transport layer which applications can utilize for sending and receiving data. As the applications are "loosely coupled" using such a data transport layer, they are less dependent and easier to maintain if the data format is changed.*
  
@@ -145,16 +153,11 @@ One powerful feature of RDA is for implementing cross-language and cross-applica
 
 Another feature of RDA is for maintaining version compatibility between a sender and a receiver. Because RDA's recursive storage allows storing an RDA inside another RDA, multiple versions (or different formats) of the data can be transported "side-by-side" (as child RDAs) in an RDA container, and the receiver can pick its preferred version or format to use. 
 
-Indeed, being able to send multiple copies of _any data_ side-by-side in a container can be interestingly useful: like sending XML data together with its DTD[^3], or sending a digital document paired with its digital signature or public key, or sending a computing "workload" that has some data together with an executable script to a data-processing unit, etc.
+Indeed, being able to send multiple copies of _any data_ side-by-side in a container can be interestingly useful: like sending XML data together with its DTD[^3], or sending a digital document paired with its digital signature or public key, or implementing distributed computing by sending a computing "workload" to a data-processing unit where the wordload contains some data together with an executable script.
 
-[^3]: An XML or JSON document can be converted to a single 'string' data element, and be stored inside an RDA container.
+[^3]: If you wish, an XML or JSON document can be stored as a 'string' value inside an RDA container.
 
 Also, thanks to its simple and efficient delimiter-based encoding, an RDA container is much more compact than a XML or JSON container with the same content, and it is much easier to parse. RDA encoding is also more robust and resilient to data corruption, as it does not have any reserved keyword or character and allows any charactor to be part of the data content. In contrast, for example, in XML the line-feed character in data has to be encoded as "\&\#xA;", otherwise it will cause corruption.
-
-## About This Project
-
-This project contains the (forthcoming, under development) technical documentation of the RDA encoding rules. 
-
 
 ## More Details 
 
@@ -163,14 +166,6 @@ The [wiki of this project](https://github.com/foldda/rda/wiki) contains more det
 - [RDA overview.](https://github.com/foldda/rda/wiki#1-introduction) - explains the background and philosophy of this project.
 - [Using the API.](https://github.com/foldda/rda/wiki#2-using-the-api) - contains more technical details, with a practical example. 
 - [FAQ.](https://github.com/foldda/rda/wiki#4-faq) - miscellaneous topics and dicsussions.
-
-## Contributors
-
-* **Michael Chen** - Invented RDA, and developed the reference RDA parser (in C#) - [sierrathedog](https://github.com/sierrathedog)
-
-* **Samuel Chen** - The Java parser and the Python parser - [samuelfchen](https://github.com/samuelfchen)
-
-You can be a contributor and help this project! Please contact us.
 
 ## Legal 
 
