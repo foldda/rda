@@ -39,7 +39,7 @@ An RDA-encoded string starts with a "header" section that contains the string's 
 
 RDA encoding allows defining delimiters dynamically in the header section, so the encoding space's dimensions can be flexibly extended when required.
 
-## The Problem To Address
+## The Problem: Schema-Dependent Pipelines
 
 Reliable cross-program data exchange, such as between two systems from different vendors, or an IoT device and its control console, are often difficult to implement and maintain, as these programs normally have incompatible data models due to their separate development cycles and evolving business requirements. Normally it requires building custom, dedicated pipelines to connect the communicating parties, using either an 'agreed' format (i.e. a schema) for the data exchange or having programmed logic in the pipelines to do the data conversion.
 
@@ -71,11 +71,11 @@ Continue using the Post Office analogy, using standardized packaging is the key 
 
 Popular data formats, such as XML, JSON, and CSV, are not suitable for encoding the UDX container, because these formats assume certain data models (by structure and type) to the data, meaning a container encoded in these formats is always for a certain kind of data, not _any data_. That's where RDA, a "one-size-fits-all" data format, comes to play. RDA encoding allows converting data objects with arbitrarily complex structures to a text string - a data type supported by most computer systems and programming languages for manipulation and transportation. Using RDA, any data can be stored as text and be exchanged via text-based networks or messaging protocols, such as HTTP/RPC, TCP/IP, and FTP. 
 
-## RDA's Unique Characteristics
+## RDA's Noval Properties
 
 > XML/JSON's schema-bound encoding space is like a wallet, with specific places for cards, notes, and coins, whilst RDA's space is like an infinitely expandable shelf that can store anything.
 
-RDA's multi-dimensional schemaless encoding space has the following three important characteristics. 
+RDA's unique encoding features depend on its three unique properties - 
 
 First, the storage locations in the space are addressed by integer indexes, rather than by names or string paths. This allows a client to access RDA's content easily without any prerequisite.
 
@@ -85,9 +85,9 @@ Third, as a sub-dimension can have unlimited dimensions because it can be infini
 
 ## Charian - Programming RDA
 
-Charian is another GitHub repo from Foldda that hosts RDA encoding and parsing API's in a number of programming languages, including C#, Java, and Python.
+Charian is a GitHub repo from Foldda that hosts RDA encoding and parsing API's in a number of programming languages, including C#, Java, and Python.
 
-These API's are intuitively designed over the schema-less encoding concept explained above, i.e. using RDA as a "box" for storing data, and accessing the stored data items via integer-based indexing. 
+These API leverage RDA's unique properties, and intuitively use the postal service metaphor to hide the underlying encoding mechanics, i.e. using RDA as a "box" for storing data, and accessing the stored data items via integer-based indexing. 
 
 For example, in C#, this is how a client app may send and recive data by firstly encoding the data as an RDA string into a file, then retrieve the data by reading and parsing the RDA string from the file.
 
@@ -114,11 +114,11 @@ For example, in C#, this is how a client app may send and recive data by firstly
             Rda rda1 = new Rda();    //create an Rda object which provides a storage space
 
             //placing some data items into the storage space (all as strings)
-            rda1.SetValue(0, "A string");  //storing a string value at index = 0
-            rda1.SetValue(1, 2.5.ToString());  //storing a decimal value at index = 1
-            rda1.SetValue(2, DateTime.Now.ToString());  //storing a date value
+            rda1.SetValue(0, "One");  //storing a string value at index = 0
+            rda1.SetValue(1, "Two");  //storing a decimal value at index = 1
+            rda1.SetValue(2, "Three");  //storing a date value
 
-            string encodedRdaString = rda1.ToString();     //encode the RDA string
+            string encodedRdaString = rda1.ToString();     // => "|\|One|Two|Three"
 
             File.WriteAllText(filePath, encodedRdaString);  //output to a physical media
         }
@@ -127,12 +127,12 @@ For example, in C#, this is how a client app may send and recive data by firstly
         {
             string encodedRdaString = File.ReadAllText(filePath);  //input from a physical media
 
-            Rda rda1 = Rda.Parse(encodedRdaString);    //restore the Rda "box" object from the RDA string
+            Rda rda1 = Rda.Parse(encodedRdaString);    //decode the RDA string and restore an Rda "box" object
 
             //"unpacking" the data items from the box's content
-            string a = rda1.GetValue(0);  //retrieve the stored value ("A string") from location index = 0
-            double b = double.Parse(rda1.GetValue(1));
-            DateTime c = DateTime.Parse(rda1.GetValue(2));
+            string a = rda1.GetValue(0);  //retrieve the stored value ("One") from location index = 0
+            string b = rda1.GetValue(1);
+            string c = rda1.GetValue(2);
         }
     }
 ```
