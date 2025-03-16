@@ -3,13 +3,13 @@
 
 <img src="docs/image/rda_logo.png" align="right" height="128">
 
-Recursive Delimited Array, or RDA, is a text encoding format, similar to XML and JSON, for storing data in text strings. 
+Recursive Delimited Array (RDA) is a text encoding format used for storing data in text strings, similar to XML and JSON.
 
-Unlike XML and JSON use a schema for a fixed data model, RDA uses a generic space - an expandable multi-dimensional array - for encoding any data object, regardless of the object's attributes and structure[^1].
+Unlike XML and JSON, which rely on a schema fixed to a data model, RDA uses a generic space—an expandable, multi-dimensional array—to encode any data object, regardless of its attributes or structure[^1].
+
+Compared to XML and JSON, the schema-less RDA is easier to use, faster to parse and encode, and more space-efficient, thanks to its simpler, “one-size-fits-all” approach. Moreover, as explained below, RDA facilitates seamless communication and collaboration between otherwise isolated devices and programs, particularly when dealing with uncertain or incompatible data models.
 
 [^1]: RDA's encoding space is logically an infinitely expandable multi-dimensional array, where the number of dimensions and the size of each dimension of the multi-dimensional array of an RDA-encoded string can be expanded as required, and in RDA, a data object's attributes values are simply stored in the space as strings i.e. no specific data types. 
-
-Compared to XML and JSON, RDA is easier to implement, faster to parse and encode, and more space-efficient - thanks to its simpler, "one-size-fits-all" approach. And, as explained below, RDA promotes easy communication and collaborative interactions between otherwise isolated devices and programs, especially when they have uncertain and incompatible data models. 
 
 ## RDA's Schema-less Encoding
 
