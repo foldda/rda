@@ -5,11 +5,11 @@
 
 Recursive Delimited Array, or RDA, is a text encoding format, similar to XML and JSON, for storing data in text strings. 
 
-Unlike XML and JSON use a schema for a fixed data model, RDA uses a generic space - a multi-dimensional array[^1] - for encoding any data object, regardless of the object's attributes and structure.
+Unlike XML and JSON use a schema for a fixed data model, RDA uses a generic space - an expandable multi-dimensional array - for encoding any data object, regardless of the object's attributes and structure[^1].
 
 [^1]: RDA's encoding space is logically an infinitely expandable multi-dimensional array, where the number of dimensions and the size of each dimension of the multi-dimensional array of an RDA-encoded string can be expanded as required, and in RDA, a data object's attributes values are simply stored in the space as strings i.e. no specific data types. 
 
-Compared to XML and JSON, RDA is easier to implement, faster to parse and encode, and more space-efficient - thanks to its simpler, "one-size-fits-all" approach. And, as explained below, RDA allows developing easy communication and collaborative interactions between otherwise isolated devices and programs, even when they have uncertain and evolving data models. 
+Compared to XML and JSON, RDA is easier to implement, faster to parse and encode, and more space-efficient - thanks to its simpler, "one-size-fits-all" approach. And, as explained below, RDA promotes easy communication and collaborative interactions between otherwise isolated devices and programs, especially when they have uncertain and incompatible data models. 
 
 ## RDA's Schema-less Encoding
 
@@ -33,13 +33,13 @@ The next example is a 2-dimensional RDA container that contains the data equival
 | John | M   | 70  |
 | Kate | F   | 63  | 
 
-An RDA-encoded string starts with a "header" section that contains the string's encoding chars, followed by a "payload" section containing the encoded data elements. In the second example above, the header section is the substring _"|,\\"_ and the payload section is the substring _"Name,Sex,Age|Mary,F,52|John,M,70|Kate,F,63"_. In the header section, the ending char of the substring, char '\\', defines the "escape char", and the other chars before the escape char are the "delimiter chars" - more specifically, delimiter chars for separating data elements at different dimensions in the array - in the example, char '|' is the 1st-dimension delimiter, and char ',' is the 2nd-dimension delimiter[^2].
+An RDA-encoded string starts with a "header" section that contains the string's encoding chars, followed by a "payload" section containing the encoded data elements. In the second example above, the header section is the substring _"|,\\"_ and the payload section is the substring _"Name,Sex,Age|Mary,F,52|John,M,70|Kate,F,63"_. In the header section, the ending char of the substring, char '\\' in the example, defines the "escape char", and the other chars before the escape char are the "delimiter chars" - more specifically, delimiter chars for separating data elements at different dimensions in the array - in the example, char '|' is the 1st-dimension delimiter, and char ',' is the 2nd-dimension delimiter[^2], and so on.
 
-[^2]: A more detailed explanation of RDA encoding rule is in this repo's wiki.
+[^2]: A more detailed explanation of RDA encoding rule is in [this repo's wiki](https://github.com/foldda/RDA/wiki).
 
-RDA encoding allows defining delimiters dynamically in the header section, so the encoding space's dimensions can be flexibly extended when required.
+As delimiters can be flexibly defined and added to the header section, the dimensions of an RDA's encoding space can be flexibly extended when required.
 
-## The Problem Of Schema-Dependent Pipelines
+## The Problem - Schema-Dependent Pipelines
 
 Reliable cross-program data exchange, such as between two systems from different vendors, or an IoT device and its control console, are often difficult to implement and maintain, as these programs can have incompatible data models due to their separate development cycles and different business requirements. Dedicated custom-developed pipelines are commonly required for connecting the communicating parties, using either an 'agreed' format (i.e. a schema) for the data exchange or having programmed logic in the pipelines to do the data conversion.
 
@@ -61,7 +61,7 @@ Postal services are convenient and cost-effective for posting goods to people, a
 
 Also, technically speaking, fixed data models used in schema-based data exchange pipelines make their dependent programs “tightly coupled” and inflexible to changes. If one of the programs has evolved and the data model needs to be changed, the logic connecting the programs needs to be updated to maintain compatibility, and the situation can be more complex and costly if multiple programs depend on the changed data model.
 
-## Universal Data Exchange
+## The Need - Universal Data Exchange
 
 Inspired by the Post Office's postal service, Universal Data Exchange, or UDX, is a "flattened" data communication layer for independent programs to exchange data conveniently and cost-effectively, that is, by providing shared, generic data transport and delivery services, rather than individually building ad-hoc dedicated data-exchange solutions. And, with UDX, cross-program data communication is much simplified, and there is less or no "tight coupling" between the communicating programs.
 
@@ -87,11 +87,9 @@ Third, as a sub-dimension in an RDA space is also a multi-dimensional array, it 
 
 ## Charian - Programming RDA
 
-Charian is a GitHub repo from Foldda that hosts RDA encoding and parsing API's in a number of programming languages, including C#, Java, and Python.
+Charian is an RDA encoding and parsing API implemented in C#, Java, and Python. Charian is available as [a separate GitHub repo](https://github.com/foldda/charian).
 
-These API leverage RDA's unique properties, and intuitively use the postal service metaphor to hide the underlying encoding mechanics, i.e. using RDA as a "box" for storing data, and accessing the stored data items via integer-based indexing. 
-
-For example, in C#, this is how a client app may send and recive data by firstly encoding the data as an RDA string into a file, then retrieve the data by reading and parsing the RDA string from the file.
+Charian API intuitively uses the postal service metaphor while hiding the underlying encoding and parsing mechanics, that is, it uses an RDA-encoded string as a "container" object for storing data, and accessing the stored data items via integer-based indexing. For example, in C#, this is how a client app may send and receive data by firstly encoding the data as an RDA string into a file, then retrieving the data by reading and parsing the RDA string from the file.
 
 ```csharp
     using Charian;
@@ -139,17 +137,21 @@ For example, in C#, this is how a client app may send and recive data by firstly
     }
 ```
 
-## Enflow - A Practical Use
+Please take a look at [the Charian repo](https://github.com/foldda/charian) to see more detailed explanations and examples of using the API.
 
-Enflow is a component-based computing system that allows an app be assembled using components potentially from any vendor. In its design, it needs to allow components with no prior knowledge to connect and collaborate with each other, including exchanging data that does not have a fixed data model. RDA is created for this design requirement and is used in the system's framework API as the primary data object for Enflow to interact with its hosted components, and for components to exchange data between each other.
+## Enflow - A Comercialized Use Of RDA And Charian
+
+Enflow is an open-source component-based computing framework that allows an app to be assembled using components potentially from any vendor. In its design, it needs to allow components with no prior knowledge to connect and collaborate with each other, including exchanging data that does not have a fixed data model. RDA is created for this design requirement and is used in the system's framework API as the primary data object for Enflow to interact with its hosted components, and for components to exchange data between each other.
 
 In Enflow, a compatible component is required to convert its "native data" to and from RDA, by possibly using Charian, so its data can flow through the system. For example, the HL7FileReader component, available at the "Enflow Portable Components" repo, implements the conversion from HL7 to RDA, and the HL7FileWriter component does the opposite conversion, and these two components can be connected and used in an app that required HL7 data file reading and writing.
 
-A demo of Enflow can be found in this video.
+[This demo video](https://www.youtube.com/watch?v=Uek9aW1qToU) shows how Enflow components can be assembled to form an app dynamically without programming or compilation.
 
-## Summary
+Enflow's framework API and many of its ready-to-use portable components are available in [this GitHub repo](https://github.com/foldda/enflow-portable-components).
 
-> *RDA allows implementing a generic and unified data transport layer which applications can utilize for sending and receiving data. As the applications are "loosely coupled" using such a data transport layer, they are less dependent and easier to maintain if the data format is changed.*
+## Other Potential Uses
+
+> *RDA allows the implementation of a generic and unified data transport layer that applications can utilize for sending and receiving data. As the applications are "loosely coupled" using such a data transport layer, they are less dependent and easier to maintain if the data format is changed.*
  
 One powerful feature of RDA is for implementing cross-language and cross-application object-serialization. For example, you can send a "Person" object as a serialized RDA container from your C# program to many receivers, and in a Python program, you can de-serialize a "User" object using data elements from the received RDA container. Because there is no schema to be adhered to, the "Person" object and the "User" object can be programmed differently and be maintained separately. 
 
