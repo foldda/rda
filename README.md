@@ -45,7 +45,7 @@ For a Post Office to provide the postal service, standardized packaging is the k
 
 Popular data formats, such as XML, JSON, and CSV, are not suitable for encoding the UDX container, because these formats assume certain data models (by structure and type) to the data, meaning a container encoded in these formats is always for a certain kind of data, not _any data_. That's where RDA, a "one-size-fits-all" data format, comes into play. RDA encoding allows converting data objects with arbitrarily complex structures to a text string, and strings are supported by most computer systems and programming languages for manipulation and transportation. So using RDA-encoding, any data can be stored as text and be exchanged via text-based networks or messaging protocols, such as HTTP/RPC, TCP/IP, and FTP. 
 
-## Introducing RDA's Schema-less Encoding
+## RDA's Schema-less Encoding - A Brief Introduction
 
 The following example shows a single-dimension RDA-encoded string containing a list of data elements: "One", "Two", and "Three". 
 
@@ -77,7 +77,7 @@ As delimiters can be flexibly defined and added to the header section, the dimen
 
 > XML/JSON's schema-bound encoding space is like a wallet, with specific places for cards, notes, and coins, whilst RDA's space is like an infinitely expandable shelf that can store anything.
 
-RDA has these unique encoding features that set it apart from the other text data encoding formats - 
+RDA sets itself apart from the other text data encoding formats with these unique encoding features - 
 
 First, the storage locations in the space are addressed by integer indexes, rather than by names or string paths. This allows a client to access an RDA's content with no meta-data knowledge.
 
@@ -85,7 +85,7 @@ Second, the number of dimensions of the space, and the length of the array at ea
 
 Third, as a sub-dimension in an RDA space is also a multi-dimensional array, it is also an RDA storage itself, meaning **an RDA's encoding space is recursive** i.e. an RDA can be stored inside another RDA. This is why RDA can be used to store arbitrarily complex data objects.
 
-## Charian - Programming RDA
+## Charian - An Easy RDA Encoding and Parsing API
 
 Charian is an RDA encoding and parsing API implemented in C#, Java, and Python. Charian is available as [a separate GitHub repo](https://github.com/foldda/charian).
 
@@ -139,25 +139,25 @@ Charian API intuitively uses the postal service metaphor while hiding the underl
 
 Please take a look at [the Charian repo](https://github.com/foldda/charian) to see more detailed explanations and examples of using the API.
 
-## Enflow - A Comercial Use Case
+## Enflow - An RDA's Comercial Use Example
 
-Enflow is an open-source component-based computing framework that allows an app to be assembled using components potentially from any vendor. In its design, it needs to allow components with no prior knowledge to connect and collaborate with each other, including exchanging data that does not have a fixed data model. RDA is created for this design requirement and is used in the system's framework API as the primary data object for Enflow to interact with its hosted components, and for components to exchange data between each other.
+Enflow is an open-source component-based computing framework that allows assembling non-propriatry apps using mixed, portable components from different vendors. Enflow components are designed to be independent,  meaning they have minimal assumed knowledge when connecting and collaborating with each other, that includes when exchanging data, it cannot assume the data has a specific data model. In fact, RDA is created for this design requirement and is a primary data type used throughout the Enflow framework, eg. for it to interact with its hosted components, and for its components to exchange data between each other.
 
-In Enflow, a compatible component is required to convert its "native data" to and from RDA, possibly by using Charian, so its data can flow through the system. For example, the HL7FileReader component, available at the "Enflow Portable Components" repo, implements the conversion from HL7 to RDA, and the HL7FileWriter component does the opposite conversion, and these two components can be connected and used in an app that required HL7 data file reading and writing.
+In Enflow, a compatible component is required to convert its "native data" to and from RDA, possibly by using Charian, so the data (carried within an RDA) can flow through the system. For example, the HL7FileReader component, available at the "Enflow Portable Components" repo, implements the conversion from HL7 to RDA, and the HL7FileWriter component does the opposite conversion, and these two components can be connected and used in an app that required HL7 data file reading and writing.
 
 [This demo video](https://www.youtube.com/watch?v=Uek9aW1qToU) shows how Enflow components can be assembled to form an app dynamically without programming or compilation.
 
 Enflow's framework API and many of its ready-to-use portable components are available in [this GitHub repo](https://github.com/foldda/enflow-portable-components).
 
-## Other Usage Ideas
+## RDA's Other Potential Uses
 
 > *RDA allows the implementation of a generic and unified data transport layer that applications can utilize for sending and receiving any data. As the applications are "loosely coupled" using such a data transport layer, they are less dependent and are easier to maintain if the data format is changed.*
  
-One powerful feature of RDA benefited from the "loose coupling" is for implementing cross-language and cross-application object-serialization. For example, you can send a "Person" object as a serialized RDA container from your C# program to many receivers, and in a Python program, you can de-serialize the the received RDA container and construct a "User" object using properties of the original Person object. Because there is no schema to be adhered to, the "Person" object and the "User" object can be programmed differently and be maintained separately - for example, the Python User object may only has a 'full-name' property that can be derived from the Java Person object's 'first-name' and 'last-name' properties. 
+Benefited from its "loose coupling" feature, RDA is most suitable for implementing systems integration and applications collabration, even for cross-language and cross-platform. For example, you can send a "Person" object as a serialized RDA container from your C# program to many receivers, and in one of the receivers, say it's a Python program, you can de-serialize the the received RDA container and construct a "User" object out of it, using properties of the original Person object. Because there is no schema to be adhered to, the "Person" object and the "User" object can be programmed differently and be maintained separately - for example, the Python's User object may only has a 'full-name' property but it can be derived from the Java Person object's 'first-name' and 'last-name' properties. 
 
-Another feature of RDA is it allows mixed contents which is useful for maintaining version compatibility between a sender and a receiver. Because RDA's recursive storage allows storing an RDA inside another RDA, multiple versions (or different formats) of the data can be transported "side-by-side" (as child RDAs) in an RDA container, and the receiver can pick its preferred version or format to use. If required, XML/JSON data can be stored inside an RDA container without any convertion because after all XML/JSON documents are just strings.
+Because RDA's recursive storage allows storing an RDA inside another RDA, multiple versions (or different formats) of the data can be transported "side-by-side" (as child RDAs) in a single RDA container. Allowing transporting mixed contents in a single RDA object can be useful for maintaining version compatibility, because a receiver can pick its preferred version or format to use. XML/JSON data can be stored inside an RDA container with no conversion required because, after all, XML/JSON documents are just strings.
 
-Indeed, being able to send multiple copies of _any data_ side-by-side in a container can have some inspiring uses: like sending XML data together with its DTD, or sending a digital document paired with its digital signature or public key, or, in distributed computing, constructing a computing "workload" that contains some data and an executable script for a generic data-processing unit to execute.
+Indeed, being able to send multiple copies of _any data_ side-by-side in a container can spark many inspiring ideas: like sending XML data together with its DTD, or sending a digital document paired with its digital signature or public key, or, in distributed computing, constructing a computing "workload" that contains some data and an executable script for a generic data-processing unit to execute.
 
 Also, thanks to its simple and efficient delimiter-based encoding, an RDA container is much more compact than an XML or JSON container for encoding the same content, and it is much easier to parse. RDA encoding is also more robust and resilient to data corruption, as it has no reserved keyword or character meaning it allows any character to be part of the data content. In contrast, for example, in XML the line-feed character in data has to be encoded as "\&\#xA;", otherwise it will cause corruption.
 
