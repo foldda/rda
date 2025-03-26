@@ -5,13 +5,13 @@
 
 Recursive Delimited Array (RDA) is a text encoding format used for storing data in text strings, similar to XML and JSON.
 
-Unlike XML and JSON, which rely on a schema fixed to a data model, RDA uses a generic space—an expandable, multi-dimensional array—to encode any data object, regardless of its attributes or structure[^1].
+Unlike XML and JSON, which rely on a schema fixed to a data model for the encoding, RDA uses a generic space—an expandable, multi-dimensional array—to encode any data object, regardless of its attributes or structure[^1]. Because of this simpler, “one-size-fits-all” approach, the schema-less RDA is easier to use, faster to parse and encode, and more space-efficient compared to XML and JSON.
 
-Compared to XML and JSON, the schema-less RDA is easier to use, faster to parse and encode, and more space-efficient, thanks to its simpler, “one-size-fits-all” approach. Moreover, as explained below, RDA facilitates seamless communication and collaboration between otherwise isolated devices and programs, particularly when dealing with uncertain or incompatible data models.
+Moreover, as explained below, RDA is advantangous in facilitating seamless communication and collaboration between isolated devices and programs, particularly when dealing with uncertain or incompatible data models.
 
 [^1]: RDA's encoding space is logically an infinitely expandable multi-dimensional array, where the number of dimensions and the size of each dimension of the multi-dimensional array of an RDA-encoded string can be expanded as required, and in RDA, a data object's attributes values are simply stored in the space as strings i.e. no specific data types. 
 
-## The Problem Of Schema-Dependent Pipelines
+## The Problem With Exchanging Data Cross-Systems
 
 Reliable cross-program data exchange, such as between two systems from different vendors, or an IoT device and its control console, are often difficult to implement and maintain, as these programs can have incompatible data models due to their separate development cycles and different business requirements. Dedicated custom-developed pipelines are commonly required for connecting the communicating parties, using either an 'agreed' format (i.e. a schema) for the data exchange or having programmed logic in the pipelines to do the data conversion.
 
@@ -33,7 +33,7 @@ Postal services are convenient and cost-effective for posting goods to people, a
 
 Also, technically speaking, fixed data models used in schema-based data exchange pipelines make their dependent programs “tightly coupled” and inflexible to changes. If one of the programs has evolved and the data model needs to be changed, the logic connecting the programs needs to be updated to maintain compatibility, and the situation can be more complex and costly if multiple programs depend on the changed data model.
 
-## The Need For Universal Data Exchange
+## Universal Data Exchange
 
 Inspired by the Post Office's postal service, Universal Data Exchange, or UDX, is a "flattened" data communication layer for independent programs to exchange data conveniently and cost-effectively, that is, by providing shared, generic data transport and delivery services, rather than individually building ad-hoc dedicated data-exchange solutions. And, with UDX, cross-program data communication is much simplified, and there is less or no "tight coupling" between the communicating programs.
 
