@@ -21,27 +21,29 @@ Reliable cross-program data exchange, such as between two systems from different
 
 Building these dedicated pipelines is normally expensive and resource-inefficient because, in an analogy, it is like sending parcels to people through ad hoc transport and delivery arrangements instead of using the generic postal services from the Post Office. 
 
+Also, technically speaking, fixed data models used in schema-based data exchange pipelines make their dependent programs “tightly coupled” and inflexible to changes. If the data models changed due to some business requirements, all connected programs will be affected, and the logic in the pipelines connecting the programs needs to be updated to maintain compatibility.
+
 <div align='center'>
 <img src='img/Pre-Post-office-system.png' width='470' align='center'>
 </div>
 
-Postal services are convenient and cost-effective for posting goods to people, as they can easily cater to all kinds of requirements, such as parcels of different shapes and sizes, and use of the shared logistics and freight system helps cut down the cost.
+Postal services are cost-effective for people posting goods because they use shared logistics and freight system helps cut down the cost. These servises are also convenient because they cater to most clients' requirements, such as posting parcels of different shapes and sizes.
 
 <div align='center'>
 <img src='img/Post-office-system.png' width='550' align='center'>
 </div>
 
-Also, technically speaking, fixed data models used in schema-based data exchange pipelines make their dependent programs “tightly coupled” and inflexible to changes. If one of the programs has evolved and the data model needs to be changed, the logic connecting the programs needs to be updated to maintain compatibility, and the situation can be more complex and costly if multiple programs depend on the changed data model.
+So ideally, for data exchange between isolated independent systems, we could do something similar to the Post Office's postal service, to cut down the costs and reduce complexicity.  
 
 ## Universal Data Exchange
 
-Inspired by the Post Office's postal service, Universal Data Exchange, or UDX, is a "flattened" data communication layer for independent programs to exchange data conveniently and cost-effectively, that is, by providing shared, generic data transport and delivery services, rather than individually building ad-hoc dedicated data-exchange solutions. And, with UDX, cross-program data communication is much simplified, and there is less or no "tight coupling" between the communicating programs.
+Universal Data Exchange, or UDX, is a "flattened" data communication layer for independent programs to exchange data conveniently and cost-effectively, that is, by providing shared, generic data transport and delivery services, rather than individually building ad-hoc dedicated data-exchange solutions. And, with UDX, cross-program data communication is much simplified, and there is less or no "tight coupling" between the communicating programs.
 
 <div align='center'>
 <img src='img/Charian-data-transport.png' width='550'>
 </div>
 
-For a Post Office to provide the postal service, standardized packaging is the key that simplifies parcel handling and allows modularized, more effective transportation using general courier companies. The use of **plain boxes** allows for packing loose items of different sizes and shapes so it's easier to cater to different parcel-posting requirements. Similarly, the key in implementing UDX is to have a generic data container for packaging (and regulating) various data items, so arbitrary, 'irregular' data can be handled uniformly using general data transport protocols and methods. We need to find such "boxes", that is, to have a standardized, _universal_ data container, for UDX.
+One key factor for a Post Office to provide the postal service is the standardized packaging. More specifically, the use of **plain boxes** allows for packing loose items of different sizes and shapes so it's easier to cater to different parcel-posting requirements. It also simplifies parcel handling and allows modularized, more effective transportation using general courier companies. Similarly, the key in implementing UDX is to have a generic data container for packaging (and regulating) various data items, so arbitrary, 'irregular' data can be handled uniformly using general data transport protocols and methods. We need to find such "boxes", that is, to have a standardized, _universal_ data container, for UDX.
 
 Popular data formats, such as XML, JSON, and CSV, are not suitable for encoding the UDX container, because these formats assume certain data models (by structure and type) to the data, meaning a container encoded in these formats is always for a certain kind of data, not _any data_. That's where RDA, a "one-size-fits-all" data format, comes into play. RDA encoding allows converting data objects with arbitrarily complex structures to a text string, and strings are supported by most computer systems and programming languages for manipulation and transportation. So using RDA-encoding, any data can be stored as text and be exchanged via text-based networks or messaging protocols, such as HTTP/RPC, TCP/IP, and FTP. 
 
