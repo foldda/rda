@@ -37,7 +37,7 @@ So ideally, for data exchange between isolated independent systems, we could do 
 
 ## Universal Data Exchange
 
-Universal Data Exchange, or UDX, is a "flattened" data communication layer for independent programs to exchange data conveniently and cost-effectively, that is, by providing shared, generic data transport and delivery services, rather than individually building ad-hoc dedicated data-exchange solutions. And, with UDX, cross-program data communication is much simplified, and there is less or no "tight coupling" between the communicating programs.
+Universal Data Exchange, or UDX, is a "flattened" data communication layer for independent programs to exchange data conveniently and cost-effectively - by providing shared, generic data transport and delivery services, rather than individually building ad-hoc dedicated data-exchange solutions. And by replacing ad-hoc, data-model-dependent pipelines with UDX, it simplifies cross-program data communications and eliminates "tight coupling" between the communicating programs.
 
 <div align='center'>
 <img src='img/Charian-data-transport.png' width='550'>
