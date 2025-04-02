@@ -11,17 +11,17 @@ But most significantly, as explained below, the schema-less RDA is potentially a
 
 [^1]: RDA's encoding space is logically an infinitely expandable multi-dimensional array, where the number of dimensions and the size of each dimension of the multi-dimensional array of an RDA-encoded string can be expanded as required, and in RDA, a data object's attributes values are simply stored in the space as strings i.e. no specific data types. 
 
-## The Problem With Exchanging Data Cross-Systems
+## The Problem With Cross-System Data Exchange 
 
-Reliable cross-program data exchange, such as between two systems from different vendors, or an IoT device and its control console, are often difficult to implement and maintain, as these programs can have incompatible data models due to their separate development cycles and different business requirements. Dedicated custom-developed pipelines are commonly required for connecting the communicating parties, using either an 'agreed' format (i.e. a schema) for the data exchange or having programmed logic in the pipelines to do the data conversion.
+Data exchange between two separated systems can be difficult to implement and maintain, as these systems can have incompatible data models due to their separate development cycles and different business requirements, and if they are from different vendors, it would be difficult to coordinate in making changes. Dedicated custom-developed pipelines are commonly required for connecting the communicating parties, using either an 'agreed' format (i.e. a schema) for the data exchange or having programmed logic in the pipelines to do the data conversion.
+
+Also, technically speaking, using fixed data models the data-exchange pipelines makes the connected programs “tightly coupled” - meaning they are inflexible to changes because changing the data model in one program will affect all the other connected programs - there will be a very high cost to make data model change and also maintain data exchange compatibility.
 
 <div align='center'>
 <img src='img/Pre-Charian-data-transport.png' width='550' align='center'>
 </div>
 
-Building these dedicated pipelines is normally expensive and resource-inefficient because, in an analogy, it is like sending parcels to people through ad hoc transport and delivery arrangements instead of using the generic postal services from the Post Office. 
-
-Also, technically speaking, fixed data models used in schema-based data exchange pipelines make their dependent programs “tightly coupled” and inflexible to changes. If the data models changed due to some business requirements, all connected programs will be affected, and the logic in the pipelines connecting the programs needs to be updated to maintain compatibility.
+Therefore, using these dedicated pipelines for cross-system data exchange is expensive and inflexible. In an analogy, it is like sending parcels to people through ad hoc transport and delivery arrangements rather than using the Post Office. 
 
 <div align='center'>
 <img src='img/Pre-Post-office-system.png' width='470' align='center'>
@@ -33,23 +33,23 @@ Postal services are cost-effective for people posting goods because they use sha
 <img src='img/Post-office-system.png' width='550' align='center'>
 </div>
 
-So ideally, for data exchange between isolated independent systems, we could do something similar to the Post Office's postal service, to cut down the costs and reduce complexicity.  
+So for data exchange between isolated independent systems, we could do something similar to the Post Office's postal service, to cut down the costs and improve flexibility.  
 
 ## Universal Data Exchange
 
-Universal Data Exchange, or UDX, is a "flattened" data communication layer for independent programs to exchange data conveniently and cost-effectively - by providing shared, generic data transport and delivery services, rather than individually building ad-hoc dedicated data-exchange solutions. And by replacing ad-hoc, data-model-dependent pipelines with UDX, it simplifies cross-program data communications and eliminates "tight coupling" between the communicating programs.
+Universal Data Exchange, or UDX, is a "flattened" data communication layer for independent programs to exchange data conveniently and cost-effectively. By providing shared, generic data transport and delivery services, rather than individually building ad-hoc dedicated data-exchange solutions, UDX simplifies cross-program data communications and eliminates "tight coupling" between the communicating programs.
 
 <div align='center'>
 <img src='img/Charian-data-transport.png' width='550'>
 </div>
 
-One key factor for a Post Office to provide the postal service is the standardized packaging. More specifically, the use of **plain boxes** allows for packing loose items of different sizes and shapes so it's easier to cater to different parcel-posting requirements. It also simplifies parcel handling and allows modularized, more effective transportation using general courier companies. Similarly, the key in implementing UDX is to have a generic data container for packaging (and regulating) various data items, so arbitrary, 'irregular' data can be handled uniformly using general data transport protocols and methods. We need to find such "boxes", that is, to have a standardized, _universal_ data container, for UDX.
+In a Post Office, using standardized packaging is a key for it to effectively provide the postal services. More specifically, the use of **plain boxes** allows for packing loose items of different sizes and shapes so it's easier to cater to different parcel-posting requirements. Standardized packaging also simplifies parcel handling and allows modularized, more effective transportation using general courier companies. Similarly, the key in implementing UDX is to have a generic data container for packaging (and regulating) various data items, so arbitrary, 'irregular' data can be handled uniformly using general data transport protocols and methods. We need to find such "boxes", that is, to have a standardized, _universal_ data container, for UDX.
 
 Popular data formats, such as XML, JSON, and CSV, are not suitable for encoding the UDX container, because these formats assume certain data models (by structure and type) to the data, meaning a container encoded in these formats is always for a certain kind of data, not _any data_. That's where RDA, a "one-size-fits-all" data format, comes into play. RDA encoding allows converting data objects with arbitrarily complex structures to a text string, and strings are supported by most computer systems and programming languages for manipulation and transportation. So using RDA-encoding, any data can be stored as text and be exchanged via text-based networks or messaging protocols, such as HTTP/RPC, TCP/IP, and FTP. 
 
-## RDA's Schema-less Encoding - A Brief Introduction
+## Schema-less Encoding
 
-The following example shows a single-dimension RDA-encoded string containing a list of data elements: "One", "Two", and "Three". 
+RDA use an expandable multi-dimensional array for encoding data items. The following example shows a single-dimension RDA-encoded string containing a list of data elements: "One", "Two", and "Three". 
 
 ```
 |\|One|Two|Three
