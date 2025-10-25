@@ -141,15 +141,15 @@ Charian API intuitively uses the postal service metaphor while hiding the underl
 
 Please take a look at [the Charian repo](https://github.com/foldda/charian) to see more detailed explanations and examples of using the API.
 
-## Enflow - An RDA's Comercial Use Example
+## Snappable - An RDA's Commercial Use Example
 
-Enflow is an open-source component-based computing framework that allows assembling non-propriatry apps using mixed, portable components from different vendors. Enflow components are designed to be independent,  meaning they have minimal assumed knowledge when connecting and collaborating with each other, that includes when exchanging data, it cannot assume the data has a specific data model. In fact, RDA is created for this design requirement and is a primary data type used throughout the Enflow framework, eg. for it to interact with its hosted components, and for its components to exchange data between each other.
+Snappable is an open-source component-based computing framework that allows assembling non-proprietary apps using mixed, portable components from different vendors. Snappable components are designed to be independent,  meaning they have minimal assumed knowledge when connecting and collaborating with each other, that includes when exchanging data, it cannot assume the data has a specific data model. In fact, RDA is created for this design requirement and is a primary data type used throughout the Enflow framework, eg. for it to interact with its hosted components, and for its components to exchange data between each other.
 
-In Enflow, a compatible component is required to convert its "native data" to and from RDA, possibly by using Charian, so the data (carried within an RDA) can flow through the system. For example, the HL7FileReader component, available at the "Enflow Portable Components" repo, implements the conversion from HL7 to RDA, and the HL7FileWriter component does the opposite conversion, and these two components can be connected and used in an app that required HL7 data file reading and writing.
+In Snappable, a compatible component is required to convert its "native data" to and from RDA, possibly by using Charian, so the data (carried within an RDA) can flow through the system. For example, the HL7FileReader component, available at the "Enflow Portable Components" repo, implements the conversion from HL7 to RDA, and the HL7FileWriter component does the opposite conversion, and these two components can be connected and used in an app that requires HL7 data file reading and writing.
 
-[This demo video](https://www.youtube.com/watch?v=Uek9aW1qToU) shows how Enflow components can be assembled to form an app dynamically without programming or compilation.
+[This demo video](https://www.youtube.com/watch?v=Uek9aW1qToU) shows how Snappable components can be assembled to form an app dynamically without programming or compilation.
 
-Enflow's framework API and many of its ready-to-use portable components are available in [this GitHub repo](https://github.com/foldda/enflow-portable-components).
+Snappable's framework API and many of its ready-to-use portable components are available in [this GitHub repo](https://github.com/foldda/snappable).
 
 ## RDA's Other Potential Uses
 
