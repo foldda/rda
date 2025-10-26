@@ -83,15 +83,15 @@ RDA sets itself apart from the other text data encoding formats with these uniqu
 
 First, the storage locations in the space are addressed by integer indexes, rather than by names or string paths. This allows a client to access an RDA's content with no meta-data knowledge.
 
-Second, the number of dimensions of the space, and the length of the array at each dimension, can be (practically unlimited) expanded as required. So from a client's encoding needs, the space's storge is infinite and always available.
+Second, both the number of dimensions of the space and the length of the array at each dimension can be dynamically expanded as required. So for a client's encoding needs, the space's storage is practically sufficient and is always available.
 
 Third, as a sub-dimension in an RDA space is also a multi-dimensional array, it is also an RDA storage itself, meaning **an RDA's encoding space is recursive** i.e. an RDA can be stored inside another RDA. This is why RDA can be used to store arbitrarily complex data objects.
 
-## Charian - An Easy RDA Encoding and Parsing API
+## Charian - A Simple RDA Encoding/Decoding API
 
 Charian is an RDA encoding and parsing API implemented in C#, Java, and Python. Charian is available as [a separate GitHub repo](https://github.com/foldda/charian).
 
-Charian API intuitively uses the postal service metaphor while hiding the underlying encoding and parsing mechanics, that is, it uses an RDA-encoded string as a "container" object for storing data, and accessing the stored data items via integer-based indexing. For example, in C#, this is how a client app may send and receive data by firstly encoding the data as an RDA string into a file, then retrieving the data by reading and parsing the RDA string from the file.
+Charian API intuitively hides the underlying RDA encoding and parsing details from the clients, where the data serialization process via the API is similar to posting a parcel using the post office. That is, a client uses an RDA-encoded string as a "container" object for storing data and accessing the stored data items in an RDA container via integer-based indexing. For example, in C#, this is how a client app may send and receive data by firstly encoding the data as an RDA string into a file, then retrieving the data by reading and parsing the RDA string from the file.
 
 ```csharp
     using Charian;
