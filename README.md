@@ -5,9 +5,9 @@
 
 Recursive Delimited Array (RDA) is a plain text data format for encoding structured data as text strings, similar to XML and JSON. 
 
-While XML and JSON rely on using a schema that is fixed to a data model for the encoding, RDA uses a generic space (an expandable, multi-dimensional array) for encoding any data object - regardless of its attributes or structure[^1]. Because of this “one-size-fits-all” approach, RDA encoding is easier to use, faster to parse and encode, and more space-efficient, compared to XML and JSON.
+While XML and JSON encoding uses a schema that is fixed to a data model, RDA encoding simply provides a generic space (an expandable, multi-dimensional array) for _storing_ a data object's properties - regardless of the data object's structure and the properties' data types[^1]. Because of this “one-size-fits-all” approach, RDA encoding is easier to use, faster to parse and encode, and more space-efficient.
 
-But most significantly, as explained below, the schema-less RDA is potentially a key technology in facilitating effective communication and collaboration through loosely-coupled devices and programs, particularly when the data models in these devices and programs are uncertain or incompatible .
+The schema-less RDA enables loosely-coupled communication. As explained below, this is especially useful in facilitating independently developed devices and programs' collaboration - where data models between these devices and programs are commonly incompatible and constantly changing.  
 
 [^1]: RDA's encoding space is logically an infinitely expandable multi-dimensional array, where the number of dimensions and the size of each dimension of the multi-dimensional array of an RDA-encoded string can be expanded as required, and in RDA, a data object's attributes values are simply stored in the space as strings i.e. no specific data types. 
 
@@ -89,7 +89,7 @@ Third, as a sub-dimension in an RDA space is also a multi-dimensional array, it 
 
 ## Charian - A Simple RDA Encoding/Decoding API
 
-Charian is an RDA encoding and parsing API implemented in C#, Java, and Python. Charian is available as [a separate GitHub repo](https://github.com/foldda/charian).
+[Charian is an open-source RDA encoding and parsing API](https://github.com/foldda/charian) implemented in C#, Java, and Python.
 
 Charian API intuitively hides the underlying RDA encoding and parsing details from the clients, where the data serialization process via the API is similar to posting a parcel using the post office. That is, a client uses an RDA-encoded string as a "container" object for storing data and accessing the stored data items in an RDA container via integer-based indexing. For example, in C#, this is how a client app may send and receive data by firstly encoding the data as an RDA string into a file, then retrieving the data by reading and parsing the RDA string from the file.
 
@@ -143,13 +143,13 @@ Please take a look at [the Charian repo](https://github.com/foldda/charian) to s
 
 ## Snappable - An RDA's Commercial Use Example
 
-Snappable is an open-source component-based computing framework that allows assembling non-proprietary apps using mixed, portable components from different vendors. Snappable components are designed to be independent,  meaning they have minimal assumed knowledge when connecting and collaborating with each other, that includes when exchanging data, it cannot assume the data has a specific data model. In fact, RDA is created for this design requirement and is a primary data type used throughout the Enflow framework, eg. for it to interact with its hosted components, and for its components to exchange data between each other.
+[Snappable is an open-source component-based computing framework](https://github.com/foldda/snappable) that allows assembling non-proprietary apps using mixed, portable components from different vendors. In Snappable's design, components are independent, having minimal assumed knowledge when connecting and collaborating to another component, i.e., when two components exchanging data, they cannot assume the data has a specific data model. This allows the Snappable to implement very generic "plugs" for plugging in interexchangeable components which is the design goal of the framework. In fact, RDA is created for this design requirement and is a primary data type used throughout the Snappable framework.
 
-In Snappable, a compatible component is required to convert its "native data" to and from RDA, possibly by using Charian, so the data (carried within an RDA) can flow through the system. For example, the HL7FileReader component, available at the "Enflow Portable Components" repo, implements the conversion from HL7 to RDA, and the HL7FileWriter component does the opposite conversion, and these two components can be connected and used in an app that requires HL7 data file reading and writing.
+In Snappable, a compatible component is required to convert its "native data" to and from RDA, possibly by using [Charian](https://github.com/foldda/charian), so the data (carried within an RDA) can flow through the system. For example, the HL7FileReader component, available at the "Snappable Portable Components" repo, implements the conversion from HL7 to RDA, and the HL7FileWriter component does the opposite conversion, and these two components can be connected and used in an app that requires HL7 data file reading and writing.
 
-[This demo video](https://www.youtube.com/watch?v=Uek9aW1qToU) shows how Snappable components can be assembled to form an app dynamically without programming or compilation.
+[This demo video](https://www.youtube.com/watch?v=Uek9aW1qToU) visually demonstrates Snappable components in-action. It shows how an app can be assembled "physically" form pre-built interexchangeable Snappable components.
 
-Snappable's framework API and many of its ready-to-use portable components are available in [this GitHub repo](https://github.com/foldda/snappable).
+The Snappable framework API and many of its ready-to-use portable components are available in [this GitHub repo](https://github.com/foldda/snappable).
 
 ## RDA's Other Potential Uses
 
