@@ -87,9 +87,9 @@ Second, both the number of dimensions of the space and the length of the array a
 
 Third, as a sub-dimension in an RDA space is also a multi-dimensional array, it is also an RDA storage itself, meaning **an RDA's encoding space is recursive** i.e. an RDA can be stored inside another RDA. This is why RDA can be used to store arbitrarily complex data objects.
 
-## Charian - A Simple RDA Encoding/Decoding API
+## Charian - The Official RDA Encoding/Decoding API
 
-[Charian is an open-source RDA encoding and parsing API](https://github.com/foldda/charian) implemented in C#, Java, and Python.
+[Charian](https://github.com/foldda/charian) is an open-source RDA encoding and parsing API implemented in C#, Java, and Python.
 
 Charian API intuitively hides the underlying RDA encoding and parsing details from the clients, where the data serialization process via the API is similar to posting a parcel using the post office. That is, a client uses an RDA-encoded string as a "container" object for storing data and accessing the stored data items in an RDA container via integer-based indexing. For example, in C#, this is how a client app may send and receive data by firstly encoding the data as an RDA string into a file, then retrieving the data by reading and parsing the RDA string from the file.
 
@@ -141,13 +141,15 @@ Charian API intuitively hides the underlying RDA encoding and parsing details fr
 
 Please take a look at [the Charian repo](https://github.com/foldda/charian) to see more detailed explanations and examples of using the API.
 
-## Snappable - An RDA's Commercial Use Example
+## Snappable - A Practical Use of RDA
 
-[Snappable is an open-source component-based computing framework](https://github.com/foldda/snappable) that allows assembling non-proprietary apps using mixed, portable components from different vendors. In Snappable's design, components are independent, having minimal assumed knowledge when connecting and collaborating to another component, i.e., when two components exchanging data, they cannot assume the data has a specific data model. This allows the Snappable to implement very generic "plugs" for plugging in interexchangeable components which is the design goal of the framework. In fact, RDA is created for this design requirement and is a primary data type used throughout the Snappable framework.
+[Snappable](https://github.com/foldda/snappable) is an open-source component-based computing framework which defines software components that are reusable and interchangeable, meaning an app developer can assemble "non-proprietary" apps using components aquired from an open market potentially made by different vendors. 
+
+In Snappable's design, components are independent, having minimal assumed knowledge when connecting and collaborating to another component, i.e., when two components exchanging data, they cannot assume the data has a specific data model. This allows the Snappable to implement very generic "plugs" for plugging in interchangeable components which is the design goal of the framework. In fact, RDA is created for this design requirement and is a primary data type used throughout the Snappable framework.
 
 In Snappable, a compatible component is required to convert its "native data" to and from RDA, possibly by using [Charian](https://github.com/foldda/charian), so the data (carried within an RDA) can flow through the system. For example, the HL7FileReader component, available at the "Snappable Portable Components" repo, implements the conversion from HL7 to RDA, and the HL7FileWriter component does the opposite conversion, and these two components can be connected and used in an app that requires HL7 data file reading and writing.
 
-[This demo video](https://www.youtube.com/watch?v=Uek9aW1qToU) visually demonstrates Snappable components in-action. It shows how an app can be assembled "physically" form pre-built interexchangeable Snappable components.
+[This demo video](https://www.youtube.com/watch?v=Uek9aW1qToU) visually demonstrates Snappable components in-action. It shows how an app can be assembled "physically" form pre-built interchangeable Snappable components.
 
 The Snappable framework API and many of its ready-to-use portable components are available in [this GitHub repo](https://github.com/foldda/snappable).
 
