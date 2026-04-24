@@ -3,11 +3,11 @@
 
 <img src="docs/image/rda_logo.png" align="right" height="128">
 
-Recursive Delimited Array (RDA) is a plain text data format for encoding structured data as text strings, similar to XML and JSON. 
+Recursive Delimited Array (RDA) is a plain text data format for encoding structured data as text strings, without depending on a predefined fixed schema. 
 
-While XML and JSON encoding uses a schema that is fixed to a data model, RDA encoding simply provides a generic space (an expandable, multi-dimensional array) for _storing_ a data object's properties - regardless of the data object's structure and the properties' data types[^1]. Because of this “one-size-fits-all” approach, RDA encoding is easier to use, faster to parse and encode, and more space-efficient.
+Comparing to XML and JSON schema-based encoding, the schema-less RDA provides a generic space (an expandable, multi-dimensional array) for _storing_ a data object's properties - which are accessible via indexes[^1]. RDA can be seen as an enhanced CSV encoding that supports encoding multiple dimemsional arrays of data, with additional encoding merits compared to CSV.
 
-The schema-less RDA enables loosely-coupled communication. As explained below, this is especially useful in facilitating independently developed devices and programs' collaboration - where data models between these devices and programs are commonly incompatible and constantly changing.  
+Because of its “one-size-fits-all” approach, RDA encoding is easier to use, faster to parse and encode, and more space-efficient. As explained below, RDA enables loosely-coupled communication, which is especially useful in facilitating independently developed devices and programs' collaboration - where data models between these devices and programs are commonly incompatible and constantly changing.  
 
 [^1]: RDA's encoding space is logically an infinitely expandable multi-dimensional array, where the number of dimensions and the size of each dimension of the multi-dimensional array of an RDA-encoded string can be expanded as required, and in RDA, a data object's attributes values are simply stored in the space as strings i.e. no specific data types. 
 
