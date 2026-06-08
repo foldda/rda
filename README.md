@@ -3,9 +3,21 @@
 
 <img src="docs/image/rda_logo.png" align="right" height="128">
 
-Recursive Delimited Array (RDA) is a plain text data format for encoding structured data as text strings, without depending on a predefined fixed schema. 
+Recursive Delimited Array (RDA) is a plain-text data format for encoding structured data as text strings. RDA format employs a simple, delimiter-based encoding similar to CSV, and unlike XML and JSON, which use complex tag enclosures or require a predefined schema, RDA encoding is easy to implement and less prone to errors. 
 
-Comparing to XML and JSON schema-based encoding, the schema-less RDA provides a generic space (an expandable, multi-dimensional array) for _storing_ a data object's properties - which are accessible via indexes[^1]. RDA can be seen as an enhanced CSV encoding that supports encoding multiple dimemsional arrays of data, with additional encoding merits compared to CSV.
+Compared to CSV, text in RDA format utilises a header section to dynamically define a series of delimiter chars, which are used to encode a multidimensional array space for storing data. This is in contrast to CSV, which has a fixed, pre-defined delimiter and can only accommodate 2-dimensional data.
+
+## Examples
+
+## Using RDA To Store And Transport Data
+
+## Charian - The Reference Encoder/Parser API
+
+## Example Use Cases 
+
+
+
+can be understood as an extension of the well-known CSV formatencoding by allowing dynamically defining multiple delimiters. The delimitor-based RDA encoding Superior to XML and JSON, the simple, schema-less RDA encoding provides a generic space (an expandable, multi-dimensional array) for _storing_ a data object's properties - which are accessible via indexes[^1]. RDA can be seen as an enhanced CSV encoding that supports encoding multidimensional arrays of data, with additional encoding merits compared to CSV.
 
 Because of its “one-size-fits-all” approach, RDA encoding is easier to use, faster to parse and encode, and more space-efficient. As explained below, RDA enables loosely-coupled communication, which is especially useful in facilitating independently developed devices and programs' collaboration - where data models between these devices and programs are commonly incompatible and constantly changing.  
 
