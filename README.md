@@ -5,15 +5,50 @@
 
 Recursive Delimited Array (RDA) is a plain-text data format for encoding structured data as text strings. RDA format employs a simple, delimiter-based encoding similar to CSV, and unlike XML and JSON, which use complex tag enclosures or require a predefined schema, RDA encoding is easy to implement and less prone to errors. 
 
-Compared to CSV, text in RDA format utilises a header section to dynamically define a series of delimiter chars, which are used to encode a multidimensional array space for storing data. This is in contrast to CSV, which has a fixed, pre-defined delimiter and can only accommodate 2-dimensional data.
+Compared to CSV, text in RDA format utilises a header section to dynamically define a series of delimiter chars, which are used to encode a multidimensional array space for storing data. This is in contrast to CSV, which has a fixed, pre-defined delimiter for encoding 2-dimensional data.
 
-## Examples
+## RDA Examples
+
+The following example shows a single-dimension RDA-encoded string containing a list of data elements: "One", "Two", and "Three". 
+
+```
+|\|One|Two|Three
+```
+
+| One | Two | Three | 
+|------|-----|-----|
+
+In the above example, the header section consists of 3 chars "|\|" where the first char '|' is the first dimension delimiter, the second letter '\' is the escape-char, and the third char '|' (the first repeat of the first dimension delimiter) marks the start of the encoded data content (aka. "payload"). In this example, the payload is a 1-D array of 3 elements: "One", "Two", and "Three", delimited by the delimiter character '|'.
+
+The next example is an RDA-formatted string that contains a 2-dimensional dataset. In this example, from the header section, the first dimension delimiter is character '|', and the second dimension delimiter is character ','.
+
+```
+|,\|Name,Sex,Age|Mary,F,52|John,M,70|Kate,F,63
+```
+The data encoded in the above example string is equivalent to the content of the following table.
+
+| Name | Sex | Age | 
+|------|-----|-----|
+| Mary | F   | 52  | 
+| John | M   | 70  |
+| Kate | F   | 63  | 
+
+Following the pattern, by defining more delimiters in an RDA string's header, we can encode higher-level multidimensional data in the string.
 
 ## Using RDA To Store And Transport Data
 
+Using XML and JSON to store and transport data causes tight-coupling between the sender and the receiver. This is because XML/JSON-based data exchange relies on a predefined schema to describe the data being exchanged for parsing and retrieving the encoded data elements. Using RDA in data exchange does not require a fixed schema which eliminates the tight-coupling issue.
+
+Imagine you're moving house...
+
+In this new approach, RDA plays the role of being the plain boxes for storing and transporting data; it's the sender and the receiver's responsibility to produce and to consume the transported data. The sender and the receiver are now loosely coupled because the data pipeline connecting them is no longer tied to a predefined schema.
+
+
 ## Charian - The Reference Encoder/Parser API
 
-## Example Use Cases 
+## SnapFusion - A Schema-less Data Exchange Use Case
+
+## Summary
 
 
 
