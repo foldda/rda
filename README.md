@@ -18,7 +18,7 @@ The following example shows a single-dimension RDA-encoded string containing a l
 | One | Two | Three | 
 |------|-----|-----|
 
-In the above example, the header section consists of 3 chars "|\|" where the first char '|' is the first dimension delimiter, the second letter '\' is the escape-char, and the third char '|' (the first repeat of the first dimension delimiter) marks the start of the encoded data content (aka. "payload"). In this example, the payload is a 1-D array of 3 elements: "One", "Two", and "Three", delimited by the delimiter character '|'.
+In the above example, the header section consists of 3 chars "|\\|" where the first char '|' is the first dimension delimiter, the second letter '\\' is the escape-char, and the third char '|' (the first repeat of the first dimension delimiter) marks the start of the encoded data content (aka. "payload"). In this example, the payload is a 1-D array of 3 elements: "One", "Two", and "Three", delimited by the delimiter character '|'.
 
 The next example is an RDA-formatted string that contains a 2-dimensional dataset. In this example, from the header section, the first dimension delimiter is character '|', and the second dimension delimiter is character ','.
 
@@ -48,25 +48,7 @@ In this new approach, RDA plays the role of being the plain boxes for storing an
 
 ## SnapFusion - A Schema-less Data Exchange Use Case
 
-## Summary
-
-
-
-can be understood as an extension of the well-known CSV formatencoding by allowing dynamically defining multiple delimiters. The delimitor-based RDA encoding Superior to XML and JSON, the simple, schema-less RDA encoding provides a generic space (an expandable, multi-dimensional array) for _storing_ a data object's properties - which are accessible via indexes[^1]. RDA can be seen as an enhanced CSV encoding that supports encoding multidimensional arrays of data, with additional encoding merits compared to CSV.
-
-Because of its “one-size-fits-all” approach, RDA encoding is easier to use, faster to parse and encode, and more space-efficient. As explained below, RDA enables loosely-coupled communication, which is especially useful in facilitating independently developed devices and programs' collaboration - where data models between these devices and programs are commonly incompatible and constantly changing.  
-
-[^1]: RDA's encoding space is logically an infinitely expandable multi-dimensional array, where the number of dimensions and the size of each dimension of the multi-dimensional array of an RDA-encoded string can be expanded as required, and in RDA, a data object's attributes values are simply stored in the space as strings i.e. no specific data types. 
-
-## The Problem With Cross-System Data Exchange 
-
-Data exchange between two separated systems can be difficult to implement (and maintain) due to their often incompatible data models. Enforced "common schema" and/or dedicated custom-built pipelines are usually required to bridge the gaps if two incompatible systems require integration.
-
-However, using fixed data models and custom-built pipelines makes the connected programs “tightly coupled” - meaning they are inflexible to changes because change in one system will affect all the other connected systems, and it's a wellknown fact that tight-coupling in systems causes high cost not just financially but also in maintanance and operational complexity.
-
-<div align='center'>
-<img src='img/Pre-Charian-data-transport.png' width='550' align='center'>
-</div>
+## Universal Data Exchange - The Big Picture
 
 In an analogy, using dedicated pipelines for cross-system data exchange is like sending parcels to people through adhoc transport and delivery arrangements rather than using the Post Office, which is expensive and inflexible. 
 
@@ -80,21 +62,35 @@ We are all used to using Postal services for posting parcels because the shared 
 <img src='img/Post-office-system.png' width='550' align='center'>
 </div>
 
+Similarily, using fixed data models and custom-built pipelines makes the connected programs “tightly coupled” - meaning they are inflexible and expensive not just financially but also in maintanance and operational complexity.
+
+<div align='center'>
+<img src='img/Pre-Charian-data-transport.png' width='550' align='center'>
+</div>
+
 So for data exchange between isolated independent systems, we could do something similar to the Post Office's postal service, to cut down the costs and improve flexibility.  
-
-## Universal Data Exchange
-
-Here, we propose a "flattened" data communication layer called Universal Data Exchange, or UDX, for independent programs to exchange data conveniently and cost-effectively. By providing shared, generic data transport and delivery services, rather than individually building ad-hoc dedicated data-exchange solutions, UDX simplifies cross-program data communications and eliminates "tight coupling" between the communicating programs.
 
 <div align='center'>
 <img src='img/Charian-data-transport.png' width='550'>
 </div>
 
-We observed using standardized packaging is a key for it to effectively provide the postal services in the Post Office. More specifically, the use of **plain boxes** allows for packing loose items of different sizes and shapes so it's easier to cater to different parcel-posting requirements. Standardized packaging also simplifies parcel handling and allows modularized, more effective transportation using general courier companies. Similarily, the key in implementing UDX is to have a generic data container for packaging (and regulating) various data items, so data of any structure can be handled uniformly using general data transport protocols and methods. We need to find such "boxes", that is, to have a standardized, _universal_ data container, for implementing UDX.
+Because RDA is schema-less, it is ideal for playing the role of the **plain boxes** in the implementation of UDX - it converts and stores complex structured data into simple, easy-to-parse text strings, so the data can be exchanged between individual programs with minimal and low-cost intermedia data transport layer, i.e. via text-based networks or messaging protocols, such as HTTP/RPC, TCP/IP, and FTP. 
 
-Popular data formats, such as XML, JSON, and CSV, are not suitable for encoding the UDX container, because these formats assume certain data models (by structure and type) to the data, meaning a container encoded in these formats is always for a certain kind of data, not _any data_. That's where RDA, a "one-size-fits-all" data format explained below, comes into play. RDA encoding allows converting data objects with arbitrarily complex structures to a text string, and strings are supported by most computer systems and programming languages for manipulation and transportation. 
 
-So RDA-encoding is the key technology for implementing UDX: it converts and stores any structured data into simple, eaily parsible text strings, so the data can be easily exchanged between individual programs via text-based networks or messaging protocols, such as HTTP/RPC, TCP/IP, and FTP. 
+
+
+
+can be understood as an extension of the well-known CSV formatencoding by allowing dynamically defining multiple delimiters. The delimitor-based RDA encoding Superior to XML and JSON, the simple, schema-less RDA encoding provides a generic space (an expandable, multi-dimensional array) for _storing_ a data object's properties - which are accessible via indexes[^1]. RDA can be seen as an enhanced CSV encoding that supports encoding multidimensional arrays of data, with additional encoding merits compared to CSV.
+
+Because of its “one-size-fits-all” approach, RDA encoding is easier to use, faster to parse and encode, and more space-efficient. As explained below, RDA enables loosely-coupled communication, which is especially useful in facilitating independently developed devices and programs' collaboration - where data models between these devices and programs are commonly incompatible and constantly changing.  
+
+[^1]: RDA's encoding space is logically an infinitely expandable multi-dimensional array, where the number of dimensions and the size of each dimension of the multi-dimensional array of an RDA-encoded string can be expanded as required, and in RDA, a data object's attributes values are simply stored in the space as strings i.e. no specific data types. 
+
+## The Problem With Cross-System Data Exchange 
+
+Data exchange between two separated systems can be difficult to implement (and maintain) due to their often incompatible data models. Enforced "common schema" and/or dedicated custom-built pipelines are usually required to bridge the gaps if two incompatible systems require integration.
+
+
 
 ## RDA: Schema-less Encoding
 
