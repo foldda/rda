@@ -9,16 +9,14 @@ Compared to CSV, text in RDA format utilises a header section to dynamically def
 
 ## RDA Examples
 
-The following example shows a single-dimension RDA-encoded string containing a list of data elements: "One", "Two", and "Three". 
-
+In this RDA example below, the header section consists of 3 chars "|\\|" where the first char '|' is the first dimension delimiter, the second letter '\\' is the escape-char, and the third char '|' (the first repeat of the first dimension delimiter) marks the start of the encoded data content (aka. "payload").
 ```
 |\|One|Two|Three
 ```
+In this example, the payload is a 1-D array consists of 3 elements: "One", "Two", and "Three", delimited by the delimiter character '|' defined in the header.
 
 | One | Two | Three | 
 |------|-----|-----|
-
-In the above example, the header section consists of 3 chars "|\\|" where the first char '|' is the first dimension delimiter, the second letter '\\' is the escape-char, and the third char '|' (the first repeat of the first dimension delimiter) marks the start of the encoded data content (aka. "payload"). In this example, the payload is a 1-D array of 3 elements: "One", "Two", and "Three", delimited by the delimiter character '|'.
 
 The next example is an RDA-formatted string that contains a 2-dimensional dataset. In this example, from the header section, the first dimension delimiter is character '|', and the second dimension delimiter is character ','.
 
@@ -33,18 +31,19 @@ The data encoded in the above example string is equivalent to the content of the
 | John | M   | 70  |
 | Kate | F   | 63  | 
 
-Following the pattern, by defining more delimiters in an RDA string's header, we can encode higher-level multidimensional data in the string.
+Following this encoding pattern, by defining more delimiters in an RDA string's header, we can encode and store higher-level multidimensional data in an RDA-formatted string.
 
 ## Using RDA To Store And Transport Data
 
-Using XML and JSON to store and transport data causes tight-coupling between the sender and the receiver. This is because XML/JSON-based data exchange relies on a predefined schema to describe the data being exchanged for parsing and retrieving the encoded data elements. Using RDA in data exchange does not require a fixed schema which eliminates the tight-coupling issue.
+Traditional data exchange pipelines use XML and JSON to store and transport data between the sender and the receiver. This causes tight-coupling because XML/JSON encoding/decoding require a predefined schema that is tied to the data being exchanged which can be (and usually are) dynamic and evolving due to requirement changes and version advances. 
 
-Imagine you're moving house...
+Using RDA in data exchange pipelines does not require using a fixed schema, it means the pipelines' encoding and parsing remain the same regardless of data payload's structure change, and there is no tight-coupling between the data sender and receiver as they can change their data structure without breaking the data transport pipelines.
 
-In this new approach, RDA plays the role of being the plain boxes for storing and transporting data; it's the sender and the receiver's responsibility to produce and to consume the transported data. The sender and the receiver are now loosely coupled because the data pipeline connecting them is no longer tied to a predefined schema.
+Let's explain this using an analogy. Imagine you're moving house: you would first pack household items into boxes, disassemble them if required, and then transport the boxes using a courier company. Once the boxes are delivered to the new place, you would unpack the boxes, reassemble the items, and re-place them to their designated places.
 
+In RDA-based data exchange, RDA strings play the role of the **plain boxes** for storing and transporting data; it's the sender and the receiver's responsibility to produce and to consume the transported data. The sender and the receiver are now loosely coupled because the data pipeline connecting them is no longer tied to a predefined schema.
 
-## Charian - The Reference Encoder/Parser API
+## Charian - Using RDA Strings As Data Container
 
 ## SnapFusion - A Schema-less Data Exchange Use Case
 
