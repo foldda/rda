@@ -31,7 +31,9 @@ The data encoded in the above example string is equivalent to the content of the
 | John | M   | 70  |
 | Kate | F   | 63  | 
 
-Following this encoding pattern, by defining more delimiters in an RDA string's header, we can encode and store higher-level multidimensional data in an RDA-formatted string.
+Following this encoding pattern, by defining more delimiters in an RDA string's header, we can encode and store higher-level multidimensional data in an RDA-formatted string[^1].
+
+[^1]: A more detailed explanation of RDA encoding rule is in [this repo's wiki](https://github.com/foldda/rda/wiki).
 
 ## Using RDA To Store And Transport Data
 
@@ -45,7 +47,7 @@ In RDA-based data exchange, RDA strings play the role of the **plain boxes** for
 
 ## Charian - Using RDA Strings As Data Container
 
-## SnapFusion - A Schema-less Data Exchange Use Case
+
 
 ## Universal Data Exchange - The Big Picture
 
@@ -75,6 +77,8 @@ So for data exchange between isolated independent systems, we could do something
 
 Because RDA is schema-less, it is ideal for playing the role of the **plain boxes** in the implementation of UDX - it converts and stores complex structured data into simple, easy-to-parse text strings, so the data can be exchanged between individual programs with minimal and low-cost intermedia data transport layer, i.e. via text-based networks or messaging protocols, such as HTTP/RPC, TCP/IP, and FTP. 
 
+
+## SnapFusion - A Practical UDX Example
 
 
 
