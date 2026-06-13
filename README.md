@@ -14,12 +14,10 @@ Below is an RDA-encoded string contains of a one-dimension array consists of thr
 ```
 |\|One|Two|Three
 ```
-**The data elements** 
 
-| One | Two | Three | 
-|------|-----|-----|
+An RDA string has two sub-string sections for its functions: a header section (the "header") for dynamically defining the string's encoding chars; and a payload section (the "payload") for containing the encoded data elements. 
 
-An RDA string has two sub-string sections for its functions: a header section (the "header") for dynamically defining the string's encoding chars, followed by a payload section (the "payload") for containing the encoded data elements. In the example, the the sub-string "|\\|" is the header, which defines only one delimiter (the first char '|') and the escape-char (the second letter '\\'). The third char '|' (the first repeat of the first char) marks the end of the header and the start of the payload.
+In the example, the header is the sub-string "|\\|", which in this case is defines only one delimiter (the first char '|') and the escape-char (the second letter '\\'). The third char '|' (the first repeat of the first char) marks the end of the header and the start of the payload, which is the rest of the string - "One|Two|Three".
 
 If we want to encode and store 2-dimensional data in an RDA string, we need to define a second-dimension delimiter in the header and use it in the encoding, like in this next example. 
 
@@ -41,9 +39,9 @@ Following this encoding pattern, by defining more delimiters in an RDA string's 
 
 ## Using RDA To Store And Transport Data
 
-Traditional data exchange pipelines use XML and JSON to store and transport data between the sender and the receiver. This causes tight-coupling because XML/JSON encoding/decoding require a predefined schema that is tied to the data being exchanged which can be (and usually are) dynamic and evolving due to requirement changes and version advances. 
+Traditional data exchange pipelines use XML and JSON to store and transport data between the sender and the receiver. This causes tight-coupling between the two because the schema used in XML/JSON encoding is tied to the data, which can be (and usually are) dynamic and evolving due to requirement changes and version advances. 
 
-Using RDA in data exchange pipelines does not require using a fixed schema, it means the pipelines' encoding and parsing remain the same regardless of data payload's structure change, and there is no tight-coupling between the data sender and receiver as they can change their data structure without breaking the data transport pipelines.
+Using RDA in data exchange pipelines does not depend on schema, it means pipelines using RDA format remain the same regardless of data payload's structure change, and a data sender and a receiver can freely exchange their data, even with evloving data structure, without breaking the data transport pipelines.
 
 Let's explain this using an analogy. Imagine you're moving house: you would first pack household items into boxes, disassemble them if required, and then transport the boxes using a courier company. Once the boxes are delivered to the new place, you would unpack the boxes, reassemble the items, and re-place them to their designated places.
 
