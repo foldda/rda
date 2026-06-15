@@ -37,23 +37,29 @@ Following this encoding pattern, by defining more delimiters in an RDA string's 
 
 [^1]: A more detailed explanation of RDA encoding rule is in [this repo's wiki](https://github.com/foldda/rda/wiki).
 
-## Using RDA To Store And Transport Data
+## Schema-Neutral Data Exchange
 
-Traditional data-exchange pipelines using XML and JSON can cause tight-coupling between the sender and the receiver. This is because the XML/JSON schemas are tied to the data, and if the data format changes the pipelines need to be confiugured or rebuilt accordingly, meaning high cost in maintainance. How can we solve such issue? Let me explain using an analogy. 
+Traditional data-exchange pipelines using XML and JSON can cause tight-coupling between the sender and the receiver. This is because the XML/JSON schemas are tied to the data, and if the data format changes the pipelines also need to change, meaning high cost in maintainance. Here we have a generic approach of schema-neutral data exchange, which can be explained with the following analogy. 
 
 Imagine you're moving house: you would first pack household items into boxes, disassemble them if required. Once the boxes are delivered to the new place by a freight company, you could then unpack the boxes, reassemble the items, and re-place them to their designated places. Notice everyone's household content would be different but they can use the same freight company for house moving. The key is the sender and the receiver are responsible for packing and unpacking the contents, the freight company only moves packed boxes.
 
-So for mimicing flexible house-moving scenario in data exchange, we can conceptually divid the connection between a data sender program and a receiver program into two layers: the bottom "data transport" layer works like freight companies, that is, it is for moving the data but is insensitive to the data content and data structure changes; and the top "application" layer is responsible for "packing and unpacking" (interpreting and consuming) the data that have been transported. We leave the sender and the receiver programs to implement the application layer, as they are the logical places to handle any data structure changes that need to happen.
+So for mimicing flexible house-moving scenario in data exchange between a data sender program and a receiver program, we can conceptually divid it  into two layers: the bottom "data transport" layer works like freight companies, that is, it is for moving the data but is insensitive to the data content and data structure changes; and the top "application" layer is responsible for "packing and unpacking" (interpreting and consuming) the data that have been transported. We leave the sender and the receiver programs to implement the application layer, as they are the logical places to handle any data structure changes that need to happen.
 
-For the data transport layer, we want to make it data-content and data-structure independent - like a "freight comapany for data", and the key to this is to have a media that has a form of **plain boxes** storage for storing data and are also suitable for being transported using various data communication methods and protocols, and RDA formatted strings are most suitable for this purpose.
+For the data transport layer, we want to make it to be data-content and data-structure independent - like a "freight comapany" for data, and the key to this is to have a media that can serve as **plain boxes** storage for storing various data and are also can be handled by conventional data communication methods and protocols, and RDA formatted strings are most suitable for this purpose.
 
 ## Charian - Using RDA Strings As Data Container
 
-Charian is an API for easily encoding and parsing RDA format strings, whcih is available in C#, Python, and Java [from its GitHub repo](https://github.com/foldda/charian).
+Charian is an API for easily encoding and parsing RDA format strings, which is available in C#, Python, and Java [from its GitHub repo](https://github.com/foldda/charian).
 
 In the API, an RDA string is modeled as a data container, which has setter and getter methods that can be used to store and retrieve data by a data sender or receiver. Charian API makes the RDA string encoding and decoding easy and transparent to a user, and the intuitive "container" modeling fits perfectly into the concept of building loosely-coupled schema-independent data trasnport pipelines. 
 
 It's worth pointing out that because strings are a generic data format supported in all modern languages and platforms, so data trasnport pipelines based on RDA-encoded strings are well suited for cross-language and cross-platform systems integration.
+
+## SnapFusion - A Practical Example
+
+SnapFusion is a component-based application building framework, which can be used assamble applications using software components. One of the design challenge of SnapFusion is to allows any third-party software components that connect to the framework to commnunicate between each other, and these components can perform any business function, built by any parties, change at anytime, and can be built in the future. So the framework has to be **extremely flexible** to accommandate all these. 
+
+One of the things has to be flexible is the data exchange format between the component and the framework, and between the components themselves. We chose to use RDA and Charian for achivieving these design goals, check out [the SnapFusion GitHub repo](https://github.com/foldda/snap-fusion) to see how these are practically implemented, with plug-n-play demos.
 
 ## Universal Data Exchange - The Big Picture
 
