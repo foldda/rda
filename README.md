@@ -39,17 +39,19 @@ Following this encoding pattern, by defining more delimiters in an RDA string's 
 
 ## Using RDA To Store And Transport Data
 
-Traditional data exchange pipelines using XML and JSON can cause tight-coupling between the sender and the receiver, because the XML/JSON schemas are tied to the data, and if the data format changes the pipelines need to be confiugured or rebuilt accordingly. Data exchange pipelines using RDA do not use a schema, so they are compatible to any data payload's structure changes, meaning a data sender and a receiver are free to change data structure in their data exchange, using the same data transport pipeline.
+Traditional data-exchange pipelines using XML and JSON can cause tight-coupling between the sender and the receiver. This is because the XML/JSON schemas are tied to the data, and if the data format changes the pipelines need to be confiugured or rebuilt accordingly. Data exchange pipelines using RDA do not have such an issue, so they are compatible to any data payload's structure changes, meaning a data sender and a receiver are free to change data structure using the same static pipeline.
 
 Let's explain how this work using an analogy. Imagine you're moving house: you would first pack household items into boxes, disassemble them if required. Once the boxes are delivered to the new place by a freight company, you could then unpack the boxes, reassemble the items, and re-place them to their designated places. Notice everyone's household content would be different but they can use the same freight company for house moving. The key is the sender and the receiver are responsible for packing and unpacking the contents, the freight company only moves packed boxes.
 
-So for loosely-coupled data exchange pipelines, we just need to make them work like the freight companies, i.e. to be insensitive to the data content and its structure changes, and let the the sender and the receiver' be responsibility to data encoding and parsing when they produce and  consume the transported data. The schema-less RDA is designed for building such generic data transport, that is, we can use RDA strings as the **plain boxes** for storing and transporting data.
+So for loosely-coupled pipelines, we just need to make them work like the freight companies, i.e. to be insensitive to the data content and its structure changes, and let the the sender and the receiver' be responsibility to data encoding and parsing when they produce and  consume the transported data. The schema-less RDA encoding is ideal for building such generic data transport, that is, we can use RDA strings as the **plain boxes** for storing and transporting data.
 
 ## Charian - Using RDA Strings As Data Container
 
-[Charian](https://github.com/foldda/charian) is an API for easily encoding and parsing RDA format strings. It models an RDA string as a data container, and a data sender and receiver can use the API's setter and getter methods to store and retrieve data to and from RDA strings.
+Charian is an API for easily encoding and parsing RDA format strings, whcih is available in C#, Python, and Java [from its GitHub repo](https://github.com/foldda/charian).
 
-Charian API is available in C#, Python, and Java [from its GitHub repo](https://github.com/foldda/charian) 
+In the API, an RDA string is modeled as a data container, which has setter and getter methods that can be used to store and retrieve data by a data sender or receiver. Charian API makes the RDA string encoding and decoding easy and transparent to a user, and the intuitive "container" modeling fits perfectly into the concept of building loosely-coupled schema-independent data trasnport pipelines. 
+
+It's worth pointing out that because strings are a generic data format supported in all modern languages and platforms, so data trasnport pipelines based on RDA-encoded strings are well suited for cross-language and cross-platform systems integration.
 
 ## Universal Data Exchange - The Big Picture
 
