@@ -57,7 +57,13 @@ It's worth pointing out that because strings are a generic data format supported
 
 ## SnapFusion - A Practical Example
 
-SnapFusion is a component-based application building framework, which can be used assamble applications using software components. One of the design challenge of SnapFusion is to allows any third-party software components that connect to the framework to commnunicate between each other, and these components can perform any business function, built by any parties, change at anytime, and can be built in the future. So the framework has to be **extremely flexible** to accommandate all these. 
+SnapFusion is a component-based software framework for building applications using pre-existing software components - a bit like the process of manufacturing cars, where different parts - doors, wheels, windows and engine from different suppliers - are assembled into an automobil.
+
+SnapFusion is designed to be generic and vendor-neutral, so it assume all components are independently-built and not necessarily have the same data model, and components connected via SnapFusion to communicate and interact, which is designed to allows to connect to each other and become an application. 
+
+These components are highly  - they can be made by different vendors, from different time, and have different business function. 
+
+between each othercan be used assamble applications using software components. One of the design challenge of SnapFusion is to allows any third-party software components that connect to the framework to commnunicate between each other, and these components can perform any business function, built by any parties, change at anytime, and can be built in the future. So the framework has to be **extremely flexible** to accommandate all these. 
 
 One of the things has to be flexible is the data exchange format between the component and the framework, and between the components themselves. We chose to use RDA and Charian for achivieving these design goals, check out [the SnapFusion GitHub repo](https://github.com/foldda/snap-fusion) to see how these are practically implemented, with plug-n-play demos.
 
