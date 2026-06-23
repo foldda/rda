@@ -3,19 +3,19 @@
 
 <img src="docs/image/rda_logo.png" align="right" height="128">
 
-Recursive Delimited Array (RDA) is a plain-text data format for encoding structured data as text strings. It's delimiter-based similar to CSV, which is more robust and simpler to implement compared to the tag-based, schema-dependent XML and JSON. 
+Recursive Delimited Array (RDA) is a plain-text data format for encoding structured data as text strings. It's a delimiter-based encoding, similar to CSV, which is more robust and simpler to implement compared to the tag-based, schema-dependent XML and JSON. 
 
-Compared to CSV that is limited for encoding 2-dimensional data, RDA allows encoding and storing any complex data in a multidimensional-array by utilising multiple delimiters that can be dynamically defined in its header.
+An RDA string consists a "header" section containing the string's encoding chars, and a "payload" section containing the data elements encoded using the encoding chars from the header. Compared to CSV, which is limited for encoding 2-dimensional data, an RDA-encoded string can store any complex data in a multidimensional "space" using multiple delimiters that can be dynamically defined in its header. By using the encoding chars retrieved from the header, a parser program can parse the payload for the data content.
 
 ## RDA Examples
 
-An RDA string has a header section (the "header") for dynamically defining the string's encoding chars, followed by a payload section (the "payload") for containing the encoded data elements. Below is an RDA-encoded string contains of a one-dimension array.
+Below is an RDA-encoded string contains of a one-dimension array.
 
 ```
 |\|One|Two|Three
 ```
 
-In the above example, the header is the leading sub-string "|\\|". In this header it defines a delimiter which is the first char '|', and the escape-char which is the second letter '\\'. The third char '|' in the header, which is the first repeat of the first char, marks the end of the header and the start of the payload, "One|Two|Three", where the delimiter '|' is used to encode the array consists of three data elements "One", "Two", and "Three".
+In this example, the header is the leading sub-string "|\\|". In this header it defines a delimiter which is the first char '|', and the escape-char which is the second letter '\\'. The third char '|' in the header, which is the first repeat of the first char, marks the end of the header and the start of the payload, "One|Two|Three", where the delimiter '|' is used to encode the array consists of three data elements "One", "Two", and "Three".
 
 RDA allows defining additional delimiters in the header for encoding multi-dimensional data, like in this next example. 
 
