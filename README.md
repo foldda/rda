@@ -5,7 +5,7 @@
 
 Recursive Delimited Array (RDA) is a plain-text data format for encoding structured data as text strings. It's a delimiter-based encoding, similar to CSV, which is more robust and simpler to implement compared to the tag-based, schema-dependent XML and JSON. 
 
-An RDA string consists a "header" section containing the string's encoding chars, and a "payload" section containing the data elements encoded using the encoding chars from the header. Compared to CSV, which is limited for encoding 2-dimensional data, an RDA-encoded string can store any complex data in a multidimensional "space" using multiple delimiters that can be dynamically defined in its header. By using the encoding chars retrieved from the header, a parser program can parse the payload for the data content.
+An RDA string consists a "header" section containing the string's encoding chars, and a "payload" section containing the data elements encoded using the encoding chars from the header. Compared to CSV, which is limited for encoding 2-dimensional data, an RDA-encoded string can encode and store any complex data into a multidimensional "space" using the multiple delimiters defined in its header. With the encoding chars retrieved from the header, a parser program can parse the payload's data content dynamically without the need of any preset configuration.
 
 ## RDA Examples
 
@@ -23,7 +23,7 @@ RDA allows defining additional delimiters in the header for encoding multi-dimen
 |,\|Name,Sex,Age|Mary,F,52|John,M,70|Kate,F,63
 ```
 
-In this example, in addition to the first dimension deleimiter '|' as in the previous example, a second dimension delimiter char ',' is defined in the header "|,\\|" and is used to encode the following 2-D table in an RDA string.
+In this second example, the header "|,\\|" consists a first dimension delimiter '|' and a second dimension delimiter char ','. These two delimiters are used to encode the following 2-D table in an RDA string.
 
 | Name | Sex | Age | 
 |------|-----|-----|
@@ -31,7 +31,7 @@ In this example, in addition to the first dimension deleimiter '|' as in the pre
 | John | M   | 70  |
 | Kate | F   | 63  | 
 
-Following this encoding pattern, by defining more delimiters in an RDA string's header, we can encode and store higher-level multidimensional data in an RDA-formatted string[^1].
+Following this encoding pattern, we can define more delimiters in an RDA string's header, and encode and store higher-level multidimensional data in an RDA-formatted string using these delimiters[^1].
 
 [^1]: A more detailed explanation of RDA encoding rule is in [this repo's wiki](https://github.com/foldda/rda/wiki).
 
