@@ -3,29 +3,27 @@
 
 <img src="docs/image/rda_logo.png" align="right" height="128">
 
-Recursive Delimited Array (RDA) is a plain-text data format for encoding structured data as text strings. Its delimiter-based encoding is  similar to CSV, which is more robust and simpler to implement than the tag-based, schema-dependent XML and JSON. 
+Recursive Delimited Array (RDA) is a plain-text data format for encoding structured data as text strings. It's delimiter-based similar to CSV, which is more robust and simpler to implement compared to the tag-based, schema-dependent XML and JSON. 
 
-Compared to CSV, which is limited for encoding 2-dimensional data, RDA encoding utilises multiple delimiter chars for storing any complex structured data in a multidimensional-array space.
+Compared to CSV that is limited for encoding 2-dimensional data, RDA allows encoding and storing any complex data in a multidimensional-array by utilising multiple delimiters that can be dynamically defined in its header.
 
 ## RDA Examples
 
-Below is an RDA-encoded string contains of a one-dimension array consists of three data elements "One", "Two", and "Three", sepatated by a delimiter char which is '|'.
+An RDA string has a header section (the "header") for dynamically defining the string's encoding chars, followed by a payload section (the "payload") for containing the encoded data elements. Below is an RDA-encoded string contains of a one-dimension array.
 
 ```
 |\|One|Two|Three
 ```
 
-An RDA string has two sub-string sections for its functions: a header section (the "header") for dynamically defining the string's encoding chars; and a payload section (the "payload") for containing the encoded data elements. 
+In the above example, the header is the leading sub-string "|\\|". In this header it defines a delimiter which is the first char '|', and the escape-char which is the second letter '\\'. The third char '|' in the header, which is the first repeat of the first char, marks the end of the header and the start of the payload, "One|Two|Three", where the delimiter '|' is used to encode the array consists of three data elements "One", "Two", and "Three".
 
-In the example, the header is the sub-string "|\\|", which in this case is defines only one delimiter (the first char '|') and the escape-char (the second letter '\\'). The third char '|' (the first repeat of the first char) marks the end of the header and the start of the payload, which is the rest of the string - "One|Two|Three".
-
-If we want to encode and store 2-dimensional data in an RDA string, we need to define a second-dimension delimiter in the header and use it in the encoding, like in this next example. 
+RDA allows defining additional delimiters in the header for encoding multi-dimensional data, like in this next example. 
 
 ```
 |,\|Name,Sex,Age|Mary,F,52|John,M,70|Kate,F,63
 ```
 
-In this example, the header "|,\\|" defines the first dimension deleimiter '|' as the previous example, but also defines a second dimension delimiter as char ',', and the data encoded in the string is the content of the following 2-D table.
+In this example, in addition to the first dimension deleimiter '|' as in the previous example, a second dimension delimiter char ',' is defined in the header "|,\\|" and is used to encode the following 2-D table in an RDA string.
 
 | Name | Sex | Age | 
 |------|-----|-----|
@@ -39,13 +37,13 @@ Following this encoding pattern, by defining more delimiters in an RDA string's 
 
 ## Schema-Neutral Data Exchange
 
-Traditional data-exchange pipelines using XML and JSON can cause tight-coupling between the sender and the receiver. This is because the XML/JSON schemas are tied to the data, and if the data format changes the pipelines also need to change, meaning high cost in maintainance. Here we have a generic approach of schema-neutral data exchange, which can be explained with the following analogy. 
+Traditional data-exchange pipelines using XML and JSON can cause tight-coupling between the sender and the receiver. This is because the XML/JSON schemas are tied to the data, and if the data format changes the pipelines also need to change, meaning high cost in maintainance. RDA enables a generic approach of schema-neutral data exchange, which can be explained with the following analogy. 
 
-Imagine you're moving house: you would first pack household items into boxes, disassemble them if required. Once the boxes are delivered to the new place by a freight company, you could then unpack the boxes, reassemble the items, and re-place them to their designated places. Notice everyone's household content would be different but they can use the same freight company for house moving. The key is the sender and the receiver are responsible for packing and unpacking the contents, the freight company only moves packed boxes.
+Imagine you're moving house: you would first pack household items into boxes, disassemble them if required, and once the boxes are delivered to the new place by a freight company, you would unpack the boxes, reassemble the items, and re-place them to their designated places. Note that even everyone's household content could be different but the same freight company can be used for the house moving. The key is the sender and the receiver are responsible for packing and unpacking the contents, using generic box containers, the freight company only moves packed boxes.
 
-So for mimicing flexible house-moving scenario in data exchange between a data sender program and a receiver program, we can conceptually divid it  into two layers: the bottom "data transport" layer works like freight companies, that is, it is for moving the data but is insensitive to the data content and data structure changes; and the top "application" layer is responsible for "packing and unpacking" (interpreting and consuming) the data that have been transported. We leave the sender and the receiver programs to implement the application layer, as they are the logical places to handle any data structure changes that need to happen.
+RDA-based data exchange mimics such flexible house-moving scenario but is for moving data between a sender program and a receiver program. The data moving process can be conceptually divided into actions in two layers: the bottom "data transport" layer works like a freight company, that is, it is for moving the data but is insensitive to the data content and data structure changes; and the top "application" layer is responsible for "packing and unpacking" (interpreting and consuming) the data that have been transported. In RDA-based data exchange we leave the application layer to be implemented in the sender and the receiver programs, as they are the logical places to handle any data structure changes that need to happen.
 
-For the data transport layer, we want to make it to be data-content and data-structure independent - like a "freight comapany" for data, and the key to this is to have a media that can serve as **plain boxes** storage for storing various data and are also can be handled by conventional data communication methods and protocols, and RDA formatted strings are most suitable for this purpose.
+For the data transport layer, we will use RDA strings as **plain boxes** storage for storing various data, so conventional data communication methods and protocols (eg messaging protocols like HTTP), can be used to "move the data" beteween their destinations, like a "freight comapany".
 
 ## Charian - Using RDA Strings As Data Container
 
