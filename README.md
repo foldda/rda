@@ -5,7 +5,9 @@
 
 Recursive Delimited Array (RDA) is a plain-text data format for encoding structured data as text strings. It's a delimiter-based encoding, similar to CSV, which is more robust and simpler to implement compared to the tag-based, schema-dependent XML and JSON. 
 
-An RDA string consists a "header" section containing the string's encoding chars, and a "payload" section containing the data elements encoded using the encoding chars from the header. Compared to CSV, which is limited for encoding 2-dimensional data, an RDA-encoded string can encode and store any complex data into a multidimensional "space" using the multiple delimiters defined in its header. With the encoding chars retrieved from the header, a parser program can parse the payload's data content dynamically without the need of any preset configuration.
+An RDA string consists two substring sections: a "header" followed by a "payload". The header contains the definition of the string's encoding chars, and the payload contains the data elements encoded using these encoding chars. Using the encoding chars obtained from the header, a parser program can parse the string's data content in the payload dynamically, without any preset configuration.
+
+Compared to CSV, which must have a fixed, predefined delimiter, and is limited for encoding 2-dimensional data, an RDA string is capable to store complex structured data into _a multidimensional space_ that it provides, because it allows defining multiple delimiters in its header.
 
 ## RDA Examples
 
@@ -15,9 +17,9 @@ Below is an RDA-encoded string contains of a one-dimension array.
 |\|One|Two|Three
 ```
 
-In this example, the header is the leading sub-string "|\\|". In this header it defines a delimiter which is the first char '|', and the escape-char which is the second letter '\\'. The third char '|' in the header, which is the first repeat of the first char, marks the end of the header and the start of the payload, "One|Two|Three", where the delimiter '|' is used to encode the array consists of three data elements "One", "Two", and "Three".
+In this example, the header is the leading sub-string "|\\|". The first char '|' in the header it defines a first-dimemsion delimiter and the the second letter '\\' defines the escape-char for the encoding. The third char '|' in the header, which is the first repeat of the first char, marks the separation between the header and the payload. The payload sunstring in this example, "One|Two|Three", is an array of three data elements "One", "Two", and "Three" encoded using the first-dimension delimiter '|'.
 
-RDA allows defining additional delimiters in the header for encoding multi-dimensional data, like in this next example. 
+Through defining additional delimiters in the header, RDA allows for encoding multi-dimensional data, like being illustrated in this next example. 
 
 ```
 |,\|Name,Sex,Age|Mary,F,52|John,M,70|Kate,F,63
@@ -31,13 +33,15 @@ In this second example, the header "|,\\|" consists a first dimension delimiter 
 | John | M   | 70  |
 | Kate | F   | 63  | 
 
-Following this encoding pattern, we can define more delimiters in an RDA string's header, and encode and store higher-level multidimensional data in an RDA-formatted string using these delimiters[^1].
+Similarily, by defining more encoding delimiters in an RDA string's header, we can encode and store higher-level multidimensional data in the string[^1].
 
 [^1]: A more detailed explanation of RDA encoding rule is in [this repo's wiki](https://github.com/foldda/rda/wiki).
 
-## Schema-Neutral Data Exchange
+## Loss-Coupled Schema-Neutral Data Exchange
 
-Traditional data-exchange pipelines using XML and JSON can cause tight-coupling between the sender and the receiver. This is because the XML/JSON schemas are tied to the data, and if the data format changes the pipelines also need to change, meaning high cost in maintainance. RDA enables a generic approach of schema-neutral data exchange, which can be explained with the following analogy. 
+Traditional data-exchange pipelines using XML and JSON can cause tight-coupling between the sender and the receiver, because these pipelines are typically built based on XML/JSON schemas that are tied to the data. If the data format changes the pipelines would also need to be changed accordingly, and tight-coupling means high cost in maintainance. 
+
+Pipelines using RDA enable schema-neutral loss-coupled data exchange, which can be explained with the following analogy. 
 
 Imagine you're moving house: you would first pack household items into boxes, disassemble them if required, and once the boxes are delivered to the new place by a freight company, you would unpack the boxes, reassemble the items, and re-place them to their designated places. Note that even everyone's household content could be different but the same freight company can be used for the house moving. The key is the sender and the receiver are responsible for packing and unpacking the contents, using generic box containers, the freight company only moves packed boxes.
 
