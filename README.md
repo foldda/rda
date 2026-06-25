@@ -5,9 +5,9 @@
 
 Recursive Delimited Array (RDA) is a plain-text data format for encoding structured data as text strings. It's a delimiter-based encoding, similar to CSV, which is more robust and simpler to implement compared to the tag-based, schema-dependent XML and JSON. 
 
-An RDA string consists two substring sections: a "header" followed by a "payload". The header contains the definition of the string's encoding chars, and the payload contains the data elements encoded using these encoding chars. Using the encoding chars obtained from the header, a parser program can parse the string's data content in the payload dynamically.
+Compared to CSV, an RDA-encoded string can have multiple dynamically defined delimiters and is capable to store complex structured data into _a multidimensional space_ that it provides, rather than being limited to encoding only 2-dimensional data using a fixed, predefined delimiter like the CSV. 
 
-Compared to CSV, an RDA string is capable to encode and store complex structured data into _a multidimensional space_ it provides, using multiple delimiters defined in its header, rather than being limited for only encoding 2-dimensional data using a fixed, predefined delimiter like the CSV. 
+An RDA string has a simple structure that consists two substring sections: a "header" followed by a "payload". The header contains the string's encoding chars, and the payload contains the data elements encoded using these encoding chars. Using the encoding chars obtained from the header, a parser program can sufficiently parse the string's data content in the payload.
 
 ## RDA Examples
 
@@ -39,15 +39,21 @@ Similarily, by defining more encoding delimiters in the header, an RDA string ca
 
 ## Loss-Coupled Schema-Neutral Data Exchange
 
-RDA is designed to address an issue with XML and JSON-based data-exchange pipelines, which is the tight-coupling between a sender and a receiver using these pipelines. The tight-coupling is caused by the XML/JSON schemas that are built into these pipelines but are tied to the data being exchanged - whenever the data format changes the pipelines would also need to be changed accordingly, resulting high cost in maintaining the data exchange using these pipelines.
+RDA is designed to address an issue with XML and JSON-based data-exchange pipelines, which is the tight-coupling between a sender and a receiver using these pipelines. Because the XML/JSON's schemas are tied to the data being exchanged, whenever the data format changes the pipelines would also need to be changed accordingly, resulting high cost in maintaining the data exchange using these pipelines.
 
-Using RDA as the encoding format in data exchange promotes easy to build and maintain "lossly-coupled" pipelines between a sender and a receiver. Let's explain this with an analogy. 
+In contrast, using RDA as the encoding format in data exchange promotes easy to build and maintain "lossly-coupled" pipelines between a sender and a receiver. Let's explain how does this work with an analogy. 
 
 Imagine you're moving house: you would first pack household items into boxes, disassemble them if required, and once the boxes are delivered to the new place by a freight company, you would unpack the boxes, reassemble the items, and re-place them to their designated places. Note that even everyone's household content could be different but the same freight company can be used for the house moving. The key is the sender and the receiver are responsible for packing and unpacking the contents, using generic box containers, the freight company only moves packed boxes.
 
 An RDA-based data exchange system has two logical layers: an "application" layer at the top and a "data transport" layer at the bottom. The application layer consists the sender program and the receiver program produce and consumes the data and are also responsible for "packing and unpacking" the data to and from standard packaging boxes, which are RDA-encoded strings. The data transport layer plays the role of "a courier company" that physically moves the data (RDA strings) between the sender and the receiver, and any protocol or mechanism that handles string data type can be used to implement this layer eg. a file system or a database or via FTP, MSMQ etc.
 
-Fundimentally, such data exchange model is a much simplified version of the OSI model, where the 
+Fundamentally, such data exchange system model gives the control to the data sender and receiver programs, which use the data transportation as a generic service that can be simply used to deposite and retrive data in the form of RDA-encoded strings. 
+
+For example, a sender program can encode ("pack") a customer's ID, first-name, and last name into an RDA string, and save the string to a file, or to a database table, later, a receiver program can read the string value from the file or the database table, decode ("unpack") the string and retrieve the customer data's details. 
+
+In this example, the data transport layer ("courier service") is simply a file system or a database, and it can also be any other systems or protocols that handles strings, eg. FTP, MSMQ, etc. These generic systems and services are readily available and easily accessible to any sender and reciver programs. And becasue RDA-encoding is schemaless, the sender and receiver can processed the data being exchanged using the same encoder/decoder regardless  
+
+In contrast, If the courier company have to move XML/JSON based strings, each time the fleet has to be custom-built
 
 the datae mimics such flexible house-moving behavior: the data moving system is divided in two  the bottom "data transport" layer works like a freight company, that is, it is for moving the data but is insensitive to the data content and data structure changes; and the top "application" layer is  that have been transported. In RDA-based data exchange we leave the application layer to be implemented in the sender and the receiver programs, as they are the logical places to handle any data structure changes that need to happen.
 
