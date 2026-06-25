@@ -5,9 +5,9 @@
 
 Recursive Delimited Array (RDA) is a plain-text data format for encoding structured data as text strings. It's a delimiter-based encoding, similar to CSV, which is more robust and simpler to implement compared to the tag-based, schema-dependent XML and JSON. 
 
-An RDA string consists two substring sections: a "header" followed by a "payload". The header contains the definition of the string's encoding chars, and the payload contains the data elements encoded using these encoding chars. Using the encoding chars obtained from the header, a parser program can parse the string's data content in the payload dynamically, without any preset configuration.
+An RDA string consists two substring sections: a "header" followed by a "payload". The header contains the definition of the string's encoding chars, and the payload contains the data elements encoded using these encoding chars. Using the encoding chars obtained from the header, a parser program can parse the string's data content in the payload dynamically.
 
-Compared to CSV, which must have a fixed, predefined delimiter, and is limited for encoding 2-dimensional data, an RDA string is capable to store complex structured data into _a multidimensional space_ that it provides, because it allows defining multiple delimiters in its header.
+Compared to CSV, an RDA string is capable to encode and store complex structured data into _a multidimensional space_ it provides, using multiple delimiters defined in its header, rather than being limited for only encoding 2-dimensional data using a fixed, predefined delimiter like the CSV. 
 
 ## RDA Examples
 
@@ -33,19 +33,25 @@ In this second example, the header "|,\\|" consists a first dimension delimiter 
 | John | M   | 70  |
 | Kate | F   | 63  | 
 
-Similarily, by defining more encoding delimiters in an RDA string's header, we can encode and store higher-level multidimensional data in the string[^1].
+Similarily, by defining more encoding delimiters in the header, an RDA string can store higher-level multidimensional data through its encoding[^1].
 
 [^1]: A more detailed explanation of RDA encoding rule is in [this repo's wiki](https://github.com/foldda/rda/wiki).
 
 ## Loss-Coupled Schema-Neutral Data Exchange
 
-Traditional data-exchange pipelines using XML and JSON can cause tight-coupling between the sender and the receiver, because these pipelines are typically built based on XML/JSON schemas that are tied to the data. If the data format changes the pipelines would also need to be changed accordingly, and tight-coupling means high cost in maintainance. 
+RDA is designed to address an issue with XML and JSON-based data-exchange pipelines, which is the tight-coupling between a sender and a receiver using these pipelines. The tight-coupling is caused by the XML/JSON schemas that are built into these pipelines but are tied to the data being exchanged - whenever the data format changes the pipelines would also need to be changed accordingly, resulting high cost in maintaining the data exchange using these pipelines.
 
-Pipelines using RDA enable schema-neutral loss-coupled data exchange, which can be explained with the following analogy. 
+Using RDA as the encoding format in data exchange promotes easy to build and maintain "lossly-coupled" pipelines between a sender and a receiver. Let's explain this with an analogy. 
 
 Imagine you're moving house: you would first pack household items into boxes, disassemble them if required, and once the boxes are delivered to the new place by a freight company, you would unpack the boxes, reassemble the items, and re-place them to their designated places. Note that even everyone's household content could be different but the same freight company can be used for the house moving. The key is the sender and the receiver are responsible for packing and unpacking the contents, using generic box containers, the freight company only moves packed boxes.
 
-RDA-based data exchange mimics such flexible house-moving scenario but is for moving data between a sender program and a receiver program. The data moving process can be conceptually divided into actions in two layers: the bottom "data transport" layer works like a freight company, that is, it is for moving the data but is insensitive to the data content and data structure changes; and the top "application" layer is responsible for "packing and unpacking" (interpreting and consuming) the data that have been transported. In RDA-based data exchange we leave the application layer to be implemented in the sender and the receiver programs, as they are the logical places to handle any data structure changes that need to happen.
+An RDA-based data exchange system has two logical layers: an "application" layer at the top and a "data transport" layer at the bottom. The application layer consists the sender program and the receiver program produce and consumes the data and are also responsible for "packing and unpacking" the data to and from standard packaging boxes, which are RDA-encoded strings. The data transport layer plays the role of "a courier company" that physically moves the data (RDA strings) between the sender and the receiver, and any protocol or mechanism that handles string data type can be used to implement this layer eg. a file system or a database or via FTP, MSMQ etc.
+
+Fundimentally, such data exchange model is a much simplified version of the OSI model, where the 
+
+the datae mimics such flexible house-moving behavior: the data moving system is divided in two  the bottom "data transport" layer works like a freight company, that is, it is for moving the data but is insensitive to the data content and data structure changes; and the top "application" layer is  that have been transported. In RDA-based data exchange we leave the application layer to be implemented in the sender and the receiver programs, as they are the logical places to handle any data structure changes that need to happen.
+
+If the courier company have to move XML/JSON based strings, each time the fleet has to be custom-built
 
 For the data transport layer, we will use RDA strings as **plain boxes** storage for storing various data, so conventional data communication methods and protocols (eg messaging protocols like HTTP), can be used to "move the data" beteween their destinations, like a "freight comapany".
 
