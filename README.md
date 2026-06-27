@@ -5,27 +5,26 @@
 
 Recursive Delimited Array (RDA) is a plain-text data format for encoding structured data as text strings. It's a delimiter-based encoding, similar to CSV, which is more robust and simpler to implement compared to the tag-based, schema-dependent XML and JSON. 
 
-Compared to CSV, an RDA-encoded string can have multiple dynamically defined delimiters and is capable to store complex structured data into _a multidimensional space_ that it provides, rather than being limited to encoding only 2-dimensional data using a fixed, predefined delimiter like the CSV. 
-
-An RDA string has a simple structure that consists two substring sections: a "header" followed by a "payload". The header contains the string's encoding chars, and the payload contains the data elements encoded using these encoding chars. Using the encoding chars obtained from the header, a parser program can sufficiently parse the string's data content in the payload.
-
-## RDA Examples
-
-Below is an RDA-encoded string contains of a one-dimension array.
-
+##### An RDA-encoded string example:
 ```
 |\|One|Two|Three
 ```
 
-In this example, the header is the leading sub-string "|\\|". The first char '|' in the header it defines a first-dimemsion delimiter and the the second letter '\\' defines the escape-char for the encoding. The third char '|' in the header, which is the first repeat of the first char, marks the separation between the header and the payload. The payload sunstring in this example, "One|Two|Three", is an array of three data elements "One", "Two", and "Three" encoded using the first-dimension delimiter '|'.
+An RDA-encoded string, or simply "RDA string", consists two substring sections: a "header" and a "payload". In the above example, the header substring "|\\|" defines a delimiter (the first char '|') that is used to encode the payload substring "One|Two|Three" which contains three data elements - "One","Two", and "Three". 
 
-Through defining additional delimiters in the header, RDA allows for encoding multi-dimensional data, like being illustrated in this next example. 
+An RDA string's header is dynamically expandable to include extra delimiters definition for encoding multi-dimensional data, which is in contrast to CSV, where it can only encode 2-dimensional data using a fixed, predefined delimiter. 
+
+> Because an RDA string's header contains all its the encoding chars[^1], a parser program, without needing extra configuration, can sufficiently parse the string's data content (the payload) after reading the header.
+
+[^1]: A more detailed explanation of RDA encoding rule is in [this repo's wiki](https://github.com/foldda/rda/wiki).
+
+In the next example, a first delimiter '|' and a second delimiter char ',' are defined in an RDA string's header ("|,\\|"), for encoding a 2-D data table into the string. 
+
+##### An RDA string containing 2-D encoded data:
 
 ```
 |,\|Name,Sex,Age|Mary,F,52|John,M,70|Kate,F,63
 ```
-
-In this second example, the header "|,\\|" consists a first dimension delimiter '|' and a second dimension delimiter char ','. These two delimiters are used to encode the following 2-D table in an RDA string.
 
 | Name | Sex | Age | 
 |------|-----|-----|
@@ -33,11 +32,7 @@ In this second example, the header "|,\\|" consists a first dimension delimiter 
 | John | M   | 70  |
 | Kate | F   | 63  | 
 
-Similarily, by defining more encoding delimiters in the header, an RDA string can store higher-level multidimensional data through its encoding[^1].
-
-[^1]: A more detailed explanation of RDA encoding rule is in [this repo's wiki](https://github.com/foldda/rda/wiki).
-
-## Loss-Coupled Schema-Neutral Data Exchange
+## Loosely-Coupled Schema-Neutral Data Exchange
 
 RDA is designed to address an issue with XML and JSON-based data-exchange pipelines, which is the tight-coupling between a sender and a receiver using these pipelines. Because the XML/JSON's schemas are tied to the data being exchanged, whenever the data format changes the pipelines would also need to be changed accordingly, resulting high cost in maintaining the data exchange using these pipelines.
 
