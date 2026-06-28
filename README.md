@@ -32,11 +32,11 @@ In the next example, a first delimiter '|' and a second delimiter char ',' are d
 | John | M   | 70  |
 | Kate | F   | 63  | 
 
-## Loosely-Coupled Schema-Neutral Data Exchange
+## Schema-less Data Exchange
 
-RDA is designed to address an issue with XML and JSON-based data-exchange pipelines, which is the tight-coupling between a sender and a receiver using these pipelines. Because the XML/JSON's schemas are tied to the data being exchanged, whenever the data format changes the pipelines would also need to be changed accordingly, resulting high cost in maintaining the data exchange using these pipelines.
+RDA is designed to address the tight-coupling issue between a data sender and a receiver when using XML and JSON encoding in the data-exchange pipelines, as XML/JSON schemas are tied to the data being exchanged. When the data format changes, which can happen quite often due to applications evolve due to upgrades and requirements chnages, the pipelines would also need to be changed accordingly, resulting high cost in maintaining these pipelines.
 
-In contrast, using RDA as the encoding format in data exchange promotes easy to build and maintain "lossly-coupled" pipelines between a sender and a receiver. Let's explain how does this work with an analogy. 
+Using RDA as the encoding format in data exchange allows the pipelines to be detached from data format changes, which allows them to easy to build and maintain, whilst leave a sender and a receiver to take responsibilities to maintain data compatibility if a change is required. Let's explain how does this work with an analogy. 
 
 Imagine you're moving house: you would first pack household items into boxes, disassemble them if required, and once the boxes are delivered to the new place by a freight company, you would unpack the boxes, reassemble the items, and re-place them to their designated places. Note that even everyone's household content could be different but the same freight company can be used for the house moving. The key is the sender and the receiver are responsible for packing and unpacking the contents, using generic box containers, the freight company only moves packed boxes.
 
