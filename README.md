@@ -30,25 +30,19 @@ In the next example, the RDA string contains definition of a first-dimension del
 | John | M   | 70  |
 | Kate | F   | 63  | 
 
-## "Late Binding" In Data Exchange
+## Data Exchange Late-Binding 
 
-When using XML or JSON encoding in data-exchange a data sender and a receiver, they must first agree to a data format in the form of XML/JSON schema for the data-exchange. This causes inflexibility (aka tight-coupling between the sender and the receiver) where when the data format changes, due to upgrades or requirements changes, they need to change accordingly to maintain the compatibility to the agreed schema data format, resulting in higher cost.
+When two programs exhange data between each other using XML or JSON encoding in data-exchange, they must first agree to a data format (i.e. an XML/JSON schema) for the data-exchange. This causes inflexibility because it limits the possibility that the data can be uncertain and can change (as they do). If one party decides to change its data format, it becomes a costly excercise for all the other parties that want to maintain the established data exchange connections.
 
-RDA encoding is schema-less but supports storing and transport arbitarily complex structured data. Using RDA encoding in data exchange does not require the sender and the receiver to agree on a data format prior to the data exchange, in other words, it allows "late binding" in the data exchange. Let's explain how does this work with an analogy. 
+Because RDA is schema-less and is suitable for encoding arbitarily complex structured data, using it in data exchange does not require the programs to pre-agree on a data format. Rather, it allows a program to decide what to do with the received data, in other words, it allows "late binding" in the data exchange. Let's explain this with an analogy. 
 
 Imagine you're moving house: you would first pack household items into boxes, disassemble them if required, and once the boxes are delivered to the new place by a freight company, you would unpack the boxes, reassemble the items, and re-place them to their designated places. Note that even everyone's household content could be different but the same freight company can be used for the house moving. The key is the sender and the receiver are responsible for packing and unpacking the contents, using generic box containers, the freight company only moves packed boxes.
 
 Late binding offers significant advantages in flexibility, version independence, and dynamic extensibility. By resolving the data object after it is received, it allows the receiver to adapt to changing environments, handle unknown object types, and avoid strict schema- dependent links.
 
-Late binding in data exchange using RDA encoding also allows using versatile, simple, and low-cost data transport. The data transport layer plays the role of "a courier company" that physically moves the data (RDA strings) between the sender and the receiver, and any protocol or mechanism that handles string data type can be used to implement this layer eg. a file system or a database or via FTP, MSMQ etc. Such data exchange system model gives the control to the data sender and receiver programs, which use the data transportation as a generic service that can be simply used to deposite and retrive data in the form of RDA-encoded strings. 
+Late binding in data exchange using RDA encoding also allows using versatile, simple, and low-cost data transport. Because the data is physically a text string, any protocol or mechanism (eg. a file system or a database or via FTP, MSMQ etc) that handles string data type can be used to be the "courier company", and RDA strings are the **plain boxes** for moving the data around. This is in contrast to building dedicated data exchange pipelines using XML/JSON for connecting specific programs of using specific data formats.
 
-For example, a sender program can encode ("pack") a customer's ID, first-name, and last name into an RDA string, and save the string to a file, or to a database table, later, a receiver program can read the string value from the file or the database table, decode ("unpack") the string and retrieve the customer data's details. 
-
-In this example, the data transport ("courier service") is simply a file system or a database, and it can also be any other systems or protocols that handles strings, eg. FTP, MSMQ, etc. These generic systems and services are readily available and easily accessible to any sender and reciver programs. And becasue RDA-encoding is schemaless, the sender and receiver can processed the data being exchanged using the same encoder/decoder regardless  
-
-In contrast, XML/JSON based strings are used, schema-dependent encoding and parsing logic has to be implemented and maintained by both the sender and the receiver. If we use RDA strings as **plain boxes** storage for storing various data, conventional data communication methods and protocols (eg messaging protocols like HTTP) can be used to "move the data" beteween their destinations, like a "freight comapany".
-
-## Charian - A One-Size-Fits-All Data Object Serialization API
+## Charian - A RDA-Based Serialization API
 
 Charian is an API for easily encoding and parsing RDA format strings, which is available in C#, Python, and Java [from its GitHub repo](https://github.com/foldda/charian).
 
