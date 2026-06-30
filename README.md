@@ -31,13 +31,17 @@ It is intended that a parser program can parse the string's data content (the pa
 
 ## Data Exchange Late-Binding 
 
+> In programming, late-binding allows a prpogram to adapt to changing environments, handle unknown object types, and avoid strict type- dependent links.
+
 When two programs exhange data between each other using XML or JSON encoding, they must first agree to a data format (i.e. an XML/JSON schema) for the data-exchange. This causes inflexibility because it limits the possibility that the data can be uncertain and can change (as they do). If one program decides to change its data format, it becomes a costly excercise for all the other programs that want to maintain the established data exchange connections.
 
-Because RDA is schema-less and can encode arbitarily complex structured data, it allows "late binding" in data exchange. That is, using RDA format encoding in data exchange does not require the programs to pre-agree on a data format. Rather, it allows a program to decide what to do with the received data, and by doing so it allows the receiver to adapt to changing environments, handle unknown object types, and avoid strict schema- dependent links. Let's explain this with an analogy. 
+Using RDA format encoding in data exchange allows "late binding" in data handling. That is, it does not require the programs to pre-agree on a data format, so it's more flexible in handling the data exchange. Let's explain this with an analogy. 
 
-Imagine you're moving house: you would first pack household items into boxes, disassemble them if required, and once the boxes are delivered to the new place, perhaps by a freight company, you would unpack the boxes, reassemble the items, and re-place them to their designated places. Note in this process, the sender, the receiver, and the freight company don't need to agree the exact shape and the size of each household item - everything is wrapped in generic box containers until the time the receiver unwrap the packaging and "consumes" the box's content.
+Imagine you're moving house: you would first pack household items into boxes, disassemble them if required, and once the boxes are delivered to the new place, perhaps by a freight company, you would unpack the boxes, reassemble the items, and re-place them to their designated places. Note in this process, the sender, the receiver, and the freight company don't need to agree the exact shape and the size of each household item - everything is wrapped in generic box containers until the time the receiver unwrap the packaging and "consumes" the box's content. 
 
-Similarily, late binding in data exchange using RDA encoding offers significant advantages in flexibility, version independence, and dynamic extensibility. It also allows using versatile, simple, and low-cost data transport. Because the data is physically a text string, any protocol or mechanism (eg. a file system or a database or via FTP, MSMQ etc) that handles string data type can be used to be the "freight company", and RDA strings are the **plain boxes** for moving the data around. This is in contrast to building dedicated data exchange pipelines using XML/JSON for connecting specific programs of using specific data formats.
+When using RDA encoding in the data exchange, because RDA strings are schema-less, they are like the generic plain boxes for moving the data around, without the parties having to agree on a specific data object type/format to be used in the data exchange. **RDA encoding allows data exchange late-binding.**
+
+Similar programming late-binding and the moving house analogy, late binding in data exchange can offers significant advantages in flexibility, version independence, and dynamic extensibility. It also allows using versatile, simple, and low-cost data transport: because the data encoded in RDA format is physically a text string, any protocol or mechanism (eg. a file system or a database or via FTP, MSMQ etc) that handles string data type can be used to be the "freight company". This is in contrast to a program must build dedicated data exchange logic or even dedicated pipelines for data exchange, if using XML/JSON encoding for specific data formats.
 
 ## Charian - A RDA-Based Serialization API
 
@@ -59,7 +63,7 @@ between each othercan be used assamble applications using software components. O
 
 One of the things has to be flexible is the data exchange format between the component and the framework, and between the components themselves. We chose to use RDA and Charian for achivieving these design goals, check out [the SnapFusion GitHub repo](https://github.com/foldda/snap-fusion) to see how these are practically implemented, with plug-n-play demos.
 
-## Universal Data Exchange - The Big Picture
+## A Low-Cost Generic Data Exchange Framework - The Big Picture
 
 In an analogy, using dedicated pipelines for cross-system data exchange is like sending parcels to people through adhoc transport and delivery arrangements rather than using the Post Office, which is expensive and inflexible. 
 
