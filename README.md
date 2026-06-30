@@ -5,15 +5,15 @@
 
 Recursive Delimited Array (RDA) is a plain-text data format for encoding structured data as text strings. It's a delimiter-based encoding, similar to CSV, which is more robust and simpler to implement compared to the tag-based, schema-dependent XML and JSON. 
 
-An RDA-encoded string, or simply "RDA string", consists two substring sections: a "header" and a "payload". In the example below, the header substring "|\\|" defines a delimiter (the first char '|') that is used to encode the payload substring "One|Two|Three" which contains three data elements - "One","Two", and "Three". 
+An RDA-encoded string, or simply "RDA string", consists two substring sections: a "header" and a "payload". In the example below, the header substring, "|\\|", defines a delimiter (the first char '|') and the payload substring, "One|Two|Three", contains three data elements ("One","Two", and "Three") encoded by using the delimiter. 
 
 ```
 |\|One|Two|Three
 ```
 
-An RDA string's header is dynamically expandable to include extra delimiters definition, for encoding multi-dimensional data. This is in contrast to CSV, where it can only encode 2-dimensional data using a fixed, predefined delimiter. 
+An RDA string's header is dynamically expandable to include extra delimiters definition, so it can encode multi-dimensional data. This is in contrast to CSV, where it can only encode 2-dimensional data using a fixed, predefined delimiter. 
 
-In the next example, the RDA string contains definition of a first-dimension delimiter '|' and a second-dimension delimiter char ',' in its header, and the encoded payload contains data elements from a 2-D data table, where the rows are separated by delimiter '|', and the columns in each row are separated by deleimiter ',' - 
+In the next example, the RDA string's header contains definition of a first-dimension delimiter '|' and a second-dimension delimiter char ',', and the encoded payload contains data elements from a 2-D data table, where the rows are separated by delimiter '|', and the columns in each row are separated by deleimiter ',' - 
 
 ```
 |,\|Name,Sex,Age|Mary,F,52|John,M,70|Kate,F,63
@@ -25,7 +25,7 @@ In the next example, the RDA string contains definition of a first-dimension del
 | John | M   | 70  |
 | Kate | F   | 63  | 
 
-It is intended that a parser program can parse the string's data content (the payload) without needing extra configuration. It is sufficient for the parsing by just reading the header, because it contains definition of all its the encoding chars[^1]. 
+It is intended that a parser program can parse the string's data content (the payload) without separate configuration. It is sufficient for the parsing by just reading the header, because it contains definition of all its the encoding chars[^1]. 
 
 [^1]: A more detailed explanation of RDA encoding rule is in [this repo's wiki](https://github.com/foldda/rda/wiki).
 
@@ -33,21 +33,19 @@ It is intended that a parser program can parse the string's data content (the pa
 
 When two programs exhange data between each other using XML or JSON encoding, they must first agree to a data format (i.e. an XML/JSON schema) for the data-exchange. This causes inflexibility because it limits the possibility that the data can be uncertain and can change (as they do). If one program decides to change its data format, it becomes a costly excercise for all the other programs that want to maintain the established data exchange connections.
 
-Because RDA is schema-less and can encode arbitarily complex structured data, it allows "late binding" in data exchange. That is, using it in data exchange does not require the programs to pre-agree on a data format. Rather, it allows a program to decide what to do with the received data. Let's explain this with an analogy. 
+Because RDA is schema-less and can encode arbitarily complex structured data, it allows "late binding" in data exchange. That is, using RDA format encoding in data exchange does not require the programs to pre-agree on a data format. Rather, it allows a program to decide what to do with the received data, and by doing so it allows the receiver to adapt to changing environments, handle unknown object types, and avoid strict schema- dependent links. Let's explain this with an analogy. 
 
-Imagine you're moving house: you would first pack household items into boxes, disassemble them if required, and once the boxes are delivered to the new place by a freight company, you would unpack the boxes, reassemble the items, and re-place them to their designated places. Note that even everyone's household content could be different but the same freight company can be used for the house moving. The key is the sender and the receiver are responsible for packing and unpacking the contents, using generic box containers, the freight company only moves packed boxes.
+Imagine you're moving house: you would first pack household items into boxes, disassemble them if required, and once the boxes are delivered to the new place, perhaps by a freight company, you would unpack the boxes, reassemble the items, and re-place them to their designated places. Note in this process, the sender, the receiver, and the freight company don't need to agree the exact shape and the size of each household item - everything is wrapped in generic box containers until the time the receiver unwrap the packaging and "consumes" the box's content.
 
-Late binding offers significant advantages in flexibility, version independence, and dynamic extensibility. By resolving the data object after it is received, it allows the receiver to adapt to changing environments, handle unknown object types, and avoid strict schema- dependent links.
-
-Late binding in data exchange using RDA encoding also allows using versatile, simple, and low-cost data transport. Because the data is physically a text string, any protocol or mechanism (eg. a file system or a database or via FTP, MSMQ etc) that handles string data type can be used to be the "courier company", and RDA strings are the **plain boxes** for moving the data around. This is in contrast to building dedicated data exchange pipelines using XML/JSON for connecting specific programs of using specific data formats.
+Similarily, late binding in data exchange using RDA encoding offers significant advantages in flexibility, version independence, and dynamic extensibility. It also allows using versatile, simple, and low-cost data transport. Because the data is physically a text string, any protocol or mechanism (eg. a file system or a database or via FTP, MSMQ etc) that handles string data type can be used to be the "freight company", and RDA strings are the **plain boxes** for moving the data around. This is in contrast to building dedicated data exchange pipelines using XML/JSON for connecting specific programs of using specific data formats.
 
 ## Charian - A RDA-Based Serialization API
 
-Charian is an API for easily encoding and parsing RDA format strings, which is available in C#, Python, and Java [from its GitHub repo](https://github.com/foldda/charian).
+Charian is an API for easily encoding and parsing RDA format strings, which is available in C#, Python, and Java [from its GitHub repo](https://github.com/foldda/charian). It's a utility for "packing" and "unpacking" arbitarily complex data into and from RDA strings.
 
-In the API, an RDA string is modeled as a data container, which has setter and getter methods that can be used to store and retrieve data by a data sender or receiver. Charian API makes the RDA string encoding and decoding easy and transparent to a user, and the intuitive "container" modeling fits perfectly into the concept of building loosely-coupled schema-independent data trasnport pipelines. 
+In the API, an RDA string is modeled as a data container, which has setter and getter methods that can be used to store and retrieve data by a data sender or receiver. Charian API makes the RDA string encoding and decoding easy and transparent to a user, and the intuitive "container" modeling fits perfectly into the house-moving analogy of data exchange late-binding. 
 
-It's worth pointing out that because strings are a generic data format supported in all modern languages and platforms, so data trasnport pipelines based on RDA-encoded strings are well suited for cross-language and cross-platform systems integration.
+It's worth pointing out that because strings are a generic data format supported in all modern languages and platforms, so data packed in RDA-encoded strings are well suited for cross-language and cross-platform systems data exchange.
 
 ## SnapFusion - A Practical Example
 
