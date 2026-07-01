@@ -47,7 +47,22 @@ Similar programming late-binding and the moving house analogy, late binding in d
 
 Charian is an API for encoding and parsing RDA formated strings. It's a utility for "packing" and "unpacking" arbitarily complex data into and from RDA strings. Charian is available in C#, Python, and Java [from its GitHub repo](https://github.com/foldda/charian). 
 
-In the API, an RDA string is modeled as a data container, which has setter and getter methods that can be used to store and retrieve data by a data sender or receiver. Charian API makes the RDA string encoding and decoding easy and transparent to a user, and the intuitive "container" modeling fits perfectly into the house-moving analogy of data exchange late-binding. 
+### The Rda Class
+
+In the API, an RDA string is modeled as a data container, which has setter and getter methods that can be used to store and retrieve data by a data sender or receiver. Charian API makes the RDA string encoding and decoding easy and transparent to a user, and the intuitive "container" modeling fits perfectly into the house-moving analogy of data exchange late-binding.
+
+If we look an RDA string as a container object, it exhibits a interesting property for being a "recursive" storage, that is, you can store an Rda object inside another Rda object, that's because the RDA's multi-dimensional encoding space can be (almost) unlimited expanded through introducing additional dilimiters to the encoding process, and a sub-dimension (multi-dimensional) array itself offers the same storaging property and capacity as its containing upper-dimension multi-dimensional array.
+
+In fact, the Rda class supports storing only two data type values: the first is type "string", the second is type "Rda"
+
+```C#
+class Rda
+{
+    
+}
+```
+
+### The IRda Interface
 
 It's worth pointing out that because strings are a generic data format supported in all modern languages and platforms, so data packed in RDA-encoded strings are well suited for cross-language and cross-platform systems data exchange.
 
