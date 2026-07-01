@@ -5,15 +5,19 @@
 
 Recursive Delimited Array (RDA) is a plain-text data format for encoding structured data as text strings. It's a delimiter-based encoding, similar to CSV, which is more robust and simpler to implement compared to the tag-based, schema-dependent XML and JSON. 
 
-An RDA-encoded string, or simply "RDA string", consists two substring sections: a "header" and a "payload". In the example below, the header substring, "|\\|", defines a delimiter (the first char '|') and the payload substring, "One|Two|Three", contains three data elements ("One","Two", and "Three") encoded by using the delimiter. 
+An RDA-encoded string, or simply "RDA string", consists a "header" and a "payload" substring sections. The header substring contains definition of all the string's encoding chars[^1], and the payload substring contains the encoded data elements. It is intended that a parser program can parse the string's data content in the payload without separate configuration, as it is sufficient for the parsing by just reading the header.
+
+[^1]: A more detailed explanation of RDA encoding rule is in [this repo's wiki](https://github.com/foldda/rda/wiki).
+
+In the example below, the header, substring "|\\|", defines a delimiter (the first char '|') and the payload, substring "One|Two|Three", contains three data elements ("One","Two", and "Three") encoded using the delimiter. 
 
 ```
 |\|One|Two|Three
 ```
 
-An RDA string's header is dynamically expandable to include extra delimiters definition, so it can encode multi-dimensional data. This is in contrast to CSV, where it can only encode 2-dimensional data using a fixed, predefined delimiter. 
+The encoding definition in an RDA string's header can be dynamically expanded to include more delimiters, which can be used to encode higher-dimension data when it's required. This is in contrast to CSV, where it can only encode 2-dimensional data using a fixed, predefined delimiter. 
 
-In the next example, the RDA string's header contains definition of a first-dimension delimiter '|' and a second-dimension delimiter char ',', and the encoded payload contains data elements from a 2-D data table, where the rows are separated by delimiter '|', and the columns in each row are separated by deleimiter ',' - 
+In the next example, the RDA string's header contains definition a second delimiter char ',' which is an extention from the previous example, and the data inside the payload is a 2-D data table, where the first-dimension rows are separated by delimiter '|', and the second-dimension columns in each row are separated by deleimiter ',' - 
 
 ```
 |,\|Name,Sex,Age|Mary,F,52|John,M,70|Kate,F,63
@@ -24,10 +28,6 @@ In the next example, the RDA string's header contains definition of a first-dime
 | Mary | F   | 52  | 
 | John | M   | 70  |
 | Kate | F   | 63  | 
-
-It is intended that a parser program can parse the string's data content (the payload) without separate configuration. It is sufficient for the parsing by just reading the header, because it contains definition of all its the encoding chars[^1]. 
-
-[^1]: A more detailed explanation of RDA encoding rule is in [this repo's wiki](https://github.com/foldda/rda/wiki).
 
 ## Data Exchange Late-Binding 
 
@@ -45,7 +45,7 @@ Similar programming late-binding and the moving house analogy, late binding in d
 
 ## Charian - A RDA-Based Serialization API
 
-Charian is an API for easily encoding and parsing RDA format strings, which is available in C#, Python, and Java [from its GitHub repo](https://github.com/foldda/charian). It's a utility for "packing" and "unpacking" arbitarily complex data into and from RDA strings.
+Charian is an API for encoding and parsing RDA formated strings. It's a utility for "packing" and "unpacking" arbitarily complex data into and from RDA strings. Charian is available in C#, Python, and Java [from its GitHub repo](https://github.com/foldda/charian). 
 
 In the API, an RDA string is modeled as a data container, which has setter and getter methods that can be used to store and retrieve data by a data sender or receiver. Charian API makes the RDA string encoding and decoding easy and transparent to a user, and the intuitive "container" modeling fits perfectly into the house-moving analogy of data exchange late-binding. 
 
