@@ -49,7 +49,7 @@ Charian is an easy-to-use API for transparently encoding and parsing RDA formate
 
 ### The Rda Class
 
-In the concept of "plain box" data transportation, if we think about using an RDA string as a container used all the program cares are to "pack" its data into the container before the transportation, and "unpack" its data after the transportation. That is why in the API, an RDA string is modeled as a data container object that has setter and getter methods for storing data into and retrieve data from it. 
+If we think an RDA string is the container used in late-binding data transportation, a program would only care about "packing" its data into the container before the transportation, and "unpacking" its data after the transportation, rather than care about how the end RDA string would be formatted. So in the API, it hides the RDA encoding details and models an RDA string a data container object that has setter and getter methods for storing data into and retrieve data from it. 
 
 ```csharp
 class Rda
@@ -64,6 +64,7 @@ class Rda
     public override string ToString();
 }
 ```
+
 You may have noticed the API's Rda class supports storing only two data type values: the first is type "string", the second is type "Rda" (via recurrsion). The recurrsion takes advantage of an RDA string's interesting property for being a "**recursive storage**", that is, you can store an Rda object inside another Rda object. That's because the RDA's multi-dimensional encoding space can be (almost) unlimited expanded through introducing additional dilimiters to the encoding process, and a sub-dimension (multi-dimensional) array itself offers the same storaging property and capacity as its containing upper-dimension multi-dimensional array.
 
 ### The IRda Interface
