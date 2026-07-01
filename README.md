@@ -45,26 +45,46 @@ Similar programming late-binding and the moving house analogy, late binding in d
 
 ## Charian - A RDA-Based Serialization API
 
-Charian is an API for encoding and parsing RDA formated strings. It's a utility for "packing" and "unpacking" arbitarily complex data into and from RDA strings. Charian is available in C#, Python, and Java [from its GitHub repo](https://github.com/foldda/charian). 
+Charian is an easy-to-use API for transparently encoding and parsing RDA formated strings. 
 
 ### The Rda Class
 
-In the API, an RDA string is modeled as a data container, which has setter and getter methods that can be used to store and retrieve data by a data sender or receiver. Charian API makes the RDA string encoding and decoding easy and transparent to a user, and the intuitive "container" modeling fits perfectly into the house-moving analogy of data exchange late-binding.
+In the concept of "plain box" data transportation, if we think about using an RDA string as a container used all the program cares are to "pack" its data into the container before the transportation, and "unpack" its data after the transportation. That is why in the API, an RDA string is modeled as a data container object that has setter and getter methods for storing data into and retrieve data from it. 
 
-If we look an RDA string as a container object, it exhibits a interesting property for being a "recursive" storage, that is, you can store an Rda object inside another Rda object, that's because the RDA's multi-dimensional encoding space can be (almost) unlimited expanded through introducing additional dilimiters to the encoding process, and a sub-dimension (multi-dimensional) array itself offers the same storaging property and capacity as its containing upper-dimension multi-dimensional array.
-
-In fact, the Rda class supports storing only two data type values: the first is type "string", the second is type "Rda"
-
-```C#
+```csharp
 class Rda
 {
-    
+    //methods for storing data element values inside an indexed space that an RDA string provides
+    public void SetValue(string value, int[] address);  /* save a string value at the index-addressed location */
+    public string GetValue(int[] address);        /* retrieve a string value from the index-addressed location */
+    public void SetRda(Rda rda, int[] address);      /* save an Rda object at the addressed location */
+    public Rda GetRda(int[] address);      /* retrieve an Rda object from the addressed location */
+
+    //serialize this Rda object to an RDA-encoded string, for transportation
+    public override string ToString();
 }
 ```
+You may have noticed the API's Rda class supports storing only two data type values: the first is type "string", the second is type "Rda" (via recurrsion). The recurrsion takes advantage of an RDA string's interesting property for being a "**recursive storage**", that is, you can store an Rda object inside another Rda object. That's because the RDA's multi-dimensional encoding space can be (almost) unlimited expanded through introducing additional dilimiters to the encoding process, and a sub-dimension (multi-dimensional) array itself offers the same storaging property and capacity as its containing upper-dimension multi-dimensional array.
 
 ### The IRda Interface
 
-It's worth pointing out that because strings are a generic data format supported in all modern languages and platforms, so data packed in RDA-encoded strings are well suited for cross-language and cross-platform systems data exchange.
+Data objects implement this interface to turn itself to/from an Rda object, so to be transported/exchanged. 
+
+```csharp
+interface IRda
+{
+    /* "packing": return an Rda object contains this data object's elements/properties values  */
+    Rda ToRda();
+
+    /* "unpacking": restore this data object's elements/properties values from an Rda object */
+    IRda FromRda(Rda rda);  
+    //... ...
+}
+```
+
+It's worth pointing out strings are a generic data format supported in all modern languages and platforms, so data packed in RDA-encoded strings are well suited for cross-language and cross-platform systems data exchange.
+
+Charian is available in C#, Python, and Java [from its GitHub repo](https://github.com/foldda/charian). 
 
 ## SnapFusion - A Practical Example
 
