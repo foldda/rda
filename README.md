@@ -43,11 +43,11 @@ When using RDA encoding in the data exchange, because RDA strings are schema-les
 
 Similar programming late-binding and the moving house analogy, late binding in data exchange can offers significant advantages in flexibility, version independence, and dynamic extensibility. It also allows using versatile, simple, and low-cost data transport: because the data encoded in RDA format is physically a text string, any protocol or mechanism (eg. a file system or a database or via FTP, MSMQ etc) that handles string data type can be used to be the "freight company". This is in contrast to a program must build dedicated data exchange logic or even dedicated pipelines for data exchange, if using XML/JSON encoding for specific data formats.
 
-## Charian - A RDA-Based Serialization API
+## Charian - A RDA-Encoding API
 
-Charian is an easy-to-use API for transparently encoding and parsing RDA formated strings. 
+Charian is an easy-to-use API for transparently encoding and parsing RDA formated strings. It is available in C#, Python, and Java [from its GitHub repo](https://github.com/foldda/charian), and the working concept is briefly explained below using the C# API implementation as example.
 
-### The Rda Class
+### The Rda Class (C#)
 
 If we think an RDA string is the container used in late-binding data transportation, a program would only care about "packing" its data into the container before the transportation, and "unpacking" its data after the transportation, rather than care about how the end RDA string would be formatted. So in the API, it hides the RDA encoding details and models an RDA string a data container object that has setter and getter methods for storing data into and retrieve data from it. 
 
@@ -67,7 +67,7 @@ class Rda
 
 You may have noticed the API's Rda class supports storing only two data type values: the first is type "string", the second is type "Rda" (via recurrsion). The recurrsion takes advantage of an RDA string's interesting property for being a "**recursive storage**", that is, you can store an Rda object inside another Rda object. That's because the RDA's multi-dimensional encoding space can be (almost) unlimited expanded through introducing additional dilimiters to the encoding process, and a sub-dimension (multi-dimensional) array itself offers the same storaging property and capacity as its containing upper-dimension multi-dimensional array.
 
-### The IRda Interface
+### The IRda Interface (C#)
 
 Data objects implement this interface to turn itself to/from an Rda object, so to be transported/exchanged. 
 
@@ -83,9 +83,7 @@ interface IRda
 }
 ```
 
-It's worth pointing out strings are a generic data format supported in all modern languages and platforms, so data packed in RDA-encoded strings are well suited for cross-language and cross-platform systems data exchange.
-
-Charian is available in C#, Python, and Java [from its GitHub repo](https://github.com/foldda/charian). 
+Charian allows easily serializing complex data objects into RDA strings, and is available in multiple lanugages. Because strings are a generic data format supported in all modern languages and platforms, cross-language and cross-platform systems data exchange are no longer difficult using the API.
 
 ## SnapFusion - A Practical Example
 
