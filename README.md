@@ -43,8 +43,6 @@ Imagine you're moving house: you would first pack household items into boxes, di
 
 As discussed earlier, XML/JSON based data exchange are schema-dependent that restricts on data format, and the schema-less CSV encoding is too primitive for carrying complex structured data. In contrast, **RDA encoding allows data exchange late-binding** because it's schema-less unlike XML/JSON, and supports encoding complex structured data unlike CSV.
 
-As in the moving house analogy, data exchange using RDA encoding format also allows using cheap "freight companies", that is, to be based on simple and low-cost data transports, because sender and receiver programs can use generic APIs that interface to file-system, RDBMS, FTP, MSMQ etc, for data transfer, in contrast to the higher cost interfaces using XML/JSON encoding, where sender and receiver programs must maintain inflexible data-handling logic, or even dedicated pipelines, for data exchange.
-
 ## Charian - A RDA-Encoding API
 
 Charian is an easy-to-use API for transparently encoding and parsing RDA formated strings. It is available in C#, Python, and Java [from its GitHub repo](https://github.com/foldda/charian), and the working concept is briefly explained below using the C# API implementation as example.
@@ -201,7 +199,9 @@ So for data exchange between isolated independent systems, we could do something
 <img src='img/Charian-data-transport.png' width='550'>
 </div>
 
-Because RDA is schema-less, it is ideal for playing the role of the **plain boxes** in the implementation of UDX - it converts and stores complex structured data into simple, easy-to-parse text strings, so the data can be exchanged between individual programs with minimal and low-cost intermedia data transport layer, i.e. via text-based networks or messaging protocols, such as HTTP/RPC, TCP/IP, and FTP. 
+Because RDA is schema-less, it is ideal for playing the role of the **plain boxes** in the implementation of data delivery postal service - it converts and stores complex structured data into simple, easy-to-parse text strings, so the data can be exchanged between individual programs with minimal and low-cost intermedia data transport layer, i.e. via text-based networks or messaging protocols, such as HTTP/RPC, TCP/IP, and FTP. 
+
+As in the moving house analogy, data exchange using RDA encoding format also allows using cheap "freight companies", that is, to be based on simple and low-cost data transports, because sender and receiver programs can use generic APIs that interface to file-system, RDBMS, FTP, MSMQ etc, for data transfer, in contrast to the higher cost interfaces using XML/JSON encoding, where sender and receiver programs must maintain inflexible data-handling logic, or even dedicated pipelines, for data exchange.
 
 ## More Details 
 
