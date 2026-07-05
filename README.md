@@ -3,13 +3,13 @@
 
 <img src="docs/image/rda_logo.png" align="right" height="128">
 
-Recursive Delimited Array (RDA) is a plain-text data format for encoding structured data as text strings. It's a delimiter-based encoding, similar to CSV, which is more robust and simpler to implement compared to the tag-based, schema-dependent XML and JSON. 
+Recursive Delimited Array (RDA) is a plain-text data format for encoding structured data as text strings. It's a simple, delimiter-based encoding, similar to CSV, but supports multi-dimensional, more complex data structure compared to CSV.
 
-An RDA-encoded string, or simply "RDA string", consists a "header" and a "payload" substring sections. The header substring contains definition of all the string's encoding chars[^1], and the payload substring contains the encoded data elements. It is intended that a parser program can parse the string's data content in the payload without separate configuration, as it is sufficient for the parsing by just reading the header.
+An RDA-encoded string (an "RDA string"), has a "header" and a "payload" substring sections, where the header substring contains definition of all the string's encoding chars[^1], and the payload substring contains the encoded data elements. Such structure allows a parser program to configure itself by reading the header and can subsequently parse the string's payload content.
 
 [^1]: A more detailed explanation of RDA encoding rule is in [this repo's wiki](https://github.com/foldda/rda/wiki).
 
-In the example below, the header, substring "|\\|", defines a delimiter (the first char '|') and the payload, substring "One|Two|Three", contains three data elements ("One","Two", and "Three") encoded using the delimiter. 
+In the example below, the header substring (the "|\\|"), defines a delimiter (the first char '|') which is used to encode the payload substring (the "One|Two|Three"), separating the three data elements ("One","Two", and "Three") the payload contains. 
 
 ```
 |\|One|Two|Three
@@ -33,11 +33,15 @@ In the next example, the RDA string's header contains definition a second delimi
 
 > In programming, late-binding allows a prpogram to adapt to changing environments, handle unknown object types, and avoid strict type- dependent links.
 
-When two programs exhange data between each other using XML or JSON encoding, they must first agree to a data format (i.e. an XML/JSON schema) for the data-exchange. This causes inflexibility because it limits the possibility that the data can be uncertain and can change (as they do). If one program decides to change its data format, it becomes a costly excercise for all the other programs that want to maintain the established data exchange connections.
+When two programs exhange data between each other using XML or JSON encoding, they must first agree to a data format (i.e. an XML/JSON schema) for the data-exchange. This can be a problem because it's possible the exact format of the data cannot be certain innitially, or can have varians, or can change (as they do) over time. It would be more flexible if data format can be determined later and the varians be dealt with accordingly by either or both the sender and the receiver, and this is restricted if we have a concrete schema beforehand.
 
-Using RDA format encoding in data exchange allows "late binding" in data handling. That is, it does not require the programs to pre-agree on a data format, so it's more flexible in handling the data exchange. Let's explain this with an analogy. 
+Using RDA format encoding in data exchange allows "late binding" in data handling. That is, it does not require the programs to pre-agree on a data format, so it's more flexible in handling the data exchange. Let's explain this concept with an analogy. 
 
-Imagine you're moving house: you would first pack household items into boxes, disassemble them if required, and once the boxes are delivered to the new place, perhaps by a freight company, you would unpack the boxes, reassemble the items, and re-place them to their designated places. Note in this process, the sender, the receiver, and the freight company don't need to agree the exact shape and the size of each household item - everything is wrapped in generic box containers until the time the receiver unwrap the packaging and "consumes" the box's content. 
+Imagine you're moving house: you would first pack household items into boxes, disassemble them if required, and once the boxes are delivered to the new place, perhaps by a freight company, you would unpack the boxes, reassemble the items, and re-place them to their designated places. Note in this process, the sender, the receiver, and through the process no party needs to agree the exact shape and the size of each household item - everything is wrapped in generic box containers until the time the receiver unwrap the packaging and "consumes" the box's content. 
+
+The idea of data exchange late binding follows the same method, that is, we want to have a data container that is 1) be capable that can carry arbitarily complex data, and 2) not to be restricted to a certain fixed data structure. As discussed earlier, XML/JSON based data exchange are schema-dependent that restricts on data format, whilst the schema-less CSV encoding is too primitive for carrying complex structured data.
+
+> For data exchange late binding, the key is to find such a "plain box" for being used in the exchange.
 
 When using RDA encoding in the data exchange, because RDA strings are schema-less, they are like the generic plain boxes for moving the data around, without the parties having to agree on a specific data object type/format to be used in the data exchange. **RDA encoding allows data exchange late-binding.**
 
