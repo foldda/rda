@@ -51,7 +51,7 @@ Charian is an easy-to-use API for transparently encoding and parsing RDA formate
 
 ### The Rda Class (C#)
 
-If we think an RDA string is the container used in late-binding data transportation, a program would only care about "packing" its data into the container before the transportation, and "unpacking" its data after the transportation, rather than care about how the end RDA string would be formatted. So in the API, it hides the RDA encoding details and models an RDA string a data container object that has setter and getter methods for storing data into and retrieve data from it. 
+If we think an RDA string is the container used in late-binding data transportation, a program would only care about "packing" its data into the container before the transportation, and "unpacking" its data after the transportation, so in the API, it hides the RDA encoding details and models an RDA string a data container object that has setter and getter methods for storing data into and retrieve data from it. 
 
 ```csharp
 class Rda
