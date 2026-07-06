@@ -5,19 +5,19 @@
 
 Recursive Delimited Array (RDA) is a plain-text data format for encoding structured data as text strings. RDA uses a simple, delimiter-based encoding, similar to CSV, but supports encoding more complex data structure compared to CSV.
 
-An RDA-encoded string (an "RDA string"), has a "header" and a "payload" substring sections, where the header substring contains definition of the string's encoding chars definition[^1], and the payload substring contains the encoded data elements. Such structure allows a parser program to configure itself, dynamically by reading the header, and subsequently parse the string's payload content.
+An RDA-encoded string (an "RDA string") has two substring sections - a "header" and a "payload". The header substring contains definition of the string's encoding chars definition[^1], and the payload substring contains the encoded data elements. It allows a parser program to configure itself dynamically when reading the header, and subsequently parse the string's payload content.
 
 [^1]: A more detailed explanation of RDA encoding rule is in [this repo's wiki](https://github.com/foldda/rda/wiki).
 
-In the example below, the header substring (the "|\\|"), defines a delimiter (the first char '|') which is used to encode the payload substring (the "One|Two|Three"), separating the three data elements ("One","Two", and "Three") the payload contains. 
+In the example below, the header (substring "|\\|") defines a delimiter (the first char '|') which is used to encode the payload (substring "One|Two|Three"), where three data elements ("One","Two", and "Three") are separated using the delimiter. 
 
 ```
 |\|One|Two|Three
 ```
 
-In contrast to CSV, which can only encode 2-dimensional data using a fixed, predefined delimiter, an RDA string's encoding delimiters in the header can be dynamically defined and expanded, so it supports encoding multi-dimensional data.
+Compared to CSV which can only encode 2-dimensional data using a fixed, predefined delimiter, an RDA string's encoding delimiters can be dynamically defined and expanded in the header, so to support encoding multi-dimensional data.
 
-In the next example, the RDA string's header contains definition a second delimiter char ',' which is an extention from the previous example, and 2-level delimiters are used to encode a 2-D data table inside the payload: the first-dimension rows are separated by delimiter '|', and the second-dimension columns in each row are separated by deleimiter ','. 
+In the next example, there is a 2-D data table encoded inside the payload using the two delimiters defined in the header: the first-dimension rows are separated by delimiter '|', and the second-dimension columns in each row are separated by deleimiter ','. 
 
 ```
 |,\|Name,Sex,Age|Mary,F,52|John,M,70|Kate,F,63
