@@ -65,7 +65,7 @@ class Rda
 
 You may have noticed the API's Rda class supports storing only two data type values: the first is type "string", the second is type "Rda" (via recurrsion). The recurrsion takes advantage of an RDA string's interesting property for havinv a "**recursive storage structure**", that is, you can store an Rda object inside another Rda object. That's because the RDA's multi-dimensional encoding space can be (almost) unlimited expanded into new deminsions (through introducing additional dilimiters to the encoding process), and any one sub-dimension is also a multi-dimensional array itself and offers the same storaging property and capacity as its containing parent-dimension. Reflecting this in the API is that an Rda object (having a multi-dimensional space) can be stored inside another Rda object (as one of its sub-dimensions).
 
-In the following example code it sends random data, as a serialized RDA string using the API, to a file, the reads and restores the data from the file.
+In the following example code it sends random data, as a serialized RDA string using the API, to a file, then reads and restores the data from the file.
 
 ```csharp
     using Charian;
@@ -161,15 +161,13 @@ Charian allows easily serializing complex data objects into RDA strings for easy
 
 ## Snappable - Data Exchange Late-Binding In Practice
 
-[Snappable](https://github.com/foldda/snappable) is an open-source component-based computing framework for assembling software applications using reusable and interchangeable software components. One of Snappable's design requirement is to allow these software components to be made by 
-
-    . It is used for defining software component intefaces, so compatible software components that are reusable and interchangeable. By using generic, interchangeable software component, an app developer can assemble "non-proprietary" apps using components made by different vendors from a open market, rather than writing code from scratch or using proprietary components and being locked-in by a specific component vendor. 
-
-Independent components connected in the Snappable framework uses RDA-based late-binding data exchange, because they have minimal assumed knowledge when connecting and collaborating to another component, i.e., when two components exchanging data, they don't assume the data has a specific data model. This allows the Snappable to implement very generic "plugs" for plugging in interchangeable components which is the design goal of the framework. In fact, RDA is created for this design requirement and is a primary data type used throughout the Snappable framework.
-
-In Snappable, a compatible component is required to convert its "native data" to and from RDA, possibly by using [Charian](https://github.com/foldda/charian), so the data (carried within an RDA) can flow through the system. For example, in its HL7FileReader component implements the conversion from HL7 to RDA, and the HL7FileWriter component does the opposite conversion, and these two components (both available in the Snappable GitHub repo) can be connected and used in an app that requires HL7 data file reading and writing.
+[Snappable](https://github.com/foldda/snappable) is an open-source component-based computing framework for assembling software applications using reusable and interchangeable software components. One of Snappable's design requirement is to allow any compatible software components to connect and work together. This is an ideal case for data exchange late binding, because these components won't necessary have any prior knowledge of the data model used by each other. In fact, RDA and data exchange late-binding are created for this design requirement and is a primary data type used throughout the Snappable framework.
 
 [This demo video](https://www.youtube.com/watch?v=Uek9aW1qToU) visually demonstrates Snappable components in-action. It shows how an app can be assembled "physically" form pre-built interchangeable Snappable components.
+
+The Snappable API defines software component intefaces that implements data exchange late binding, so compatible software components can "plug" themselves to the framework and "talk" to each other in a generic, consistant way. From a user perspective, it means these components are "pluggable", reusable and interchangeable, so the user can assemble apps using physical component assemblies, rather than having to rebuild/recompile source code everytime, and being locked-in by a specific data model from the component vendor. 
+
+In Snappable, implementing the late binding meaning a compatible component is required to convert its "native data" to and from RDA, possibly by using [Charian](https://github.com/foldda/charian), so the data (carried within an RDA) can flow through the system. For example, in its HL7FileReader component implements the conversion from HL7 to RDA, and the HL7FileWriter component does the opposite conversion, and these two components (both available in the Snappable GitHub repo) can be connected and used in an app that requires HL7 data file reading and writing.
 
 The Snappable framework API and many of its ready-to-use portable components are available in [this GitHub repo](https://github.com/foldda/snappable).
 
