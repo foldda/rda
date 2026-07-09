@@ -15,7 +15,7 @@ In the example below, the header (substring "|\\|") defines a delimiter (the fir
 |\|One|Two|Three
 ```
 
-By dynamically expanding the header and defining more delimiters, RDA encoding supports encoding multi-dimensional data. In the next example, there are two delimiters defined in the RDA string's header, delimiter '|' and deleimiter ',', which are used for encoding a 2-D data table: the rows (first-dimension) are separated by delimiter '|', and the columns (second-dimension) in each row are separated by deleimiter ','. 
+By dynamically expanding the header and defining more delimiters, RDA encoding supports encoding multi-dimensional data. In the next example, there are two delimiters defined in the RDA string's header, delimiter '|' and deleimiter ',', and the string contains an encoded 2-D data table: the rows (first-dimension) are separated by delimiter '|', and the columns (second-dimension) in each row are separated by deleimiter ','. 
 
 ```
 |,\|Name,Sex,Age|Mary,F,52|John,M,70|Kate,F,63
@@ -31,13 +31,13 @@ By dynamically expanding the header and defining more delimiters, RDA encoding s
 
 > In programming, late-binding allows a prpogram to adapt to changing environments, handle unknown object types, and avoid strict type- dependent links.
 
-When two programs exhange data between each other using XML or JSON encoding, they must first agree to a data format (i.e. an XML/JSON schema) for the data-exchange. This can be a problem because it's possible the exact format of the data cannot be certain innitially, or can have varians, or can change (as they do) over time. Similar to programming late-binding, it could be bebeficial if data format can be determined later and the varians be dealt with accordingly by either or both the sender and the receiver, something we call data exchange "late binding". Late binding in data exchange offers significant advantages in flexibility, version independence, and dynamic extensibility to the sender and the receiver.
+When two programs exchange data between each other using XML or JSON encoding, they must first agree to a data format (i.e. an XML/JSON schema) for the data-exchange. This can be a problem if the exact format for the data cannot be certain innitially, or can have varians, or can change (as they do) over time. It would be bebeficial if the data format can be determined later and the varians be dealt with accordingly by either or both the sender and the receiver, something we call data exchange "late binding". Similar to the late-binding in programming, late binding in data exchange offers significant advantages in flexibility, version independence, and dynamic extensibility to the sender and the receiver.
 
-How do we achieve data exchange late binding? Let's explain our approach with an analogy. 
+But how can we achieve data exchange late binding? Let's explain our approach with an analogy. 
 
 Imagine you're moving house: you would first pack household items into boxes, disassemble them if required, and once the boxes are delivered to the new place, perhaps by a freight company, you would unpack the boxes, reassemble the items, and re-place them to their designated places. Note in this process, the sender, the receiver, and through the process no party needs to agree the exact shape and the size of each household item - everything is wrapped in generic box containers until the time the receiver unwrap the packaging and "consumes" the box's content. 
 
-> To achieve data exchange late binding following the same approach, we need to have a "plain box" data container that is 1) be capable to carry arbitarily complex data, and 2) not to be restricted to a certain fixed data structure. 
+> Data exchange late binding also requires a "plain box" data container that is 1) be capable to carry arbitarily complex data, and 2) not to be restricted to a certain fixed data structure. 
 
 As discussed earlier, XML/JSON based data exchange are schema-dependent that restricts on data format, and the schema-less CSV encoding is too primitive for carrying complex structured data. In contrast, **RDA encoding allows data exchange late-binding** because it's schema-less unlike XML/JSON, and supports encoding complex structured data unlike CSV.
 
@@ -63,9 +63,9 @@ class Rda
 }
 ```
 
-You may have noticed the API's Rda class supports storing only two data type values: the first is type "string", the second is type "Rda" (via recurrsion). The recurrsion takes advantage of an RDA string's interesting property for being a "**recursive storage**", that is, you can store an Rda object inside another Rda object. That's because the RDA's multi-dimensional encoding space can be (almost) unlimited expanded through introducing additional dilimiters to the encoding process, and a sub-dimension (multi-dimensional) array itself offers the same storaging property and capacity as its containing upper-dimension multi-dimensional array.
+You may have noticed the API's Rda class supports storing only two data type values: the first is type "string", the second is type "Rda" (via recurrsion). The recurrsion takes advantage of an RDA string's interesting property for havinv a "**recursive storage structure**", that is, you can store an Rda object inside another Rda object. That's because the RDA's multi-dimensional encoding space can be (almost) unlimited expanded into new deminsions (through introducing additional dilimiters to the encoding process), and any one sub-dimension is also a multi-dimensional array itself and offers the same storaging property and capacity as its containing parent-dimension. Reflecting this in the API is that an Rda object (having a multi-dimensional space) can be stored inside another Rda object (as one of its sub-dimensions).
 
-An example code of sending and receiving data using the API.
+In the following example code it sends random data, as a serialized RDA string using the API, to a file, the reads and restores the data from the file.
 
 ```csharp
     using Charian;
@@ -115,7 +115,7 @@ An example code of sending and receiving data using the API.
 
 ### The IRda Interface (C#)
 
-Data objects implement this interface to turn itself to/from an Rda object, so to be transported/exchanged. 
+Data objects implement this interface is capable to turn itself to/from an Rda object, which can be transported/exchanged in late-binding fashion. 
 
 ```csharp
 interface IRda
@@ -128,7 +128,7 @@ interface IRda
     //... ...
 }
 ```
-This example Address class is serializable as it implements the IRda interface. 
+In the below example, the Address class implements the IRda interface and is serializable. 
 
 ```csharp
     class Address : IRda
@@ -157,11 +157,13 @@ This example Address class is serializable as it implements the IRda interface.
         }
     }
 ```
-Charian allows easily serializing complex data objects into RDA strings, and is available in multiple lanugages. Because strings are a generic data format supported in all modern languages and platforms, when using the API, cross-language and cross-platform systems data exchange are no longer difficult.
+Charian allows easily serializing complex data objects into RDA strings for easy late-binding data exchange, and is available in multiple lanugages. Because strings are a generic data format supported in all modern languages and platforms, when using the API, cross-language and cross-platform systems data exchange are no longer difficult.
 
-## Snappable - A Practical Use
+## Snappable - Data Exchange Late-Binding In Practice
 
-[Snappable](https://github.com/foldda/snappable) is an open-source component-based computing framework. It is used for defining software component intefaces, so compatible software components that are reusable and interchangeable. By using generic, interchangeable software component, an app developer can assemble "non-proprietary" apps using components made by different vendors from a open market, rather than writing code from scratch or using proprietary components and being locked-in by a specific component vendor. 
+[Snappable](https://github.com/foldda/snappable) is an open-source component-based computing framework for assembling software applications using reusable and interchangeable software components. One of Snappable's design requirement is to allow these software components to be made by 
+
+    . It is used for defining software component intefaces, so compatible software components that are reusable and interchangeable. By using generic, interchangeable software component, an app developer can assemble "non-proprietary" apps using components made by different vendors from a open market, rather than writing code from scratch or using proprietary components and being locked-in by a specific component vendor. 
 
 Independent components connected in the Snappable framework uses RDA-based late-binding data exchange, because they have minimal assumed knowledge when connecting and collaborating to another component, i.e., when two components exchanging data, they don't assume the data has a specific data model. This allows the Snappable to implement very generic "plugs" for plugging in interchangeable components which is the design goal of the framework. In fact, RDA is created for this design requirement and is a primary data type used throughout the Snappable framework.
 
