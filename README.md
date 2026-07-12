@@ -29,15 +29,15 @@ By dynamically expanding the header and defining more delimiters, RDA encoding s
 
 ## Data Exchange Late-Binding 
 
-> In programming, late-binding allows a prpogram to adapt to changing environments, handle unknown object types, and avoid strict type- dependent links.
+> In programming, late-binding allows a prpogram to adapt to changing environments, handle unknown object types, and avoid strict type-dependent links.
 
-When two programs exchange data between each other using XML or JSON encoding, they must first agree to a data format (i.e. an XML/JSON schema) for the data-exchange. This can be a problem if the exact format for the data cannot be certain innitially, or can have varians, or can change (as they do) over time. It would be bebeficial if the data format can be determined later and the varians be dealt with accordingly by either or both the sender and the receiver, something we call data exchange "late binding". Similar to the late-binding in programming, late binding in data exchange offers significant advantages in flexibility, version independence, and dynamic extensibility to the sender and the receiver.
+When two programs exchange data between each other using XML or JSON encoding, they must first agree to a data format (i.e. an XML/JSON schema) for the data-exchange. This can be a problem if the exact format for the data cannot be certain innitially, or can have varians, or can change (as they do) over time. It would be bebeficial if the data format can be determined later and the varians be dealt with accordingly by either or both the sender and the receiver, something we call "data exchange late-binding". Similar to the late-binding in programming, late binding in data exchange offers significant advantages in flexibility, version independence, and dynamic extensibility to the sender and the receiver.
 
 But how can we achieve data exchange late binding? Let's explain our approach with an analogy. 
 
 Imagine you're moving house: you would first pack household items into boxes, disassemble them if required, and once the boxes are delivered to the new place, perhaps by a freight company, you would unpack the boxes, reassemble the items, and re-place them to their designated places. Note in this process, the sender, the receiver, and through the process no party needs to agree the exact shape and the size of each household item - everything is wrapped in generic box containers until the time the receiver unwrap the packaging and "consumes" the box's content. 
 
-> Data exchange late binding also requires a "plain box" data container that is 1) be capable to carry arbitarily complex data, and 2) not to be restricted to a certain fixed data structure. 
+> Data exchange late binding requires a "plain box" data container that is 1) be capable to carry arbitarily complex data, and 2) not to be restricted to a certain fixed data structure. 
 
 As discussed earlier, XML/JSON based data exchange are schema-dependent that restricts on data format, and the schema-less CSV encoding is too primitive for carrying complex structured data. In contrast, **RDA encoding allows data exchange late-binding** because it's schema-less unlike XML/JSON, and supports encoding complex structured data unlike CSV.
 
@@ -161,19 +161,25 @@ Charian allows easily serializing complex data objects into RDA strings for easy
 
 ## Snappable - Data Exchange Late-Binding In Practice
 
-[Snappable](https://github.com/foldda/snappable) is an open-source component-based computing framework for assembling software applications using reusable and interchangeable software components. One of Snappable's design requirement is to allow any compatible software components to connect and work together. This is an ideal case for data exchange late binding, because these components won't necessary have any prior knowledge of the data model used by each other. In fact, RDA and data exchange late-binding are created for this design requirement and is a primary data type used throughout the Snappable framework.
+[Snappable](https://github.com/foldda/snappable) is an open-source component-based computing framework, for assembling software applications using reusable and interchangeable software components. One of Snappable's design requirement is to allow third-parties' compatible software components to connect and work together. This is an ideal case for data exchange late binding, because these components won't necessary have any prior knowledge of the data model used by each other. In fact, RDA and data exchange late-binding are created for this design requirement, and RDA is a primary data type used throughout the Snappable framework for data exchange.
 
 [This demo video](https://www.youtube.com/watch?v=Uek9aW1qToU) visually demonstrates Snappable components in-action. It shows how an app can be assembled "physically" form pre-built interchangeable Snappable components.
 
-The Snappable API defines software component intefaces that implements data exchange late binding, so compatible software components can "plug" themselves to the framework and "talk" to each other in a generic, consistant way. From a user perspective, it means these components are "pluggable", reusable and interchangeable, so the user can assemble apps using physical component assemblies, rather than having to rebuild/recompile source code everytime, and being locked-in by a specific data model from the component vendor. 
+The Snappable API defines software component intefaces that implements data exchange late binding, so components can "plug" themselves to the framework and "talk" to each other in a generic, consistant way. These allow the user can assemble apps using physical component assemblies, rather than having to rebuild/recompile source code everytime, and being locked-in by a specific data model from the component vendor, because these off-market components are "pluggable", reusable and interchangeable.  
 
-In Snappable, implementing the late binding meaning a compatible component is required to convert its "native data" to and from RDA, possibly by using [Charian](https://github.com/foldda/charian), so the data (carried within an RDA) can flow through the system. For example, in its HL7FileReader component implements the conversion from HL7 to RDA, and the HL7FileWriter component does the opposite conversion, and these two components (both available in the Snappable GitHub repo) can be connected and used in an app that requires HL7 data file reading and writing.
+In Snappable, a compatible component implementing the late binding is required to convert its "native data" to and from RDA, possibly by using [Charian](https://github.com/foldda/charian), so the data (carried within an RDA) can flow through the system. For example, there is a  HL7FileReader component implements the conversion from HL7 to RDA, and the HL7FileWriter component does the opposite conversion, and these two components (both available in the Snappable GitHub repo) can be connected and used in an app that requires HL7 data file reading and writing.
 
 The Snappable framework API and many of its ready-to-use portable components are available in [this GitHub repo](https://github.com/foldda/snappable).
 
 ## The Bigger Picture
 
-Today, using dedicated pipelines for cross-system data exchange is like sending parcels to people through adhoc transport and delivery arrangements rather than using the Post Office, which is expensive and inflexible. 
+Today, most cross-system data exchange are using dedicated pipelines. Most likely, the fixed data models used in these custom-built pipelines make the connected programs “tightly coupled” - meaning they are inflexible and expensive not just financially but also in maintanance and operational complexity.
+
+<div align='center'>
+<img src='img/Pre-Charian-data-transport.png' width='550' align='center'>
+</div>
+
+This is like sending parcels to people through adhoc transport and delivery arrangements rather than using the Post Office, which is expensive and inflexible. 
 
 <div align='center'>
 <img src='img/Pre-Post-office-system.png' width='470' align='center'>
@@ -185,21 +191,13 @@ We are all used to using Postal services for posting parcels because the shared 
 <img src='img/Post-office-system.png' width='550' align='center'>
 </div>
 
-Similarily, using fixed data models and custom-built pipelines makes the connected programs “tightly coupled” - meaning they are inflexible and expensive not just financially but also in maintanance and operational complexity.
-
-<div align='center'>
-<img src='img/Pre-Charian-data-transport.png' width='550' align='center'>
-</div>
-
 So for data exchange between isolated independent systems, we could do something similar to the Post Office's postal service, to cut down the costs and improve flexibility.  
 
 <div align='center'>
 <img src='img/Charian-data-transport.png' width='550'>
 </div>
 
-Because RDA is schema-less, it is ideal for playing the role of the **plain boxes** in the implementation of data delivery postal service - it converts and stores complex structured data into simple, easy-to-parse text strings, so the data can be exchanged between individual programs with minimal and low-cost intermedia data transport layer, i.e. via text-based networks or messaging protocols, such as HTTP/RPC, TCP/IP, and FTP. 
-
-As in the moving house analogy, data exchange using RDA encoding format also allows using cheap "freight companies", that is, to be based on simple and low-cost data transports, because sender and receiver programs can use generic APIs that interface to file-system, RDBMS, FTP, MSMQ etc, for data transfer, in contrast to the higher cost interfaces using XML/JSON encoding, where sender and receiver programs must maintain inflexible data-handling logic, or even dedicated pipelines, for data exchange.
+By using the schema-less RDA and through late-binding, data can be exchanged between individual programs with generic and low-cost intermedia data transport layer, i.e. via text-based networks or messaging protocols, such as HTTP/RPC, TCP/IP, and FTP. As in the moving house analogy, these low-cost generic data links are like using cheap "freight companies", that is, to be based on simple and low-cost data transports, because sender and receiver programs can use generic APIs (eg file-system, RDBMS, FTP, MSMQ APIs) for cross-system data transfer, in contrast to building higher cost dedicated pipelines using XML/JSON encoding, where sender and receiver programs must maintain inflexible data-handling logic for the data exchange.
 
 ## More Details 
 
