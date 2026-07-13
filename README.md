@@ -45,11 +45,13 @@ As discussed earlier, XML/JSON based data exchange are schema-dependent that res
 
 ## Charian - A RDA-Encoding API
 
-Charian is an easy-to-use API for transparently encoding and parsing RDA formated strings. It is available in C#, Python, and Java [from its GitHub repo](https://github.com/foldda/charian), and the working concept is briefly explained below using the C# API implementation as example.
+Charian is a simple, easy-to-use RDA encoding and parsing API. It is specifically designed to enable programs to do late-binding data exchange, that is, it hides the details of the underlying RDA encoding and decoding, but exposes methods to a program to easily "pack and unpack data to and from containers" for late-binding data transportation.
+
+Charian is available in C#, Python, and Java [from its GitHub repo](https://github.com/foldda/charian), and the working concept is briefly explained below using the C# API implementation as example.
 
 ### The Rda Class (C#)
 
-If we think an RDA string is the container used in late-binding data transportation, a program would only care about "packing" its data into the container before the transportation, and "unpacking" its data after the transportation, so in the API, it hides the RDA encoding details and models an RDA string a data container object that has setter and getter methods for storing data into and retrieve data from it[^2]. 
+In the API, an RDA string is modeled as a data container class, the class Rda, that has setter and getter methods for storing data into and retrieve data from it[^2]. 
 
 ```csharp
 class Rda
@@ -66,7 +68,7 @@ class Rda
 ```
 [^2]: You may have noticed the API's Rda class supports storing only two data type values: the first is type "string", the second is type "Rda" (via recurrsion). The recurrsion takes advantage of an RDA string's interesting property for havinv a "**recursive storage structure**", that is, you can store an Rda object inside another Rda object. That's because the RDA's multi-dimensional encoding space can be (almost) unlimited expanded into new deminsions (through introducing additional dilimiters to the encoding process), and any one sub-dimension is also a multi-dimensional array itself and offers the same storaging property and capacity as its containing parent-dimension. Reflecting this in the API is that an Rda object (having a multi-dimensional space) can be stored inside another Rda object (as one of its sub-dimensions).
 
-In the following example code it sends random data, as a serialized RDA string using the API, to a file, then reads and restores the data from the file.
+In the following example illustrates how a program utilizes an Rda object to transfer some random data via a file. Transparently to the program, the API serializes the data elements into a RDA string, which is used for the data transfer (via a physical file).
 
 ```csharp
 using Charian;
