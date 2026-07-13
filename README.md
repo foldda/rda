@@ -29,11 +29,13 @@ By dynamically expanding the header and defining more delimiters, RDA encoding s
 
 ## Data Exchange Late-Binding 
 
+One unique feature of the RDA encoding is that it can be used for data exchange late-binding.
+
 > In programming, late-binding allows a prpogram to adapt to changing environments, handle unknown object types, and avoid strict type-dependent links.
 
 When two programs exchange data between each other using XML or JSON encoding, they must first agree to a data format (i.e. an XML/JSON schema) for the data-exchange. This can be a problem if the exact format for the data cannot be certain innitially, or can have varians, or can change (as they do) over time. It would be bebeficial if the data format can be determined later and the varians be dealt with accordingly by either or both the sender and the receiver, something we call "data exchange late-binding". Similar to the late-binding in programming, late binding in data exchange offers significant advantages in flexibility, version independence, and dynamic extensibility to the sender and the receiver.
 
-But how can we achieve data exchange late binding? Let's explain our approach with an analogy. 
+But how can we use RDA in data exchange late binding? Let's explain our approach with an analogy. 
 
 Imagine you're moving house: you would first pack household items into boxes, disassemble them if required, and once the boxes are delivered to the new place, perhaps by a freight company, you would unpack the boxes, reassemble the items, and re-place them to their designated places. Note in this process, the sender, the receiver, and through the process no party needs to agree the exact shape and the size of each household item - everything is wrapped in generic box containers until the time the receiver unwrap the packaging and "consumes" the box's content. 
 
@@ -47,7 +49,7 @@ Charian is an easy-to-use API for transparently encoding and parsing RDA formate
 
 ### The Rda Class (C#)
 
-If we think an RDA string is the container used in late-binding data transportation, a program would only care about "packing" its data into the container before the transportation, and "unpacking" its data after the transportation, so in the API, it hides the RDA encoding details and models an RDA string a data container object that has setter and getter methods for storing data into and retrieve data from it. 
+If we think an RDA string is the container used in late-binding data transportation, a program would only care about "packing" its data into the container before the transportation, and "unpacking" its data after the transportation, so in the API, it hides the RDA encoding details and models an RDA string a data container object that has setter and getter methods for storing data into and retrieve data from it[^2]. 
 
 ```csharp
 class Rda
@@ -62,101 +64,56 @@ class Rda
     public override string ToString();
 }
 ```
-
-You may have noticed the API's Rda class supports storing only two data type values: the first is type "string", the second is type "Rda" (via recurrsion). The recurrsion takes advantage of an RDA string's interesting property for havinv a "**recursive storage structure**", that is, you can store an Rda object inside another Rda object. That's because the RDA's multi-dimensional encoding space can be (almost) unlimited expanded into new deminsions (through introducing additional dilimiters to the encoding process), and any one sub-dimension is also a multi-dimensional array itself and offers the same storaging property and capacity as its containing parent-dimension. Reflecting this in the API is that an Rda object (having a multi-dimensional space) can be stored inside another Rda object (as one of its sub-dimensions).
+[^2]: You may have noticed the API's Rda class supports storing only two data type values: the first is type "string", the second is type "Rda" (via recurrsion). The recurrsion takes advantage of an RDA string's interesting property for havinv a "**recursive storage structure**", that is, you can store an Rda object inside another Rda object. That's because the RDA's multi-dimensional encoding space can be (almost) unlimited expanded into new deminsions (through introducing additional dilimiters to the encoding process), and any one sub-dimension is also a multi-dimensional array itself and offers the same storaging property and capacity as its containing parent-dimension. Reflecting this in the API is that an Rda object (having a multi-dimensional space) can be stored inside another Rda object (as one of its sub-dimensions).
 
 In the following example code it sends random data, as a serialized RDA string using the API, to a file, then reads and restores the data from the file.
 
 ```csharp
-    using Charian;
+using Charian;
 
-    class RdaDemo1
-    {
-        public void Main(string[] args)
-        {
-            //a file is used as the physical media/channel for the data transport
-            string PATH = "C:\\Temp\\file1.txt";
-
-            //as sender ...
-            SendSomeData(PATH);
-
-            //as receiver ...
-            ReceiveSomeData(PATH);
-        }
-
-        void SendSomeData(string filePath)
-        {
-
-            Rda rda1 = new Rda();    //create an Rda object which provides a storage space
-
-            //placing some data items into the storage space (all as strings)
-            rda1.SetValue(0, "One");  //storing a string value at index = 0
-            rda1.SetValue(1, "Two");  //storing a decimal value at index = 1
-            rda1.SetValue(2, "Three");  //storing a date value
-
-            string encodedRdaString = rda1.ToString();     // => "|\|One|Two|Three"
-
-            File.WriteAllText(filePath, encodedRdaString);  //output to a physical media
-        }
-
-        void ReceiveSomeData(string filePath)
-        {
-            string encodedRdaString = File.ReadAllText(filePath);  //input from a physical media
-
-            Rda rda1 = Rda.Parse(encodedRdaString);    //decode the RDA string and restore an Rda "box" object
-
-            //"unpacking" the data items from the box's content
-            string a = rda1.GetValue(0);  //retrieve the stored value ("One") from location index = 0
-            string b = rda1.GetValue(1);
-            string c = rda1.GetValue(2);
-        }
-    }
-```
-
-### The IRda Interface (C#)
-
-Data objects implement this interface is capable to turn itself to/from an Rda object, which can be transported/exchanged in late-binding fashion. 
-
-```csharp
-interface IRda
+class RdaDemo1
 {
-    /* "packing": return an Rda object contains this data object's elements/properties values  */
-    Rda ToRda();
+    public void Main(string[] args)
+    {
+        //a file is used as the physical media/channel for the data transport
+        string PATH = "C:\\Temp\\file1.txt";
 
-    /* "unpacking": restore this data object's elements/properties values from an Rda object */
-    IRda FromRda(Rda rda);  
-    //... ...
+        //as sender ...
+        SendSomeData(PATH);
+
+        //as receiver ...
+        ReceiveSomeData(PATH);
+    }
+
+    void SendSomeData(string filePath)
+    {
+
+        Rda rda1 = new Rda();    //an Rda object is created as a "generic data container"
+
+        //placing some data items into the storage space (all as strings)
+        rda1.SetValue(0, "One");  //storing a string value at index = 0
+        rda1.SetValue(1, "Two");  //storing a decimal value at index = 1
+        rda1.SetValue(2, "Three");  //storing a date value
+
+        string encodedRdaString = rda1.ToString();     // => "|\|One|Two|Three"
+
+        File.WriteAllText(filePath, encodedRdaString);  //output to a physical media
+    }
+
+    void ReceiveSomeData(string filePath)
+    {
+        string encodedRdaString = File.ReadAllText(filePath);  //input from a physical media
+
+        Rda rda1 = Rda.Parse(encodedRdaString);    //decode the RDA string and restore an Rda "box" object
+
+        //"unpacking" the data items from the box's content
+        string a = rda1.GetValue(0);  //retrieve the stored value ("One") from location index = 0
+        string b = rda1.GetValue(1);
+        string c = rda1.GetValue(2);
+    }
 }
 ```
-In the below example, the Address class implements the IRda interface and is serializable. 
 
-```csharp
-    class Address : IRda
-    {
-        public enum RDA_INDEX : int { LINES = 0, ZIP = 1 }
-
-        public string AddressLines = "Line 1\nLine 2\nLine 3";
-        public string ZIP = "NY 21540";
-
-        //"packing" properties into an Rda container
-        public Rda ToRda()
-        {
-            var rda = new Rda();  //create an RDA container
-            // properties
-            rda[(int)RDA_INDEX.LINES].ScalarValue = this.AddressLines;
-            rda[(int)RDA_INDEX.ZIP].ScalarValue = this.ZIP;
-            return rda;
-        }
-
-        //"unpacking" and restoring properties from an Rda container
-        public IRda FromRda(Rda rda)
-        {
-            this.AddressLines = rda[(int)RDA_INDEX.LINES].ScalarValue;
-            this.ZIP = rda[(int)RDA_INDEX.ZIP].ScalarValue;
-            return this;
-        }
-    }
-```
 Charian allows easily serializing complex data objects into RDA strings for easy late-binding data exchange, and is available in multiple lanugages. Because strings are a generic data format supported in all modern languages and platforms, when using the API, cross-language and cross-platform systems data exchange are no longer difficult.
 
 ## Snappable - Data Exchange Late-Binding In Practice
