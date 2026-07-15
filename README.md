@@ -74,7 +74,7 @@ Applications disassemble complex objects into generic RDA containers for transpo
 
 > RDA is the "box" used during transport.
 
-Unlike schema-based formats, the transport layer does not impose restrictions on the structure of the data being carried, which also allows more loosely-coupled integration where sending and receiving applications can handle data structure changes independently.
+Unlike schema-based formats, the transport layer does not impose restrictions on the structure of the data being carried, allowing loosely-coupled integration by moving data validation to the application layer.
 
 ---
 
@@ -84,9 +84,11 @@ RDA is accompanied by [**Charian**](https://github.com/foldda/charian), a lightw
 
 Rather than exposing a schema-driven object model, Charian presents a generic hierarchical container that applications can populate, transport, and reconstruct as required.
 
-Because an RDA object can itself contain other RDA objects, arbitrarily deep hierarchical structures can be represented naturally.
+Because an RDA object can itself contain other RDA objects[1], arbitrarily deep hierarchical structures can be represented naturally.
 
 Code examples for C#, Python and Java are available in the Charian repository.
+
+[1]: RDA object supports only two data types: strings or RDA objects. It's an application's responsiblity to validate and convert data in these forms to its native type, and to handle any possible exceptions.
 
 ---
 
@@ -96,7 +98,7 @@ RDA was originally created for [**Snappable**](https://github.com/foldda/snappab
 
 Each component converts between its native data structures and RDA, allowing components from different vendors to interoperate through late-binding.
 
-A demonstration can be seen in the project video:
+The following video demonstrates how Snappable achieves its design goals using RDA and late-binding:
 
 https://www.youtube.com/watch?v=Uek9aW1qToU
 
@@ -106,28 +108,28 @@ https://www.youtube.com/watch?v=Uek9aW1qToU
 
 Traditional system integration often requires dedicated data pipelines based on fixed schemas.
 
-<div align="center">
-<img src="img/Pre-Charian-data-transport.png" width="550">
+<div align="left">
+<img src="img/Pre-Charian-data-transport.png" width="440">
 </div>
 
 This is similar to arranging a custom courier service for every parcel.
 
-<div align="center">
-<img src="img/Pre-Post-office-system.png" width="470">
+<div align="left">
+<img src="img/Pre-Post-office-system.png" width="440">
 </div>
 
 Postal services reduce cost by transporting standardized packages instead of requiring knowledge of every parcel's contents.
 
-<div align="center">
-<img src="img/Post-office-system.png" width="550">
+<div align="left">
+<img src="img/Post-office-system.png" width="440">
 </div>
 
 RDA applies the same principle to software integration.
 
 Applications exchange generic containers instead of tightly coupled object models.
 
-<div align="center">
-<img src="img/Charian-data-transport.png" width="550">
+<div align="left">
+<img src="img/Charian-data-transport.png" width="440">
 </div>
 
 The result is a transport layer that is simpler, more reusable, and less dependent on shared schemas.
@@ -141,8 +143,10 @@ The [project Wiki](https://github.com/foldda/rda/wiki) contains additional detai
 - RDA encoding rules
 - Charian API
 - Design philosophy
-- Practical examples
-- Frequently Asked Questions
+- Practical usages
+- Competition
+
+(NB - some wiki pages are unfinalized / under construction.)
 
 ---
 
