@@ -136,15 +136,13 @@ The result is a transport layer that is simpler, more reusable, and less depende
 
 ## Learn More
 
-The project Wiki contains additional details, including:
+The [project Wiki](https://github.com/foldda/rda/wiki) contains additional details, including:
 
 - RDA encoding rules
 - Charian API
 - Design philosophy
 - Practical examples
 - Frequently Asked Questions
-
-https://github.com/foldda/rda/wiki
 
 ---
 
