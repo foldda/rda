@@ -40,7 +40,7 @@ An RDA string consists of two parts:
 |\|One|Two|Three
 ```
 
-The header (`|\|`) declares the delimiter (`|`) and the escape character (`\\`), allowing a parser to determine the encoding dynamically.
+The header (`|\|`) declares the delimiter (`|`) and the escape character (`\`), allowing a parser to determine the encoding dynamically.
 
 Additional delimiters allow encoding higher-dimensional data.
 
