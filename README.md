@@ -15,11 +15,7 @@ In the example below, the header (substring "|\\|") defines a delimiter (the fir
 |\|One|Two|Three
 ```
 
-RDA encoding supports encoding multi-dimensional data, which is done by expanding the header and defining more delimiters. In the example below, two delimiters ('|' and ',') are defined in the RDA string's header, and the string's payload contains an encoded 2-D data table: the rows are separated by the "first-dimension" delimiter '|', and the columns in each row are separated by the "second-dimension" deleimiter ','. 
-
-```
-|,\|Name,Sex,Age|Mary,F,52|John,M,70|Kate,F,63
-```
+RDA encoding supports encoding multi-dimensional data, through expanding the header and defining more delimiters. The next example illustrates an RDA string that contains the data values of a 2-D data table - 
 
 | Name | Sex | Age | 
 |------|-----|-----|
@@ -27,29 +23,37 @@ RDA encoding supports encoding multi-dimensional data, which is done by expandin
 | John | M   | 70  |
 | Kate | F   | 63  | 
 
+In the encoded RDA string below, the header ("|,\\|") defines a first-dimension delimiter '|' and a second-dimension deleimiter ',', which are used to encode the table's data elements in the payload - the rows are separated by the delimiter '|', and the columns in each row are separated by the deleimiter ','.
+
+```
+|,\|Name,Sex,Age|Mary,F,52|John,M,70|Kate,F,63
+```
+
 ## Data Exchange Late-Binding 
 
 > In programming, late-binding allows a prpogram to adapt to changing environments, handle unknown object types, and avoid strict type-dependent links.
 
-When two programs exchange data in XML or JSON format, the data exchange implementation is bound to an XML/JSON schema. This can be a problem if the exact format for the data cannot be certain innitially, or can have varians, or may change (as they do) over time. 
+Today, XML/JSON/CSV are the most common encoding formats used in cross-program data exchange, such as messaging and file-based data transfer. Such data exchange requires the programs to pre-agree to a certain data format eg. an XML/JSON schema, which we refer as the "early-binding" in data exchange. Early-binding in data exchange imposes certain limitations if the exact format for the data exchange cannot be decided initially, or has varians, or may change (as they do) over time. 
 
-Data exchange late binding, like late-binding in programming, offers flexibility, version independence, and dynamic extensibility to the sender and the receiver, that is, the data format can be determined later and the varians be dealt with accordingly by either or both the sender and the receiver, and **RDA is designed for implementing data exchange late-binding**. Let's explain this with an analogy. 
+Data exchange late binding, like late-binding in programming, offers flexibility, version independence, and dynamic extensibility to the sender and the receiver, that is, the data format can be determined later and the varians be dealt with accordingly by either or both the sender and the receiver. 
+
+**The RDA encoding is designed for implementing data exchange late-binding**. How does it work can be explained by using an analogy -  
 
 Imagine you're moving house: you would first pack household items into boxes, _disassemble_ them if required, and once the boxes are delivered to the new place, perhaps by a freight company, you would unpack the boxes, _reassemble_ the items, and re-place them to their designated places. Note in this process, the sender, the receiver, and through the process no party needs to agree the exact shape and the size of each household item - everything is wrapped in generic boxes until the time the receiver unwrap the packaging and "consumes" the content inside the boxes. 
 
-> Data exchange late-binding involves a sender disassembling a complex data object into properties and values, and a receiver reassembling the properties and values back into consumable data. In between, it requires a data container storage for carrying the disassembled properties and values - a storage that does not restrict what can be carried, like a "plain box". 
+> Data exchange late-binding involves a sender disassembling a complex data object into properties and values, and a receiver reassembling the properties and values back into a consumable data. In between, it requires a data container for carrying the disassembled properties and values - a storage that does not restrict what can be carried, like a "plain box". 
 
-As discussed earlier, XML/JSON based data exchange are schema-dependent that restricts on data format, and the schema-less CSV encoding is too primitive for carrying complex structured data. In contrast, the schema-less RDA encoding does not have these limitation and restriction and is suitable for data exchange late-binding.
+As discussed earlier, schema-based data encoding format restricts on the format of the data to be carried and transferred. In contrast, the schema-less RDA encoding does not have these limitation and restriction. In an analogy, XML/JSON/CSV are like wallets that have defined specific places for storing cards, notes, and coins; whilst RDA is like boxes, sacks, and shelves that provide a generic open storage space - for storing anything and everything.
 
 ## Charian - More Than An RDA-Encoding API
 
-Charian is a simple RDA encoding and parsing API, that serves as an easy-to-use tool for late-binding data exchange. Specifically, the API assists  programs late-binding data exchange through providing a class that is modeled as a generic schema-less container to be used for "packing and unpacking data" for the data exchange. This is explained below using the API's C# implementation[^2] as an example.
+Charian is a simple RDA encoding and parsing API, and an easy-to-use tool for programs to implement data exchange late-binding. Specifically, the API provides a class that is modeled as a generic container, which programs can use for "packing and unpacking data" in the course of late-binding data exchange. This is explained below using the API's C# implementation[^2] as an example.
 
 [^2]: Charian is current available in C#, Python, and Java [from its GitHub repo](https://github.com/foldda/charian), and potentially more languages will be supported in the future. 
 
 ### The Rda Class (C#)
 
-In the API, the Rda class has setter and getter methods for programs storing and retrieving data[^3]. An Rda class object can be serialized into, and be de-serialized from, an RDA-encoded string:
+In the API, the Rda class is modeled as a container which has setter and getter methods for programs storing and retrieving data[^3]. An Rda class object can then be serialized into an RDA-encoded string for easy data transportation.
 
 ```csharp
 class Rda
@@ -66,7 +70,7 @@ class Rda
 ```
 [^3]: You may have noticed the API's Rda class supports storing only two data type values: the first is type "string", the second is type "Rda" (via recurrsion). The recurrsion takes advantage of an RDA string's interesting property for havinv a "**recursive storage structure**", that is, you can store an Rda object inside another Rda object. That's because the RDA's multi-dimensional encoding space can be (almost) unlimited expanded into new deminsions (through introducing additional dilimiters to the encoding process), and any one sub-dimension is also a multi-dimensional array itself and offers the same storaging property and capacity as its containing parent-dimension. Reflecting this in the API is that an Rda object (having a multi-dimensional space) can be stored inside another Rda object (as one of its sub-dimensions).
 
-The Rda is modeled as a data container for ebing used in late-binding style data exchange. In the following example illustrates how a program utilizes an Rda object to transfer some random data via an RDA-encoded string that is temporarilly stored in a file. Note how the container object can automatically expand to accomandate extra data elements without having any restrictions on the data that can be transported.
+In the following example illustrates how a program utilizes an Rda "container" object to transfer some random data via an RDA-encoded string that is temporarilly stored in a file. Note how the container object can automatically expand to accomandate extra data elements without having any restrictions on the data that can be transported.
 
 ```csharp
 using Charian;
@@ -114,7 +118,7 @@ class RdaDemo1
 }
 ```
 
-Charian can also easily serializing complex data objects into RDA strings. More details and code examples are available at [its GitHub repo](https://github.com/foldda/charian)
+Charian can also be used as a serialization API, as it can be used to disassemble complex data objects into discrete values and be stored in RDA strings. More details and code examples are available at [its GitHub repo](https://github.com/foldda/charian)
 
 ## Snappable - Data Exchange Late-Binding In Practice
 
