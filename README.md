@@ -33,16 +33,16 @@ This provides:
 
 An RDA string consists of two parts:
 
-- a **header**, which defines the encoding delimiters
+- a **header**, which defines the encoding delimiters and the escape character
 - a **payload**, which contains the encoded data
 
 ```
 |\|One|Two|Three
 ```
 
-The header (`|\|`) declares the delimiter (`|`), allowing a parser to determine the encoding dynamically.
+The header (`|\|`) declares the delimiter (`|`) and the escape character (`\\`), allowing a parser to determine the encoding dynamically.
 
-Additional delimiters allow higher-dimensional data.
+Additional delimiters allow encoding higher-dimensional data.
 
 For example, the table
 
@@ -58,7 +58,7 @@ is encoded as
 |,\|Name,Sex,Age|Mary,F,52|John,M,70|Kate,F,63
 ```
 
-The parser learns the delimiter definitions directly from the header, allowing different encoding characters to be used without changing the parser.
+The parser learns the encoding characters definitions directly from the header, allowing different encoding characters to be used without changing the parser.
 
 ---
 
