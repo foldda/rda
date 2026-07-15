@@ -15,7 +15,7 @@ In the example below, the header (substring "|\\|") defines a delimiter (the fir
 |\|One|Two|Three
 ```
 
-RDA encoding supports encoding multi-dimensional data, which is done by expanding the header and defining more delimiters. In the next example, there are two delimiters defined in the RDA string's header, delimiter '|' and deleimiter ',', and the string contains an encoded 2-D data table: the rows (first-dimension) are separated by delimiter '|', and the columns (second-dimension) in each row are separated by deleimiter ','. 
+RDA encoding supports encoding multi-dimensional data, which is done by expanding the header and defining more delimiters. In the example below, two delimiters ('|' and ',') are defined in the RDA string's header, and the string's payload contains an encoded 2-D data table: the rows are separated by the "first-dimension" delimiter '|', and the columns in each row are separated by the "second-dimension" deleimiter ','. 
 
 ```
 |,\|Name,Sex,Age|Mary,F,52|John,M,70|Kate,F,63
@@ -31,21 +31,19 @@ RDA encoding supports encoding multi-dimensional data, which is done by expandin
 
 > In programming, late-binding allows a prpogram to adapt to changing environments, handle unknown object types, and avoid strict type-dependent links.
 
-When two programs exchange data in XML or JSON format, they must first agree to an XML/JSON schema for the data-exchange. This can be a problem if the exact format for the data cannot be certain innitially, or can have varians, or can change (as they do) over time. 
+When two programs exchange data in XML or JSON format, the data exchange implementation is bound to an XML/JSON schema. This can be a problem if the exact format for the data cannot be certain innitially, or can have varians, or may change (as they do) over time. 
 
-**RDA is designed for data exchange late-binding**, that is, the data format can be determined later and the varians be dealt with accordingly by either or both the sender and the receiver. Similar to the late-binding in programming, data exchange late binding offers significant advantages in flexibility, version independence, and dynamic extensibility to the sender and the receiver.
+Data exchange late binding, like late-binding in programming, offers flexibility, version independence, and dynamic extensibility to the sender and the receiver, that is, the data format can be determined later and the varians be dealt with accordingly by either or both the sender and the receiver, and **RDA is designed for implementing data exchange late-binding**. Let's explain this with an analogy. 
 
-So how to implement data exchange late binding using RDA? Let's explain our approach with an analogy. 
+Imagine you're moving house: you would first pack household items into boxes, _disassemble_ them if required, and once the boxes are delivered to the new place, perhaps by a freight company, you would unpack the boxes, _reassemble_ the items, and re-place them to their designated places. Note in this process, the sender, the receiver, and through the process no party needs to agree the exact shape and the size of each household item - everything is wrapped in generic boxes until the time the receiver unwrap the packaging and "consumes" the content inside the boxes. 
 
-Imagine you're moving house: you would first pack household items into boxes, disassemble them if required, and once the boxes are delivered to the new place, perhaps by a freight company, you would unpack the boxes, reassemble the items, and re-place them to their designated places. Note in this process, the sender, the receiver, and through the process no party needs to agree the exact shape and the size of each household item - everything is wrapped in generic box containers until the time the receiver unwrap the packaging and "consumes" the box's content. 
+> Data exchange late-binding involves a sender disassembling a complex data object into properties and values, and a receiver reassembling the properties and values back into consumable data. In between, it requires a data container storage for carrying the disassembled properties and values - a storage that does not restrict what can be carried, like a "plain box". 
 
-> Data exchange late binding requires a "plain box" data container that is 1) be capable to carry arbitarily complex data, and 2) not to be restricted to a certain fixed data structure. 
-
-As discussed earlier, XML/JSON based data exchange are schema-dependent that restricts on data format, and the schema-less CSV encoding is too primitive for carrying complex structured data. In contrast, **RDA encoding allows data exchange late-binding** because it's schema-less unlike XML/JSON, and supports encoding complex structured data unlike CSV.
+As discussed earlier, XML/JSON based data exchange are schema-dependent that restricts on data format, and the schema-less CSV encoding is too primitive for carrying complex structured data. In contrast, the schema-less RDA encoding does not have these limitation and restriction and is suitable for data exchange late-binding.
 
 ## Charian - More Than An RDA-Encoding API
 
-Charian is a simple, easy-to-use RDA encoding and parsing API, although it operates more like a late-binding data exchange tool - that is, rather than producing and consuming RDA strings as the end product, the API exposes class model and methods for "packing and unpacking data" using generic schema-less containers, for late-binding style data transportation between programs. This is explained below using the API's C# implementation[^2] as an example.
+Charian is a simple RDA encoding and parsing API, that serves as an easy-to-use tool for late-binding data exchange. Specifically, the API assists  programs late-binding data exchange through providing a class that is modeled as a generic schema-less container to be used for "packing and unpacking data" for the data exchange. This is explained below using the API's C# implementation[^2] as an example.
 
 [^2]: Charian is current available in C#, Python, and Java [from its GitHub repo](https://github.com/foldda/charian), and potentially more languages will be supported in the future. 
 
