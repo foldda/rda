@@ -144,19 +144,18 @@ The [project Wiki](https://github.com/foldda/rda/wiki) contains additional detai
 - Charian API
 - Design philosophy
 - Practical usages
-- Competition
 
-(NB - some wiki pages are unfinalized / under construction.)
+(NB - some wiki pages are unfinalized and/or under construction.)
 
 ---
 
-## Bonus - Claude AI's View
+## Claude AI's View
 
-From a discussion with Claude AI -
+From a discussion with Claude AI, it summarise RDA as -
 
 > RDA is CSV extended with recursion and self-declared delimiters, while deliberately not adopting JSON's key-value naming or type system.
 
-Read more inculding Claude AI's comparison RDA vs XML/JSON/CSV, Protobuf and Avro
+The discussion also inculdes Claude AI's comparison of RDA against XML/JSON/CSV, Protobuf and Avro
 
 https://claude.ai/share/b75c3360-f61d-4216-ada6-422d0ea8a934
 
