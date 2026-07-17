@@ -80,7 +80,7 @@ Unlike schema-based formats, the transport layer does not impose restrictions on
 
 ## Charian
 
-RDA is accompanied by [**Charian**](https://github.com/foldda/charian), a lightweight API for encoding, decoding, and manipulating RDA data.
+RDA is accompanied by [**Charian**, a lightweight API for encoding, decoding, and manipulating RDA data](https://github.com/foldda/charian).
 
 Rather than exposing a schema-driven object model, Charian presents a generic hierarchical container that applications can populate, transport, and reconstruct as required.
 
@@ -94,7 +94,7 @@ Code examples for C#, Python and Java are available in the Charian repository.
 
 ## Snappable
 
-RDA was originally created for [**Snappable**](https://github.com/foldda/snappable), an open-source component framework that allows independently developed software components to communicate without requiring a shared object model.
+RDA was originally created for [**Snappable**, an open-source component framework](https://github.com/foldda/snappable) that allows independently developed software components to communicate without requiring a shared object model.
 
 Each component converts between its native data structures and RDA, allowing components from different vendors to interoperate through late-binding.
 
@@ -147,6 +147,18 @@ The [project Wiki](https://github.com/foldda/rda/wiki) contains additional detai
 - Competition
 
 (NB - some wiki pages are unfinalized / under construction.)
+
+---
+
+## Bonus - Claude AI's View
+
+From a discussion with Claude AI -
+
+> RDA is CSV extended with recursion and self-declared delimiters, while deliberately not adopting JSON's key-value naming or type system.
+
+Read more inculding Claude AI's comparison RDA vs XML/JSON/CSV, Protobuf and Avro
+
+https://claude.ai/share/b75c3360-f61d-4216-ada6-422d0ea8a934
 
 ---
 
