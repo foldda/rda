@@ -83,7 +83,7 @@
       <p style="margin-bottom: 10px;">As in the example, each record carries a schema version tag as its first element, and with the detached, versioned schemas, 
       the reader can dynamically look up the correct version for each record when parsing the data RDA stream, instead of assuming 
       a single fixed data structure.</p>
-      <p style="margin-bottom: 10px;">Edit the stream or the cached manuals below and the table updates immediately.</p>
+      <p>Edit the stream or the cached manuals below and the table updates immediately.</p>
   </header>
 
   <div class="desks">
@@ -105,12 +105,12 @@
 
   <div class="dock-title">Resolved shipment</div>
   <table class="resolve-table" id="resolveTable">
-    <thead><tr><th style="width:48px;">#</th><th>Resolved shipment</th></tr></thead>
+    <thead><tr><th style="width:48px;">#</th><th>Resolved shipment record</th></tr></thead>
     <tbody id="resolveBody"></tbody>
   </table>
 
   <div class="note">
-    <strong>How to read this:</strong> nothing here is hard-coded to one shape. The reader takes each record's version tag, fetches the matching manual from its cache, and resolves position → meaning from whichever manual matches — including unpacking a compound entry like <code>Destination</code> into its own named sub-attributes (Address / Suburb / Post&nbsp;Code), rather than generic positions. A record from an unrecognized version (try <code>v9,...</code> in the stream) fails cleanly and visibly in its own row, rather than silently misreading — that's the honest boundary of this approach: it only works for versions the reader already has cached, or can fetch on demand. This is comparable to what a schema registry gives Avro/Protobuf consumers, but with a plain cache of small text strings instead of a registry service and generated codec classes.
+    <strong>How to read this:</strong> nothing here is hard-coded to one fixed structure. The reader takes each record's version tag, fetches the matching manual from its cache, and resolves position → meaning from whichever manual matches — including unpacking a compound entry like <code>Destination</code> into its own named sub-attributes (Address / Suburb / Post&nbsp;Code), rather than generic positions. A record from an unrecognized version (try <code>v9,...</code> in the stream) fails cleanly and visibly in its own row, rather than silently misreading — that's the honest boundary of this approach: it only works for versions the reader already has cached, or can fetch on demand. This is comparable to what a schema registry gives Avro/Protobuf consumers, but with a plain cache of small text strings instead of a registry service and generated codec classes.
   </div>
 
 </div>
