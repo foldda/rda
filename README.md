@@ -51,7 +51,7 @@ JSON and XML embed structural metadata directly into every single object. RDA al
 
 See the [dynamic schema-version handling demo](https://htmlpreview.github.io/?https://github.com/foldda/rda/blob/main/rda-version-handling.html) for examples.
 
-### More Efficient Encoding
+### More Efficient Data Encoding and Transmission
 
 RDA uses positional delimiters in the encoding and can separately transmit schema and data, rather than repeating key names (JSON) or opening/closing tags (XML) on every record. As a result, RDA payloads are significantly smaller—especially for uniform or semi-uniform arrays of data.
 
@@ -59,9 +59,9 @@ See the [size comparison demo](https://htmlpreview.github.io/?https://github.com
 
 ## Purpose & Next Steps
 
-RDA isn't built to replace CSV, XML, or JSON as data containers. 
+Despite its advantageous features discussed above, RDA isn't built to replace CSV, XML, or JSON as data containers. 
 
->RDA is designed for **loosely coupled, late-binding data exchange**—scenarios where data structures evolve over time across disparate systems, and where hardcoding schemas into compiled code or embedding heavy metadata in every payload is inefficient.
+>RDA is designed for [**loosely coupled, late-binding data exchange**](./RDA-Background-Overview.md)—scenarios where data structures evolve over time across disparate systems, and where hardcoding schemas into compiled code or embedding heavy metadata in every payload is inefficient.
 
 While RDA defines the foundational wire format, higher-level capabilities—such as schema evolution, late binding, dynamic object mapping, and composable components—are handled by the surrounding ecosystem.
 
