@@ -49,17 +49,19 @@ Because RDA natively models nested hierarchies, it serves as a lightweight alter
 
 RDA uses positional delimiters rather than repeating key names (JSON) or opening/closing tags (XML) on every record. As a result, RDA payloads are significantly smaller—especially for uniform or semi-uniform arrays of data.
 
-See the [size comparison demo](./rda-vs-json-size.html) for examples.
+See the [size comparison demo](https://htmlpreview.github.io/?https://github.com/foldda/rda/blob/main/rda-vs-json-size.html)) for examples.
 
 ### Separation of Schema and Data
 
 JSON and XML embed structural metadata directly into every single object. RDA allows you to separate schema definitions from the data payload when appropriate (or include an optional header row, similar to CSV). While this trade-off reduces self-describing verbosity, it mostly eliminates redundancy over the wire.
 
-See the [dynamic schema-version handling demo](./rda-version-handling.html) for examples.
+See the [dynamic schema-version handling demo](https://htmlpreview.github.io/?https://github.com/foldda/rda/blob/main/rda-version-handling.html) for examples.
 
 ## Purpose & Next Steps
 
-RDA isn't designed to replace CSV, XML, or JSON as data containers. RDA is built for **loosely coupled, late-binding data exchange**—scenarios where data structures evolve over time across disparate systems, and where hardcoding schemas into compiled code or embedding heavy metadata in every payload is inefficient.
+RDA isn't built to replace CSV, XML, or JSON as data containers. 
+
+>RDA is designed for **loosely coupled, late-binding data exchange**—scenarios where data structures evolve over time across disparate systems, and where hardcoding schemas into compiled code or embedding heavy metadata in every payload is inefficient.
 
 While RDA defines the foundational wire format, higher-level capabilities—such as schema evolution, late binding, dynamic object mapping, and composable components—are handled by the surrounding ecosystem.
 
@@ -68,8 +70,6 @@ While RDA defines the foundational wire format, higher-level capabilities—such
 
 ---
 
-## License
-
-Released under the MIT License.
+RDA is released under the MIT License.
 
 "Recursive Delimited Array" and "RDA" are trademarks of Foldda Pty Ltd.
