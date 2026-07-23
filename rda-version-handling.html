@@ -77,21 +77,23 @@
       <span>Concurrent multi&#8209;version reading</span>
     </div>
     <h1>One reader, several schemas, one stream</h1>
-    <p>This example simulates encoding "shipment records" using a data-RDA and separate schema-RDAs. The metaphor is the shipment records are kept inside a "box" 
-      (the data RDA on the left), and the schema RDAs on the right are the "manuals" that describe what's in the box (i.e. the meta-data about the records).</p>  
-      <p>As in the example, each record carries a schema version tag as its first element, and with the detached, versioned schemas, the reader can dynamically 
-      look up the correct version for each record when parsing the data RDA stream, instead of assuming a single fixed data structure. </p>
-      <p>Edit the stream or the cached manuals below and the table updates immediately.</p>
+    <p>This example demonstrates encoding some mock "shipment records" using a data-RDA and multiple schema-RDAs. The metaphor is the shipment 
+      records are kept inside a "box" (the data RDA on the left), and the schema RDAs on the right are multiple versions of "manuals" that 
+      describe what's in the box (i.e. the meta-data about the records).  
+      <br/>As in the example, each record carries a schema version tag as its first element, and with the detached, versioned schemas, 
+      the reader can dynamically look up the correct version for each record when parsing the data RDA stream, instead of assuming 
+      a single fixed data structure.
+      <br/>Edit the stream or the cached manuals below and the table updates immediately.</p>
   </header>
 
   <div class="desks">
     <div class="tag-card">
-      <div class="tag-label"><span>Mixed shipment stream <span class="string">— records from different producer versions</span></span><span>editable</span></div>
+      <div class="tag-label"><span>Mixed shipment stream (data RDA)<span class="string">— records from different producer versions</span></span><span>editable</span></div>
       <textarea id="streamInput" spellcheck="false" style="min-height:78px;"></textarea>
       <div class="hint">First element of each row is a version tag (v1 / v2 / v3). Try adding a row with an unknown version, e.g. <code>v9,...</code>.</div>
     </div>
     <div class="tag-card">
-      <div class="tag-label"><span>Manual cache <span class="string">— one entry per known version</span></span><span>editable</span></div>
+      <div class="tag-label"><span>Manual cache (schema RDAs)<span class="string">— one entry per known version</span></span><span>editable</span></div>
       <div class="sub-label" style="margin-top:0;">v1</div>
       <textarea id="manualV1" spellcheck="false" style="min-height:34px;"></textarea>
       <div class="sub-label">v2 <span style="color:var(--ink-soft); text-transform:none; letter-spacing:0; font-weight:400;">— Weight renamed to Mass</span></div>
