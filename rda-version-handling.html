@@ -76,8 +76,12 @@
       <span>Manifest No. RDA&#8209;03</span>
       <span>Concurrent multi&#8209;version reading</span>
     </div>
-    <h1>One reader, several manuals, one stream</h1>
-    <p>Each record carries a version tag as its first element. The reader keeps a small cache of manuals — one per version — and looks up the right one per record, live, instead of assuming a single fixed shape. Edit the stream or the cached manuals below and the table updates immediately.</p>
+    <h1>One reader, several schemas, one stream</h1>
+    <p>This example simulates encoding "shipment records" using a data-RDA and separate schema-RDAs. The metaphor is the shipment records are kept inside a "box" 
+      (the data RDA on the left), and the schema RDAs on the right are the "manuals" that describe what's in the box (i.e. the meta-data about the records).  
+      As in the example, each record carries a schema version tag as its first element, and with the detached, versioned schemas, the reader can dynamically 
+      look up the correct version for each record when parsing the data RDA stream, instead of assuming a single fixed data structure. 
+      <br>Edit the stream or the cached manuals below and the table updates immediately.</p>
   </header>
 
   <div class="desks">
