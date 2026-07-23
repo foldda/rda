@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RDA vs JSON — Size &amp; Change Comparison</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #E8E4D6;
+    --paper-dark: #DDD8C6;
+    --card: #F4F1E6;
+    --ink: #23303F;
+    --ink-soft: #5B6473;
+    --line: #C9C2AA;
+    --stamp-green: #3C6E52;
+    --stamp-red: #A6402F;
+    --stamp-amber: #B4791E;
+    --tag-string: #C08A2E;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'IBM Plex Sans', sans-serif;
+    --cond: 'IBM Plex Sans Condensed', sans-serif;
+  }
+  *{ box-sizing: border-box; }
+  body{
+    margin:0;
+    background: var(--paper);
+    background-image:
+      repeating-linear-gradient(0deg, rgba(0,0,0,0.015) 0px, rgba(0,0,0,0.015) 1px, transparent 1px, transparent 3px);
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.5;
+    padding: 0 0 80px;
+  }
+  a{ color: var(--ink); }
+  .wrap{ max-width: 1120px; margin: 0 auto; padding: 0 28px; }
+  header.manifest{ border-bottom: 2px solid var(--ink); padding: 40px 0 22px; margin-bottom: 32px; }
+  .eyebrow{ font-family: var(--cond); font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; font-size: 12px; color: var(--ink-soft); display:flex; justify-content: space-between; margin-bottom: 14px; }
+  h1{ font-family: var(--mono); font-weight: 700; font-size: clamp(28px, 4vw, 42px); margin: 0 0 10px; letter-spacing: -0.01em; }
+  header.manifest p{ max-width: 720px; color: var(--ink-soft); font-size: 15px; margin: 0; }
+  header.manifest code{ font-family: var(--mono); background: var(--paper-dark); padding: 1px 5px; border-radius: 2px; }
+  .scenarios{ display:flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; }
+  .scenario-btn{ font-family: var(--cond); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; font-size: 13px; background: var(--card); border: 1.5px solid var(--ink); color: var(--ink); padding: 10px 16px; cursor: pointer; transition: transform .08s ease, background .15s ease; }
+  .scenario-btn:hover{ transform: translateY(-1px); }
+  .scenario-btn.active{ background: var(--ink); color: var(--paper); }
+  .scenario-btn .num{ color: var(--tag-string); margin-right: 6px; }
+  .scenario-btn.active .num{ color: #D9B968; }
+  .legend{ font-family: var(--cond); font-size: 12px; color: var(--ink-soft); margin: 6px 0 30px; }
+  .legend .add{ color: var(--stamp-red); font-weight: 700; }
+  .legend .rem{ color: var(--stamp-red); font-weight: 700; text-decoration: line-through; }
+  .compare{ display:grid; grid-template-columns: 1.35fr 1fr; gap: 20px; align-items: start; }
+  @media (max-width: 860px){ .compare{ grid-template-columns: 1fr; } }
+  .panel{ background: var(--card); border: 1px solid var(--ink); }
+  .panel-head{ font-family: var(--mono); font-weight: 600; font-size: 13px; padding: 12px 16px; border-bottom: 1px solid var(--line); text-transform: uppercase; letter-spacing: 0.03em; }
+  .panel-body{ padding: 16px; }
+  .sub-block + .sub-block{ margin-top: 18px; }
+  .sub-label{ font-family: var(--cond); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; font-size: 11px; color: var(--tag-string); margin-bottom: 6px; }
+  .code-block{ font-family: var(--mono); font-size: 13px; background: #FBF9F1; border: 1px solid var(--line); padding: 10px 12px; white-space: pre-wrap; word-break: break-word; line-height: 1.6; color: var(--ink); }
+  .code-block .add{ color: var(--stamp-red); font-weight: 700; }
+  .code-block .rem{ color: var(--stamp-red); font-weight: 700; text-decoration: line-through; }
+  .caption{ font-family: var(--cond); font-size: 12px; color: var(--ink-soft); font-style: italic; margin-top: 6px; }
+  .caption.touched{ color: var(--stamp-red); font-weight: 600; font-style: normal; }
+  .caption.untouched{ color: var(--stamp-green); font-weight: 600; font-style: normal; }
+  .scenario-panel{ display:none; }
+  .scenario-panel.show{ display:block; }
+  .dock-title{ font-family: var(--cond); text-transform: uppercase; letter-spacing: 0.14em; font-size: 12px; color: var(--ink-soft); margin: 34px 0 14px; display:flex; align-items:center; gap: 10px; }
+  .dock-title::after{ content:''; flex:1; height:1px; background: var(--line); }
+  table.size-table{ width:100%; border-collapse: collapse; font-family: var(--mono); font-size: 12.5px; }
+  table.size-table th{ text-align:right; padding:6px 8px; font-family: var(--cond); text-transform:uppercase; letter-spacing:.06em; font-size:11px; color:var(--ink-soft); border-bottom: 1.5px solid var(--ink); }
+  table.size-table th:first-child{ text-align:left; }
+  table.size-table td{ text-align:right; padding:7px 8px; border-bottom: 1px dashed var(--line); }
+  table.size-table td:first-child{ text-align:left; }
+  table.size-table tr:last-child td{ border-bottom: none; }
+  .note{ margin-top: 30px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 12.5px; color: var(--ink-soft); }
+  .note strong{ color: var(--ink); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="manifest">
+    <div class="eyebrow">
+      <span>Manifest No. RDA&#8209;02</span>
+      <span>Late&#8209;binding demonstration</span>
+    </div>
+    <h1>Same box, different contents</h1>
+    <p>A freight yard ships parcels. The data box carries only values &mdash; no field names travel with every record. A separate <code>manual</code>, itself an RDA object, carries the meaning. Compare that against JSON, where names and values travel together in every record. Pick a scenario to see exactly what has to change from the base shipment, in red.</p>
+  </header>
+
+  <div class="scenarios" id="scenarios">
+    <button class="scenario-btn active" data-key="base"><span class="num">01</span>Base shipment</button>
+    <button class="scenario-btn" data-key="renamed"><span class="num">02</span>Field title changed</button>
+    <button class="scenario-btn" data-key="address"><span class="num">03</span>Destination sub-element added</button>
+    <button class="scenario-btn" data-key="removed"><span class="num">04</span>Field removed</button>
+  </div>
+  <div class="legend"><span class="add">red text</span> = added or changed &nbsp;&nbsp;&middot;&nbsp;&nbsp; <span class="rem">red strikethrough</span> = removed &nbsp;&nbsp;&middot;&nbsp;&nbsp; plain text = untouched from the base shipment</div>
+
+  <!-- BASE -->
+  <div class="scenario-panel show" data-panel="base">
+    <div class="compare">
+      <div class="panel">
+        <div class="panel-head">RDA — data object + manual object</div>
+        <div class="panel-body">
+          <div class="sub-block">
+            <div class="sub-label">Manual object</div>
+            <div class="code-block">|,\|0,Item|1,Qty|2,Weight</div>
+            <div class="caption">Position → meaning, sent once, separately. No header row — position 0 is always the first entry.</div>
+          </div>
+          <div class="sub-block">
+            <div class="sub-label">Data object</div>
+            <div class="code-block">|,\|Steel Bolts,500,12.4|Copper Wire,120,8.1|Packing Foam,40,3.6</div>
+            <div class="caption">Reference shipment. No field names travel with the data.</div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-head">JSON</div>
+        <div class="panel-body">
+          <div class="code-block">[
+  {"Item": "Steel Bolts", "Qty": 500, "Weight": 12.4},
+  {"Item": "Copper Wire", "Qty": 120, "Weight": 8.1},
+  {"Item": "Packing Foam", "Qty": 40, "Weight": 3.6}
+]</div>
+          <div class="caption">Reference shipment. Names repeat in every record.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RENAMED -->
+  <div class="scenario-panel" data-panel="renamed">
+    <div class="compare">
+      <div class="panel">
+        <div class="panel-head">RDA — data object + manual object</div>
+        <div class="panel-body">
+          <div class="sub-block">
+            <div class="sub-label">Manual object</div>
+            <div class="code-block">|,\|0,Item|1,Qty|2,<span class="add">Mass</span></div>
+            <div class="caption touched">1 label changed, in 1 place.</div>
+          </div>
+          <div class="sub-block">
+            <div class="sub-label">Data object</div>
+            <div class="code-block">|,\|Steel Bolts,500,12.4|Copper Wire,120,8.1|Packing Foam,40,3.6</div>
+            <div class="caption untouched">Untouched — nothing to change.</div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-head">JSON</div>
+        <div class="panel-body">
+          <div class="code-block">[
+  {"Item": "Steel Bolts", "Qty": 500, "<span class="add">Mass</span>": 12.4},
+  {"Item": "Copper Wire", "Qty": 120, "<span class="add">Mass</span>": 8.1},
+  {"Item": "Packing Foam", "Qty": 40, "<span class="add">Mass</span>": 3.6}
+]</div>
+          <div class="caption touched">1 label changed, but repeated in all 3 records.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADDRESS / DESTINATION -->
+  <div class="scenario-panel" data-panel="address">
+    <div class="compare">
+      <div class="panel">
+        <div class="panel-head">RDA — data object + manual object</div>
+        <div class="panel-body">
+          <div class="sub-block">
+            <div class="sub-label">Manual object</div>
+            <div class="code-block">|,<span class="add">;</span>\|0,Item|1,Qty|2,Weight<span class="add">|3,Destination;Address;Suburb;Post Code</span></div>
+            <div class="caption touched">1 entry appended — and it carries its own sub-attribute names (nested, same recursive rule as the data).</div>
+          </div>
+          <div class="sub-block">
+            <div class="sub-label">Data object</div>
+            <div class="code-block">|,<span class="add">;</span>\|Steel Bolts,500,12.4|Copper Wire,120,8.1|Packing Foam,40,3.6<span class="add">,45 Dock Rd;Fremantle;6160</span></div>
+            <div class="caption touched">Header gains a 3rd delimiter; only the 1 row that actually has a destination is touched — same as JSON.</div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-head">JSON</div>
+        <div class="panel-body">
+          <div class="code-block">[
+  {"Item": "Steel Bolts", "Qty": 500, "Weight": 12.4},
+  {"Item": "Copper Wire", "Qty": 120, "Weight": 8.1},
+  {"Item": "Packing Foam", "Qty": 40, "Weight": 3.6, <span class="add">"Destination": {"Address": "45 Dock Rd", "Suburb": "Fremantle", "Post Code": "6160"}</span>}
+]</div>
+          <div class="caption touched">Only the 1 record that actually has a destination is touched — the other 2 are untouched.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REMOVED -->
+  <div class="scenario-panel" data-panel="removed">
+    <div class="compare">
+      <div class="panel">
+        <div class="panel-head">RDA — data object + manual object</div>
+        <div class="panel-body">
+          <div class="sub-block">
+            <div class="sub-label">Manual object</div>
+            <div class="code-block">|,\|0,Item|1,Qty|2,Weight</div>
+            <div class="caption untouched">Left stale, on purpose — the reader just reports position 2 as not supplied.</div>
+          </div>
+          <div class="sub-block">
+            <div class="sub-label">Data object</div>
+            <div class="code-block">|,\|Steel Bolts,500<span class="rem">,12.4</span>|Copper Wire,120<span class="rem">,8.1</span>|Packing Foam,40<span class="rem">,3.6</span></div>
+            <div class="caption touched">3 values removed, one per row.</div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-head">JSON</div>
+        <div class="panel-body">
+          <div class="code-block">[
+  {"Item": "Steel Bolts", "Qty": 500<span class="rem">, "Weight": 12.4</span>},
+  {"Item": "Copper Wire", "Qty": 120<span class="rem">, "Weight": 8.1</span>},
+  {"Item": "Packing Foam", "Qty": 40<span class="rem">, "Weight": 3.6</span>}
+]</div>
+          <div class="caption touched">3 keys removed, one per record.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dock-title">Size — single shipment (3 records)</div>
+  <div class="panel" style="margin-bottom:30px;">
+    <div class="panel-body">
+      <table class="size-table">
+        <thead>
+          <tr><th>Scenario</th><th>RDA data</th><th>RDA manual</th><th>RDA total</th><th>JSON (minified)</th><th>RDA vs JSON</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Base shipment</td><td>64 B</td><td>25 B</td><td style="font-weight:600;">89 B</td><td>140 B</td><td style="color: var(--stamp-green); font-weight:700;">&minus;36%</td></tr>
+          <tr><td>Field title changed</td><td>64 B</td><td>23 B</td><td style="font-weight:600;">87 B</td><td>134 B</td><td style="color: var(--stamp-green); font-weight:700;">&minus;35%</td></tr>
+          <tr><td>Destination sub-element added</td><td>91 B</td><td>65 B</td><td style="font-weight:600;">156 B</td><td>219 B</td><td style="color: var(--stamp-green); font-weight:700;">&minus;29%</td></tr>
+          <tr><td>Field removed</td><td>51 B</td><td>25 B</td><td style="font-weight:600;">76 B</td><td>100 B</td><td style="color: var(--stamp-green); font-weight:700;">&minus;24%</td></tr>
+        </tbody>
+      </table>
+      <div class="caption" style="margin-top:10px;">Byte counts of the exact strings shown above. JSON is minified (no whitespace) for a fair comparison.</div>
+    </div>
+  </div>
+
+  <div class="dock-title">Size at scale — 100 records, one manual</div>
+  <div class="panel" style="margin-bottom:30px;">
+    <div class="panel-body">
+      <table class="size-table">
+        <thead>
+          <tr><th>Scenario</th><th>RDA (100 records + 1 manual)</th><th>JSON (100 records)</th><th>RDA as % of JSON</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Base shipment</td><td>2,062 B</td><td>4,635 B</td><td style="color: var(--stamp-green); font-weight:700;">44%</td></tr>
+          <tr><td>Field title changed</td><td>2,060 B</td><td>4,435 B</td><td style="color: var(--stamp-green); font-weight:700;">46%</td></tr>
+          <tr><td>Destination sub-element added</td><td>2,961 B</td><td>7,242 B</td><td style="color: var(--stamp-green); font-weight:700;">41%</td></tr>
+          <tr><td>Field removed</td><td>1,628 B</td><td>3,301 B</td><td style="color: var(--stamp-green); font-weight:700;">49%</td></tr>
+        </tbody>
+      </table>
+      <div class="caption" style="margin-top:10px;">The manual is paid once per integration, not once per shipment. As record count grows, its cost is amortized toward zero, while JSON keeps repeating every field name in every record. This is the number that actually matters for a real integration, not the single-shipment table above it.</div>
+    </div>
+  </div>
+
+  <div class="note">
+    <strong>How to read this:</strong> the data object never carries field names — only the manual does, sent once as a sibling RDA object. The manual itself carries no header row either: position 0 is always the first entry, by convention, the same way the data has no title row. That's why a pure rename costs the data object nothing. The manual isn't limited to a flat index→name list — as the "Destination added" case shows, an entry can itself declare sub-attribute names, using the same recursive delimiter rule as any RDA data. Adding a trailing field only touches the rows that actually have it — since it's the last column, rows without it simply end early, no placeholder needed. Removing a field needs no change to the manual at all. This is a simplified, illustrative encoding built from the two examples in the <a href="https://github.com/foldda/rda/blob/main/README.md" target="_blank" rel="noopener">RDA README</a>, not the full project spec.
+  </div>
+
+</div>
+
+<script>
+document.getElementById('scenarios').addEventListener('click', (e) => {
+  const btn = e.target.closest('.scenario-btn');
+  if (!btn) return;
+  const key = btn.dataset.key;
+  document.querySelectorAll('.scenario-btn').forEach(b => b.classList.toggle('active', b === btn));
+  document.querySelectorAll('.scenario-panel').forEach(p => p.classList.toggle('show', p.dataset.panel === key));
+});
+</script>
+</body>
+</html>

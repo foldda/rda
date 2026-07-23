@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RDA — Concurrent Multi-Version Reading</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #E8E4D6;
+    --paper-dark: #DDD8C6;
+    --card: #F4F1E6;
+    --ink: #23303F;
+    --ink-soft: #5B6473;
+    --line: #C9C2AA;
+    --stamp-green: #3C6E52;
+    --stamp-red: #A6402F;
+    --stamp-amber: #B4791E;
+    --tag-string: #C08A2E;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'IBM Plex Sans', sans-serif;
+    --cond: 'IBM Plex Sans Condensed', sans-serif;
+  }
+  *{ box-sizing: border-box; }
+  body{
+    margin:0;
+    background: var(--paper);
+    background-image:
+      repeating-linear-gradient(0deg, rgba(0,0,0,0.015) 0px, rgba(0,0,0,0.015) 1px, transparent 1px, transparent 3px);
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.5;
+    padding: 0 0 80px;
+  }
+  a{ color: var(--ink); }
+  .wrap{ max-width: 1120px; margin: 0 auto; padding: 0 28px; }
+  header.manifest{ border-bottom: 2px solid var(--ink); padding: 40px 0 22px; margin-bottom: 32px; }
+  .eyebrow{ font-family: var(--cond); font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; font-size: 12px; color: var(--ink-soft); display:flex; justify-content: space-between; margin-bottom: 14px; }
+  h1{ font-family: var(--mono); font-weight: 700; font-size: clamp(26px, 3.6vw, 38px); margin: 0 0 10px; letter-spacing: -0.01em; }
+  header.manifest p{ max-width: 720px; color: var(--ink-soft); font-size: 15px; margin: 0; }
+  header.manifest code{ font-family: var(--mono); background: var(--paper-dark); padding: 1px 5px; border-radius: 2px; }
+
+  .desks{ display:grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 8px; }
+  @media (max-width: 720px){ .desks{ grid-template-columns: 1fr; } }
+  .tag-card{ background: var(--card); border: 1px solid var(--line); position: relative; padding: 18px 18px 16px; }
+  .tag-card::before{ content: ''; position: absolute; top: -9px; left: 20px; width: 14px; height: 14px; border-radius: 50%; background: var(--paper); border: 1.5px solid var(--ink); }
+  .tag-label{ font-family: var(--cond); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; font-size: 11px; color: var(--ink-soft); margin-bottom: 8px; display:flex; justify-content: space-between; }
+  .tag-label .string{ color: var(--tag-string); }
+  textarea{ width: 100%; min-height: 96px; font-family: var(--mono); font-size: 13.5px; background: #FBF9F1; border: 1px solid var(--line); color: var(--ink); padding: 10px 12px; resize: vertical; line-height: 1.55; }
+  textarea:focus{ outline: 2px solid var(--stamp-green); outline-offset: 1px; }
+  .hint{ font-size: 12px; color: var(--ink-soft); margin-top: 6px; }
+  .sub-label{ font-family: var(--cond); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; font-size: 11px; color: var(--tag-string); margin-bottom: 6px; margin-top: 12px; }
+
+  .dock-title{ font-family: var(--cond); text-transform: uppercase; letter-spacing: 0.14em; font-size: 12px; color: var(--ink-soft); margin: 34px 0 14px; display:flex; align-items:center; gap: 10px; }
+  .dock-title::after{ content:''; flex:1; height:1px; background: var(--line); }
+
+  table.resolve-table{ width:100%; border-collapse: collapse; background: var(--card); border: 1px solid var(--ink); }
+  table.resolve-table th{ text-align:left; padding:10px 14px; font-family: var(--cond); text-transform:uppercase; letter-spacing:.06em; font-size:11px; color:var(--ink-soft); border-bottom: 1.5px solid var(--ink); background: var(--paper-dark); }
+  table.resolve-table td{ padding:11px 14px; border-bottom: 1px dashed var(--line); font-family: var(--mono); font-size: 13px; vertical-align: top; }
+  table.resolve-table tr:last-child td{ border-bottom: none; }
+  table.resolve-table td.recnum{ color: var(--ink-soft); width: 48px; }
+  .via{ color: var(--tag-string); font-weight: 700; }
+  .warn{ color: var(--stamp-red); font-weight: 600; }
+  .field-eq{ color: var(--ink-soft); }
+
+  .note{ margin-top: 30px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 12.5px; color: var(--ink-soft); }
+  .note strong{ color: var(--ink); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="manifest">
+    <div class="eyebrow">
+      <span>Manifest No. RDA&#8209;03</span>
+      <span>Concurrent multi&#8209;version reading</span>
+    </div>
+    <h1>One reader, several manuals, one stream</h1>
+    <p>Each record carries a version tag as its first element. The reader keeps a small cache of manuals — one per version — and looks up the right one per record, live, instead of assuming a single fixed shape. Edit the stream or the cached manuals below and the table updates immediately.</p>
+  </header>
+
+  <div class="desks">
+    <div class="tag-card">
+      <div class="tag-label"><span>Mixed shipment stream <span class="string">— records from different producer versions</span></span><span>editable</span></div>
+      <textarea id="streamInput" spellcheck="false" style="min-height:78px;"></textarea>
+      <div class="hint">First element of each row is a version tag (v1 / v2 / v3). Try adding a row with an unknown version, e.g. <code>v9,...</code>.</div>
+    </div>
+    <div class="tag-card">
+      <div class="tag-label"><span>Manual cache <span class="string">— one entry per known version</span></span><span>editable</span></div>
+      <div class="sub-label" style="margin-top:0;">v1</div>
+      <textarea id="manualV1" spellcheck="false" style="min-height:34px;"></textarea>
+      <div class="sub-label">v2 <span style="color:var(--ink-soft); text-transform:none; letter-spacing:0; font-weight:400;">— Weight renamed to Mass</span></div>
+      <textarea id="manualV2" spellcheck="false" style="min-height:34px;"></textarea>
+      <div class="sub-label">v3 <span style="color:var(--ink-soft); text-transform:none; letter-spacing:0; font-weight:400;">— Destination added</span></div>
+      <textarea id="manualV3" spellcheck="false" style="min-height:34px;"></textarea>
+    </div>
+  </div>
+
+  <div class="dock-title">Resolved shipment</div>
+  <table class="resolve-table" id="resolveTable">
+    <thead><tr><th style="width:48px;">#</th><th>Resolved shipment</th></tr></thead>
+    <tbody id="resolveBody"></tbody>
+  </table>
+
+  <div class="note">
+    <strong>How to read this:</strong> nothing here is hard-coded to one shape. The reader takes each record's version tag, fetches the matching manual from its cache, and resolves position → meaning from whichever manual matches — including unpacking a compound entry like <code>Destination</code> into its own named sub-attributes (Address / Suburb / Post&nbsp;Code), rather than generic positions. A record from an unrecognized version (try <code>v9,...</code> in the stream) fails cleanly and visibly in its own row, rather than silently misreading — that's the honest boundary of this approach: it only works for versions the reader already has cached, or can fetch on demand. This is comparable to what a schema registry gives Avro/Protobuf consumers, but with a plain cache of small text strings instead of a registry service and generated codec classes.
+  </div>
+
+</div>
+
+<script>
+/* ---------------- RDA parsing (generic, recursive) ---------------- */
+function splitRespectingEscape(s, delim, esc){
+  const parts = [];
+  let cur = '';
+  for (let i=0; i<s.length; i++){
+    const c = s[i];
+    if (c === esc && i+1 < s.length){ cur += s[i+1]; i++; continue; }
+    if (c === delim){ parts.push(cur); cur=''; } else cur += c;
+  }
+  parts.push(cur);
+  return parts;
+}
+function recursiveSplit(s, delims, esc){
+  if (delims.length === 0) return s;
+  const parts = splitRespectingEscape(s, delims[0], esc);
+  if (delims.length === 1) return parts;
+  return parts.map(p => recursiveSplit(p, delims.slice(1), esc));
+}
+function parseRDA(str){
+  str = str.trim();
+  if (!str) throw new Error('empty input');
+  const d0 = str[0];
+  let termIdx = -1;
+  for (let i=1; i<str.length; i++){ if (str[i] === d0){ termIdx = i; break; } }
+  if (termIdx === -1) throw new Error('no header terminator found');
+  const headerBody = str.slice(0, termIdx);
+  const esc = headerBody[headerBody.length - 1];
+  const delims = headerBody.slice(0, -1).split('');
+  const payload = str.slice(termIdx + 1);
+  return { delims, esc, tree: recursiveSplit(payload, delims, esc) };
+}
+function flattenForDisplay(val){
+  if (Array.isArray(val)) return val.map(flattenForDisplay).join(' ; ');
+  return val;
+}
+
+/* manual has NO header row: every row is directly [index, label(s)] */
+function parseManualEntries(manualStr){
+  const { tree } = parseRDA(manualStr.trim());
+  return tree; // array of rows, each row = [idxVal, labelVal] (labelVal may itself be a nested array)
+}
+
+/* resolve one data row against one manual's entries, producing "Label=value" parts,
+   unpacking compound entries (e.g. Destination;Address;Suburb;Post Code) into their own sub-attributes */
+function resolveRow(row, manualEntries){
+  const parts = [];
+  const sorted = manualEntries
+    .filter(r => Array.isArray(r) && r.length >= 2)
+    .map(r => [parseInt(flattenForDisplay(r[0]), 10), r[1]])
+    .sort((a,b) => a[0]-b[0]);
+
+  sorted.forEach(([idx, labelRaw]) => {
+    const labelArr = Array.isArray(labelRaw) ? labelRaw : [labelRaw];
+    const raw = row[idx];
+
+    if (labelArr.length > 1){
+      // compound entry: labelArr[0] = field name, labelArr.slice(1) = sub-attribute names
+      const fieldName = labelArr[0];
+      const subNames = labelArr.slice(1);
+      const rawArr = raw === undefined ? [] : (Array.isArray(raw) ? raw : [raw]);
+      const hasValue = rawArr.length > 0 && !(rawArr.length === 1 && rawArr[0] === '');
+      if (!hasValue){
+        parts.push(fieldName + '=(not supplied)');
+      } else {
+        const sub = subNames.map((sn, i) => sn + '=' + (rawArr[i] !== undefined ? rawArr[i] : '(not supplied)')).join(', ');
+        parts.push(fieldName + '={' + sub + '}');
+      }
+    } else {
+      const label = labelArr[0];
+      const val = raw === undefined ? '(not supplied)' : flattenForDisplay(raw);
+      parts.push(label + '=' + val);
+    }
+  });
+
+  return parts;
+}
+
+const streamInput = document.getElementById('streamInput');
+const manualV1 = document.getElementById('manualV1');
+const manualV2 = document.getElementById('manualV2');
+const manualV3 = document.getElementById('manualV3');
+const resolveBody = document.getElementById('resolveBody');
+
+streamInput.value = '|,;\\|v1,Steel Bolts,500,12.4|v2,Copper Wire,120,8.1|v3,Packing Foam,40,3.6,45 Dock Rd;Fremantle;6160|v1,Rubber Gasket,80,1.2|v3,Steel Pipe,15,22.0,12 Port Ave;Geelong;3220';
+manualV1.value = '|,\\|0,Version|1,Item|2,Qty|3,Weight';
+manualV2.value = '|,\\|0,Version|1,Item|2,Qty|3,Mass';
+manualV3.value = '|,;\\|0,Version|1,Item|2,Qty|3,Weight|4,Destination;Address;Suburb;Post Code';
+
+function render(){
+  resolveBody.innerHTML = '';
+
+  let cache;
+  try{
+    cache = { v1: parseManualEntries(manualV1.value), v2: parseManualEntries(manualV2.value), v3: parseManualEntries(manualV3.value) };
+  } catch(e){
+    resolveBody.innerHTML = '<tr><td colspan="2" class="warn">Could not parse manual cache: '+e.message+'</td></tr>';
+    return;
+  }
+
+  let parsed;
+  try{ parsed = parseRDA(streamInput.value); }
+  catch(e){
+    resolveBody.innerHTML = '<tr><td colspan="2" class="warn">Could not parse stream: '+e.message+'</td></tr>';
+    return;
+  }
+
+  parsed.tree.forEach((row, i) => {
+    const version = flattenForDisplay(row[0]);
+    const tr = document.createElement('tr');
+    const tdNum = document.createElement('td');
+    tdNum.className = 'recnum';
+    tdNum.textContent = i + 1;
+    const tdCell = document.createElement('td');
+
+    if (!cache[version]){
+      tdCell.innerHTML = 'Version=' + version + ', <span class="field-eq">raw=' + flattenForDisplay(row) + '</span> — <span class="warn">no manual cached for this version, cannot resolve</span>';
+    } else {
+      const parts = resolveRow(row, cache[version]);
+      tdCell.innerHTML = parts.join(', ') + ' — <span class="via">resolved via manual ' + version + '</span>';
+    }
+
+    tr.appendChild(tdNum);
+    tr.appendChild(tdCell);
+    resolveBody.appendChild(tr);
+  });
+}
+
+[streamInput, manualV1, manualV2, manualV3].forEach(el => el.addEventListener('input', render));
+render();
+</script>
+</body>
+</html>
