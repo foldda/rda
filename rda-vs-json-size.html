@@ -82,10 +82,14 @@
   <header class="manifest">
     <div class="eyebrow">
       <span>Manifest No. RDA&#8209;02</span>
-      <span>Late&#8209;binding demonstration</span>
+      <span>Data+Schema RDA encoding demonstration</span>
     </div>
-    <h1>Same box, different contents</h1>
-    <p>A freight yard ships parcels. The data box carries only values &mdash; no field names travel with every record. A separate <code>manual</code>, itself an RDA object, carries the meaning. Compare that against JSON, where names and values travel together in every record. Pick a scenario to see exactly what has to change from the base shipment, in red.</p>
+    <h1>Same content, different packages</h1>
+    <p style="margin-bottom: 10px;">This example demonstrates encoding data of a freight yard ships parcels using data+schema RDAs.</p> 
+    <p style="margin-bottom: 10px;">On the left, the data-RDA <code>box</code> carries only values &mdash; no field names travel with every record, 
+      and a separate <code>manual</code>, a schema-RDA object, carries the meaning (the meta-data). The output RDA strings are compared to the JSON-encoded string 
+      that carries the same information on the right, where names and values travel together in every record. </p>
+    <p>Pick a scenario to see exactly what has to change from the base shipment, in red.</p>
   </header>
 
   <div class="scenarios" id="scenarios">
@@ -103,7 +107,7 @@
         <div class="panel-head">RDA — data object + manual object</div>
         <div class="panel-body">
           <div class="sub-block">
-            <div class="sub-label">Manual object</div>
+            <div class="sub-label">Manual (schema) object</div>
             <div class="code-block">|,\|0,Item|1,Qty|2,Weight</div>
             <div class="caption">Position → meaning, sent once, separately. No header row — position 0 is always the first entry.</div>
           </div>
