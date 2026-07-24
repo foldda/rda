@@ -6,7 +6,7 @@
 
 > RDA is a text-encoding format that extends CSV with two core capabilities: **inline delimiter definitions** and **recursive nested structures**.
 
-While traditional CSV assumes an externally agreed-upon delimiter (typically a comma) and a flat table, RDA declares its own delimiters directly in its inline header and allows any field to contain either a string value or a nested RDA structure.
+While traditional CSV assumes an externally agreed-upon delimiter (typically a comma) and a flat table, RDA declares its encoding characters directly in its inline header and allows any field to contain either a string value or a nested RDA structure.
 
 ## Compared to CSV
 
@@ -14,7 +14,7 @@ RDA retains CSV's lightweight, delimiter-separated design while overcoming two o
 
 ### Inline Delimiter Definition
 
-Rather than relying on out-of-band agreements or file extensions to know how a file is formatted, an RDA-encoded string declares its encoding characters (delimiters plus an escape character) in its header, followed by a payload substring that contains the encoded data:
+Rather than relying on out-of-band agreements or file extensions to know how a file is formatted, an RDA-encoded string declares its encoding characters (delimiters and escape character) in its header, which are used to encode the payload data that follows the header:
 
 ```text
 |,\|Steel Bolts,500,12.4|Copper Wire,120,8.1
@@ -47,7 +47,7 @@ Because RDA natively models nested hierarchies, it serves as a lightweight alter
 
 ### Separation of Schema and Data
 
-JSON and XML embed structural metadata directly into every single object. RDA allows you to separate schema definitions from the data payload when appropriate (or include an optional header row, similar to CSV). While this trade-off reduces self-describing verbosity, it mostly eliminates redundancy over the wire.
+JSON and XML embed structural metadata directly into every single object. RDA allows you to separate schema definitions from the data payload when appropriate (or include an optional header row, similar to CSV). While this trade-off reduces self-describing verbosity, it mostly eliminates redundancy over the wire, and more importantly, it allows flexibilities such as having multiple versions of records in the same container.
 
 See the [dynamic schema-version handling demo](https://htmlpreview.github.io/?https://github.com/foldda/rda/blob/main/rda-version-handling.html) for examples.
 
@@ -80,5 +80,5 @@ While RDA defines the foundational wire format, higher-level capabilities—such
 <small>
 * RDA is released under the MIT License.
 
-** **Recursive Delimited Array** and **RDA** are trademarks of Foldda Pty Ltd.
+** _Recursive Delimited Array_ and _RDA_ are trademarks of Foldda Pty Ltd.
 </small>
