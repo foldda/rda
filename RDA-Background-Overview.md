@@ -29,39 +29,6 @@ This provides:
 
 ---
 
-## A Simple Example
-
-An RDA string consists of two parts:
-
-- a **header**, which defines the encoding delimiters and the escape character
-- a **payload**, which contains the encoded data
-
-```
-|\|One|Two|Three
-```
-
-The header (`|\|`) declares the delimiter (`|`) and the escape character (`\`), allowing a parser to determine the encoding dynamically.
-
-Additional delimiters allow encoding higher-dimensional data.
-
-For example, the table
-
-| Name | Sex | Age |
-|------|-----|-----|
-| Mary | F | 52 |
-| John | M | 70 |
-| Kate | F | 63 |
-
-is encoded as
-
-```
-|,\|Name,Sex,Age|Mary,F,52|John,M,70|Kate,F,63
-```
-
-The parser learns the encoding characters definitions directly from the header, allowing different encoding characters to be used without changing the parser.
-
----
-
 ## The Late-Binding Analogy
 
 Imagine moving house.
@@ -74,37 +41,11 @@ Applications disassemble complex objects into generic RDA containers for transpo
 
 > RDA is the "box" used during transport.
 
-Unlike schema-based formats, the transport layer does not impose restrictions on the structure of the data being carried, allowing loosely-coupled integration by moving data validation to the application layer.
+Unlike schema-based formats, the transport layer does not impose restrictions on the structure of the data being carried, allowing loosely coupled integration by moving data validation to the application layer.
 
 ---
 
-## Charian
-
-RDA is accompanied by [**Charian**, a lightweight API for encoding, decoding, and manipulating RDA data](https://github.com/foldda/charian).
-
-Rather than exposing a schema-driven object model, Charian presents a generic hierarchical container that applications can populate, transport, and reconstruct as required.
-
-Because an RDA object can itself contain other RDA objects[1], arbitrarily deep hierarchical structures can be represented naturally.
-
-Code examples for C#, Python and Java are available in the Charian repository.
-
-[1]: RDA object supports only two data types: strings or RDA objects. It's an application's responsiblity to validate and convert data in these forms to its native type, and to handle any possible exceptions.
-
----
-
-## Snappable
-
-RDA was originally created for [**Snappable**, an open-source component framework](https://github.com/foldda/snappable) that allows independently developed software components to communicate without requiring a shared object model.
-
-Each component converts between its native data structures and RDA, allowing components from different vendors to interoperate through late-binding.
-
-The following video demonstrates how Snappable achieves its design goals using RDA and late-binding:
-
-https://www.youtube.com/watch?v=Uek9aW1qToU
-
----
-
-## The Bigger Picture
+## Loose-coupled data exchange - the big picture
 
 Traditional system integration often requires dedicated data pipelines based on fixed schemas.
 
@@ -136,6 +77,31 @@ The result is a transport layer that is simpler, more reusable, and less depende
 
 ---
 
+
+## Charian
+
+RDA is accompanied by [**Charian**, a lightweight API for encoding, decoding, and manipulating RDA data](https://github.com/foldda/charian).
+
+Rather than exposing a schema-driven object model, Charian presents a generic hierarchical container that applications can populate, transport, and reconstruct as required.
+
+Because an RDA object can itself contain other RDA objects[1], arbitrarily deep hierarchical structures can be represented naturally.
+
+Code examples for C#, Python, and Java are available in the Charian repository.
+
+[1]: RDA objects support only two data types: strings or RDA objects. It's an application's responsibility to validate and convert data in these forms to its native type, and to handle any possible exceptions.
+
+---
+
+## Snappable
+
+RDA was originally created for [**Snappable**, an open-source component framework](https://github.com/foldda/snappable) that allows independently developed software components to communicate without requiring a shared object model.
+
+Each component converts between its native data structures and RDA, allowing components from different vendors to interoperate through late-binding.
+
+The following video demonstrates how Snappable achieves its design goals using RDA and late-binding:
+
+https://www.youtube.com/watch?v=Uek9aW1qToU
+
 ## Learn More
 
 The [project Wiki](https://github.com/foldda/rda/wiki) contains additional details, including:
@@ -151,11 +117,11 @@ The [project Wiki](https://github.com/foldda/rda/wiki) contains additional detai
 
 ## Claude AI's View
 
-From a discussion with Claude AI, it summarise RDA as -
+From a discussion with Claude AI, it summarises RDA as -
 
 > RDA is CSV extended with recursion and self-declared delimiters, while deliberately not adopting JSON's key-value naming or type system.
 
-The discussion also inculdes Claude AI's comparison of RDA against XML/JSON/CSV, Protobuf and Avro
+The discussion also includes Claude AI's comparison of RDA against XML/JSON/CSV, Protobuf, and Avro
 
 https://claude.ai/share/b75c3360-f61d-4216-ada6-422d0ea8a934
 
