@@ -43,7 +43,7 @@ Notice that only the final record contains a nested `Destination` value (`45 Doc
 
 ## Compared to JSON and XML
 
-Because RDA natively models nested hierarchies, it serves as a lightweight alternative to JSON and XML in data interchange scenarios.
+Because RDA natively models nested hierarchies, it serves as a lightweight alternative to JSON and XML in data interchange scenarios with some added benefits.
 
 ### Separation of Schema and Data
 
@@ -65,13 +65,13 @@ See the [size comparison demo](https://htmlpreview.github.io/?https://github.com
 <img src="img/rda-vs-json-size-compare.png" width="700">
 </div>
 
-## Purpose & Next Steps
+## Purpose & Applications
 
-Despite its advantageous features, RDA isn't built to replace CSV, XML, or JSON as data containers. 
+Despite its distinctive features, RDA isn't built to replace CSV, XML, or JSON as data containers. 
 
->RDA is designed for [**loosely coupled, late-binding data exchange**](./RDA-Background-Overview.md) — scenarios where data structures evolve over time across disparate systems, and where hardcoding schemas into compiled code or embedding heavy metadata in payload is inflexible.
+_RDA is designed for [**loosely coupled, late-binding data exchange**](./RDA-Background-Overview.md) — scenarios where data structures evolve over time across disparate systems, and where hardcoding schemas into compiled code or embedding heavy metadata in payload is inflexible._
 
-While RDA defines the foundational wire format, higher-level capabilities—such as schema evolution, late binding, dynamic object mapping, and composable components—are handled by the surrounding ecosystem.
+While RDA defines the foundational wire format, higher-level capabilities—such as schema evolution, late binding, dynamic object mapping, and composable components—are realized through the surrounding ecosystem.
 
 * Check out **[Charian](https://github.com/foldda/)** for a lightweight reference parser/encoder implementation featuring working code and practical examples to experiment with RDA's benefits in your own projects.
 * Explore **[Snappable](https://github.com/foldda/)** to see how modular, late-bound components dynamically work and collaborate inside a generic **component-based computing framework**.
