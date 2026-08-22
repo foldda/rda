@@ -71,7 +71,7 @@ Despite its distinctive features, RDA isn't built to replace CSV, XML, or JSON a
 
 _RDA is designed for [**loosely coupled, late-binding data exchange**](./RDA-Background-Overview.md) — scenarios where data structures evolve over time across disparate systems, and where hardcoding schemas into compiled code or embedding heavy metadata in payload is inflexible._
 
-While RDA defines the foundational wire format, higher-level capabilities—such as schema evolution, late binding, dynamic object mapping, and composable components—are realized through the surrounding ecosystem.
+While RDA defines the foundational wire format, higher-level capabilities—such as schema evolution, dynamic object self-binding, and vendor-neutral interchangeable components—are realized through the surrounding ecosystem.
 
 * Check out **[Charian](https://github.com/foldda/)** for a lightweight reference parser/encoder implementation featuring working code and practical examples to experiment with RDA's benefits in your own projects.
 * Explore **[Snappable](https://github.com/foldda/)** to see how modular, late-bound components dynamically work and collaborate inside a generic **component-based computing framework**.
