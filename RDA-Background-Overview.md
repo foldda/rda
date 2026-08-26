@@ -80,7 +80,7 @@ The result is a transport layer that is simpler, more reusable, and less depende
 
 ## Charian
 
-RDA is accompanied by **Charian**, a lightweight serialization API for encoding, decoding, and manipulating RDA data.
+RDA is accompanied by **Charian**, a lightweight serialization API based on encoding, decoding, and manipulating RDA data.
 
 Rather than exposing a schema-driven object model, Charian uses RDA as a generic hierarchical container that applications can populate, transport, and reconstruct data objects as required.
 
