@@ -29,7 +29,7 @@ This provides:
 
 ---
 
-## The Late-Binding Analogy
+## The moving-house analogy
 
 Imagine moving house.
 
@@ -39,9 +39,9 @@ Data exchange can work the same way.
 
 Applications disassemble complex objects into generic RDA containers for transport. The receiving application reconstructs the objects after delivery.
 
-> RDA is the "box" used during transport.
+> RDA is the "box" for data transport.
 
-Unlike schema-based formats, the transport layer does not impose restrictions on the structure of the data being carried, allowing loosely coupled integration by moving data validation to the application layer.
+Unlike using schema-based formats, the RDA-based transport layer does not impose restrictions on the structure of the data being carried, allowing loosely coupled integration by moving data validation to the application layer.
 
 ---
 
@@ -83,6 +83,10 @@ The result is a transport layer that is simpler, more reusable, and less depende
 RDA is accompanied by [**Charian**, a lightweight API for encoding, decoding, and manipulating RDA data](https://github.com/foldda/charian).
 
 Rather than exposing a schema-driven object model, Charian presents a generic hierarchical container that applications can populate, transport, and reconstruct as required.
+
+<div align="left">
+<img src="img/Charian_Schema-less_Data_Exchange.png" width="440">
+</div>
 
 Because an RDA object can itself contain other RDA objects[1], arbitrarily deep hierarchical structures can be represented naturally.
 
