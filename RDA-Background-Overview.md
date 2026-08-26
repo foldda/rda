@@ -4,11 +4,11 @@
 
 <img src="docs/image/rda_logo.png" align="right" height="128">
 
-Recursive Delimited Array (RDA) is a **schema-less plain-text data format** designed for **data exchange late-binding**.
+Recursive Delimited Array (RDA) is a plain-text format designed for **schema-less data exchange**.
 
 Unlike XML or JSON, which require sender and receiver to agree on a shared schema, RDA allows applications to exchange structured data without depending on a fixed data model. This makes systems easier to evolve independently while remaining interoperable.
 
-> **Data exchange late-binding** means the structure of exchanged data does not need to be agreed upon before transmission. Instead, the sender and receiver interpret the data only when they consume it.
+> _Self-binding_ means a data object decides how to map its own fields to and from the RDA container, instead of relying on an external schema or code generator. It allows the sender and receiver to interpret the data only when they consume it.
 
 ---
 
@@ -80,17 +80,17 @@ The result is a transport layer that is simpler, more reusable, and less depende
 
 ## Charian
 
-RDA is accompanied by [**Charian**, a lightweight API for encoding, decoding, and manipulating RDA data](https://github.com/foldda/charian).
+RDA is accompanied by **Charian**, a lightweight serialization API for encoding, decoding, and manipulating RDA data.
 
-Rather than exposing a schema-driven object model, Charian presents a generic hierarchical container that applications can populate, transport, and reconstruct as required.
+Rather than exposing a schema-driven object model, Charian uses RDA as a generic hierarchical container that applications can populate, transport, and reconstruct data objects as required.
 
 <div align="left">
-<img src="img/Charian_Schema-less_Data_Exchange.png" width="440">
+<img src="img/Charian_Schema-less_Data_Exchange.png" width="1024">
 </div>
 
-Because an RDA object can itself contain other RDA objects[1], arbitrarily deep hierarchical structures can be represented naturally.
+Because an RDA container can itself recursively contain other RDA containers[1], data objects with arbitrarily deep hierarchical structures can be represented naturally.
 
-Code examples for C#, Python, and Java are available in the Charian repository.
+Code examples for C#, Python, and Java are available in [the Charian repository](https://github.com/foldda/charian).
 
 [1]: RDA objects support only two data types: strings or RDA objects. It's an application's responsibility to validate and convert data in these forms to its native type, and to handle any possible exceptions.
 
@@ -100,9 +100,9 @@ Code examples for C#, Python, and Java are available in the Charian repository.
 
 RDA was originally created for [**Snappable**, an open-source component framework](https://github.com/foldda/snappable) that allows independently developed software components to communicate without requiring a shared object model.
 
-Each component converts between its native data structures and RDA, allowing components from different vendors to interoperate through late-binding.
+Each component converts between its native data structures and RDA, allowing components from different vendors to interoperate through self-binding.
 
-The following video demonstrates how Snappable achieves its design goals using RDA and late-binding:
+The following video demonstrates how Snappable achieves its design goals using RDA and data object self-binding:
 
 https://www.youtube.com/watch?v=Uek9aW1qToU
 
