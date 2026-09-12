@@ -43,7 +43,7 @@ Notice that only the final record contains a nested `Destination` value (`45 Doc
 
 ## Compared to JSON and XML
 
-Because RDA natively models nested hierarchies, it serves as a lightweight alternative to JSON and XML in data interchange scenarios with some added benefits.
+Because RDA natively models nested hierarchies, it serves as a lightweight alternative to JSON and XML in data interchange scenarios—with added benefits.
 
 ### Separation of Schema and Data
 
@@ -55,7 +55,7 @@ See the [dynamic schema-version handling demo](https://htmlpreview.github.io/?ht
 <img src="img/schema-rda-versions-demo.png" width="800">
 </div>
 
-### More Size-Efficient
+### Better Encoding Size-Efficiency
 
 RDA uses positional delimiters in the encoding and can separately transmit schema and data, rather than repeating key names (JSON) or opening/closing tags (XML) on every record. As a result, RDA payloads are significantly smaller—especially for uniform or semi-uniform arrays of data.
 
