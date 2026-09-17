@@ -122,16 +122,25 @@ function splitRespectingEscape(s, delim, esc){
   let cur = '';
   for (let i=0; i<s.length; i++){
     const c = s[i];
-    if (c === esc && i+1 < s.length){ cur += s[i+1]; i++; continue; }
+    // Keep escape pairs intact until every structural level has been split.
+    // Otherwise an escaped inner delimiter can become a separator later.
+    if (c === esc && i+1 < s.length){ cur += c + s[i+1]; i++; continue; }
     if (c === delim){ parts.push(cur); cur=''; } else cur += c;
   }
   parts.push(cur);
   return parts;
 }
+function unescapeScalar(s, esc){
+  let value = '';
+  for (let i=0; i<s.length; i++){
+    if (s[i] === esc && i+1 < s.length){ value += s[++i]; }
+    else { value += s[i]; }
+  }
+  return value;
+}
 function recursiveSplit(s, delims, esc){
-  if (delims.length === 0) return s;
+  if (delims.length === 0) return unescapeScalar(s, esc);
   const parts = splitRespectingEscape(s, delims[0], esc);
-  if (delims.length === 1) return parts;
   return parts.map(p => recursiveSplit(p, delims.slice(1), esc));
 }
 function parseRDA(str){
